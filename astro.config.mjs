@@ -20,5 +20,9 @@ export default defineConfig({
                 "piccolore": path.resolve(__dirname, "./src/mocks/piccolore.ts"),
             },
         },
+        ssr: {
+            // Force bundle library utility kecil agar tidak perlu resolve dari node_modules di runtime
+            noExternal: ['clsx', 'tailwind-merge', '@astrojs/vercel', 'astro-icon'],
+        },
     },
 });
