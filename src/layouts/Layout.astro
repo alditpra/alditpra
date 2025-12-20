@@ -33,8 +33,9 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <!-- Preconnect for Google Sheets data -->
-    <link rel="preconnect" href="https://docs.google.com" />
+    <!-- Resource hints for Google Sheets data fetching -->
+    <link rel="dns-prefetch" href="https://docs.google.com" />
+    <link rel="preconnect" href="https://docs.google.com" crossorigin />
 
     <!-- Preload LCP image -->
     <link

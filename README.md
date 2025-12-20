@@ -1,31 +1,33 @@
 # 🌐 alditpra - Personal Link Directory
 
-> Web ini dibangun menggunakan Astro dan Tailwind CSS 4, dengan Google Sheets sebagai database-nya. **Solusi gratis tanpa bayar.**
+> A modern, high-performance personal link directory built with Astro and Tailwind CSS 4, powered by Google Sheets as a free CMS. **100% free solution, no paid services required.**
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
 ## ✨ Features
 
-- 🎨 **Modern Design** - Glassmorphism UI dengan candy color palette
-- 📊 **Google Sheets as CMS** - Kelola konten tanpa database tradisional
-- 🔍 **Real-time Search** - Cari link dengan instant filtering
-- 📱 **Fully Responsive** - Mobile-first design yang sempurna di semua device
-- ⚡ **Lightning Fast** - Server-side rendering dengan Astro
-- 🎯 **Dynamic Routing** - Level 0 (direct links) dan Level 1 (detail pages)
-- 🔒 **Secure** - URL sanitization dan external link protection
-- 🌈 **Animated UI** - Smooth transitions dan hover effects
-- 📂 **Google Drive Integration** - Embedded folder view untuk file management
-- ♿ **Accessible** - Keyboard shortcuts (⌘K untuk search) dan semantic HTML
+- 🎨 **Modern Design** - Glassmorphism UI with candy color palette
+- 📊 **Google Sheets as CMS** - Manage content without traditional databases
+- 🔍 **Real-time Search** - Instant filtering with keyboard shortcuts (⌘K)
+- 📱 **Fully Responsive** - Mobile-first design that works perfectly on all devices
+- ⚡ **Lightning Fast** - Optimized SSR with Astro, 90+ Lighthouse score
+- 🎯 **Dynamic Routing** - Level 0 (direct links) and Level 1 (detail pages)
+- 🔒 **Secure** - URL sanitization and external link protection
+- 🌈 **Smooth Transitions** - View Transitions for SPA-like navigation
+- 📂 **Google Drive Integration** - Embedded folder view for file management
+- ♿ **Accessible** - Semantic HTML and ARIA labels
+- 🔄 **Auto Data Refresh** - ISR with 5-minute cache revalidation
+- 🎭 **Error Resilient** - Graceful error handling prevents crashes
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Astro](https://astro.build) 5.0
-- **CSS**: [Tailwind CSS](https://tailwindcss.com) 4.0 (Beta)
+- **Framework**: [Astro](https://astro.build) 5.16
+- **CSS**: [Tailwind CSS](https://tailwindcss.com) 4.0
 - **Icons**: [Lucide Icons](https://lucide.dev) via `astro-icon`
+- **Fonts**: [Inter](https://fontsource.org/fonts/inter) (self-hosted via @fontsource)
 - **Data Source**: Google Sheets (CSV export)
-- **Deployment**: [Vercel](https://vercel.com)
-- **Font**: [Inter](https://fonts.google.com/specimen/Inter)
+- **Deployment**: [Vercel](https://vercel.com) with ISR
 - **TypeScript**: Full type safety
 
 ## 📁 Project Structure
@@ -38,29 +40,27 @@ alditpra/
 │   │   │   ├── profile-card/  # Profile card with social links
 │   │   │   ├── category-section/ # Category filters
 │   │   │   └── LinkCard.astro # Link card component
+│   │   ├── HomePage.astro     # Homepage component
 │   │   └── ui/                # Reusable UI components
-│   │       ├── MeshGradient.astro
-│   │       └── SearchBar.astro
 │   ├── layouts/
-│   │   └── Layout.astro       # Base layout
+│   │   └── Layout.astro       # Base layout with View Transitions
 │   ├── lib/
-│   │   ├── data.ts            # Google Sheets data fetching
+│   │   ├── data.ts            # Google Sheets data fetching with caching
 │   │   ├── security.ts        # URL sanitization
 │   │   ├── error-handler.ts   # Error handling & retry logic
-│   │   ├── colors.ts          # Color system
+│   │   ├── colors.ts          # Dynamic color system
 │   │   ├── category-utils.ts  # Category helpers
 │   │   └── constants.ts       # App configuration
 │   ├── pages/
-│   │   ├── index.astro        # Homepage
+│   │   ├── index.astro        # Homepage route
 │   │   └── [id].astro         # Dynamic link detail pages
 │   ├── styles/
 │   │   └── global.css         # Global styles & CSS variables
 │   └── types/
-│       └── index.ts           # TypeScript types
+│       └── index.ts           # TypeScript definitions
 ├── public/
-│   └── avatar.webp            # Profile image (optimized)
-├── astro.config.mjs           # Astro configuration
-├── tailwind.config.mjs        # Tailwind configuration
+│   └── avatar.webp            # Profile image (8KB, optimized)
+├── astro.config.mjs           # Astro + Vercel ISR config
 └── package.json
 ```
 
@@ -69,13 +69,13 @@ alditpra/
 ### Prerequisites
 
 - Node.js 18+ (recommended: 22)
-- npm atau pnpm
+- npm or pnpm
 
 ### Installation
 
 1. **Clone repository**
    ```bash
-   git clone https://github.com/yourusername/alditpra.git
+   git clone https://github.com/alditpra/alditpra.git
    cd alditpra
    ```
 
@@ -84,17 +84,17 @@ alditpra/
    npm install
    ```
 
-3. **Setup Google Sheets** (Optional - jika ingin menggunakan data sendiri)
+3. **Setup Google Sheets** (Optional - use your own data)
    
-   a. Buat Google Spreadsheet dengan 3 sheets:
-   - `Links` - Data link utama
-   - `Level1` - Data detail untuk level 1 pages
-   - `Categories` - Data kategori
+   a. Create a Google Spreadsheet with 3 sheets:
+   - `Links` - Main link data
+   - `Level1` - Detail page content
+   - `Categories` - Category definitions
    
    b. Publish spreadsheet to web:
    - File → Share → Publish to web
-   - Pilih "Entire Document" dan "CSV"
-   - Copy URL-nya
+   - Select "Entire Document" and "CSV"
+   - Copy the published URL
    
    c. Update `src/lib/constants.ts`:
    ```typescript
@@ -106,7 +106,7 @@ alditpra/
    npm run dev
    ```
    
-   Website akan berjalan di `http://localhost:4321`
+   Open `http://localhost:4321`
 
 ## 📊 Google Sheets Schema
 
@@ -149,7 +149,7 @@ alditpra/
 ## 🎨 Customization
 
 ### Colors
-Edit candy color palette di `src/styles/global.css`:
+Edit the candy color palette in `src/styles/global.css`:
 ```css
 :root {
   --candy-teal: #35e2c3;
@@ -160,8 +160,8 @@ Edit candy color palette di `src/styles/global.css`:
 }
 ```
 
-### Site Config
-Edit informasi site di `src/lib/constants.ts`:
+### Site Configuration
+Edit site information in `src/lib/constants.ts`:
 ```typescript
 export const SITE_CONFIG = {
     name: "Your Name",
@@ -171,14 +171,17 @@ export const SITE_CONFIG = {
 };
 ```
 
+### Profile Avatar
+Replace `public/avatar.webp` with your own image (recommended: 230x230px, WebP format).
+
 ## 📦 Build & Deployment
 
-### Build untuk Production
+### Build for Production
 ```bash
 npm run build
 ```
 
-### Deploy ke Vercel
+### Deploy to Vercel
 
 1. **Via Vercel CLI**
    ```bash
@@ -186,40 +189,54 @@ npm run build
    vercel
    ```
 
-2. **Via GitHub**
-   - Push code ke GitHub
-   - Import project di [Vercel Dashboard](https://vercel.com/new)
-   - Deploy akan otomatis
+2. **Via GitHub (Recommended)**
+   - Push code to GitHub
+   - Import project in [Vercel Dashboard](https://vercel.com/new)
+   - Automatic deployments on every push
 
 ### Environment Variables
-Tidak ada environment variable yang diperlukan! Semua konfigurasi ada di `constants.ts`.
+No environment variables required! All configuration is in `constants.ts`.
 
 ## 🔧 Available Scripts
 
 ```bash
 npm run dev      # Start development server
-npm run build    # Build for production
+npm run build    # Build for production  
 npm run preview  # Preview production build
 npm run astro    # Run Astro CLI commands
 ```
 
-## 🎯 Performance
+## 🎯 Performance Optimizations
 
-- ✅ **Lighthouse Score**: 95+
-- ⚡ **LCP**: < 2.5s
-- 📦 **Bundle Size**: Optimized dengan dynamic imports
-- 🖼️ **Images**: WebP format dengan preload
-- 🔄 **Caching**: Smart caching strategy (5 minutes)
+- ✅ **Lighthouse Score**: 90-95/100
+- ⚡ **Max Critical Path**: 564ms
+- 📦 **CSS Bundle**: 13.9 KB (minimal, purged)
+- 🖼️ **Avatar Image**: 8 KB WebP
+- 🔤 **Fonts**: Self-hosted, 4 weights only (~80KB)
+- 🔄 **ISR Caching**: 5-minute revalidation for auto data updates
+- 🎬 **View Transitions**: Smooth page navigation
+- 🚫 **No Forced Reflows**: Pure CSS-based filtering
+- 🌐 **No CDN Dependencies**: Fully self-hosted fonts
+
+### Total First Load
+~60-70 KB (excellent!)
+
+## 🔄 Auto Data Updates
+
+The site uses **Incremental Static Regeneration (ISR)** with 5-minute cache expiration:
+- Update Google Sheets → Changes appear within 5 minutes
+- No manual redeployment needed
+- Optimal balance between freshness and performance
 
 ## 🤝 Contributing
 
-Contributions are welcome! Jika Anda menemukan bug atau ingin menambahkan fitur:
+Contributions are welcome! If you find a bug or want to add features:
 
-1. Fork repository
+1. Fork the repository
 2. Create feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
+5. Open a Pull Request
 
 ## 📝 License
 
@@ -234,11 +251,12 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgments
 
-- [Astro](https://astro.build) - Amazing framework
-- [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS
-- [Lucide](https://lucide.dev) - Beautiful icons
-- [Vercel](https://vercel.com) - Free hosting platform
+- [Astro](https://astro.build) - Amazing framework for content-focused sites
+- [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS framework
+- [Lucide](https://lucide.dev) - Beautiful, consistent icon set
+- [Vercel](https://vercel.com) - Free hosting with ISR support
 - [Google Sheets](https://sheets.google.com) - Free CMS solution
+- [@fontsource](https://fontsource.org) - Self-hosted fonts made easy
 
 ---
 
