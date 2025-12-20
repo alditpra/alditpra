@@ -20,7 +20,7 @@ export default defineConfig({
         imageService: true,
         imagesConfig: {
             sizes: [320, 640, 768, 1024, 1280, 1536],
-            formats: ['webp', 'avif'],
+            formats: ['image/webp', 'image/avif'],
             domains: ['docs.google.com', 'drive.google.com'],
         },
     }),
