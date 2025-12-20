@@ -23,14 +23,33 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
     <meta name="author" content={SITE_CONFIG.author} />
     
 
-    <!-- Open Graph -->
+    <!-- SEO: Canonical URL -->
+    <link rel="canonical" href={new URL(Astro.url.pathname, SITE_CONFIG.url).href} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, SITE_CONFIG.url).href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL(SITE_CONFIG.ogImage, SITE_CONFIG.url).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE_CONFIG.name} - ${SITE_CONFIG.tagline}`} />
+    <meta property="og:site_name" content={SITE_CONFIG.name} />
+    <meta property="og:locale" content="id_ID" />
 
-    <!-- Resource hints for fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={new URL(Astro.url.pathname, SITE_CONFIG.url).href} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(SITE_CONFIG.ogImage, SITE_CONFIG.url).href} />
+    <meta name="twitter:image:alt" content={`${SITE_CONFIG.name} - ${SITE_CONFIG.tagline}`} />
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#7f73ff" />
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+
     <!-- Resource hints for Google Sheets data fetching -->
     <link rel="dns-prefetch" href="https://docs.google.com" />
     <link rel="preconnect" href="https://docs.google.com" crossorigin />
