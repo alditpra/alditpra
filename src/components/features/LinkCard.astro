@@ -1,0 +1,129 @@
+---
+import { cn } from "../../lib/utils";
+import { sanitizeUrl, getExternalLinkProps } from "../../lib/security";
+import { getColorByIndex } from "../../lib/colors";
+import { Icon } from "astro-icon/components";
+import type { Link } from "../../types";
+
+interface Props {
+  link: Link;
+  index?: number;
+  className?: string;
+}
+
+const { link, index = 0, className } = Astro.props;
+
+if (!link || !link.id || !link.name) {
+  throw new Error("Invalid link prop");
+}
+
+const color = getColorByIndex(index);
+const isDirectLink = link.level === 0 && link.link;
+const sanitizedLink = link.link ? sanitizeUrl(link.link) : '#';
+const href = isDirectLink && sanitizedLink !== '#' ? sanitizedLink : `/${link.id}`;
+const externalLinkProps = isDirectLink && sanitizedLink !== '#' ? getExternalLinkProps(sanitizedLink) : {};
+
+// FontAwesome to Lucide icon name mapping (for migrated data)
+const faToLucideMap: Record<string, string> = {
+  'object-group': 'layout-grid',
+  'book': 'book-open',
+  'video': 'play-circle',
+  'file-alt': 'file-text',
+  'cog': 'settings',
+  'certificate': 'award',
+  'tools': 'wrench',
+};
+
+// Get icon name: try spreadsheet value, then map legacy FA names
+const rawIcon = link.icon;
+const iconName = rawIcon ? (faToLucideMap[rawIcon] || rawIcon) : null;
+
+// First letter fallback
+const firstLetter = link.name.charAt(0).toUpperCase();
+---
+
+<a
+  href={href}
+  {...externalLinkProps}
+  class={cn("group relative block w-full h-full link-card-item", className, externalLinkProps.className)}
+  data-name={link.name.toLowerCase()}
+  data-category={link.category || 'kuliah'}
+>
+  <div class="relative h-full transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02]">
+    {/* Card Background with subtle candy tint */}
+    <div 
+        class={cn(
+            "absolute inset-0 rounded-3xl border-2 backdrop-blur-md transition-all duration-300",
+            "bg-gradient-to-br from-white/80 to-white/40",
+            "border-white/60 group-hover:border-transparent",
+            color.border
+        )}
+    ></div>
+    
+    {/* Enhanced Glow Effect */}
+    <div
+        class="absolute inset-0 rounded-3xl opacity-0 transition-all duration-500 group-hover:opacity-100"
+        style={`box-shadow: 0 20px 40px -10px ${color.glow};`}
+    ></div>
+
+    {/* Content */}
+    <div class="relative p-6 h-full flex items-start gap-5">
+        {/* Icon - Using Lucide or First Letter Fallback */}
+        <div 
+            class={cn(
+                "shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300",
+                "group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg",
+                color.bg,
+                color.text
+            )}
+            style={`box-shadow: 0 4px 15px -3px ${color.glow};`}
+        >
+            {iconName ? (
+                <Icon name={`lucide:${iconName}`} class="w-7 h-7" />
+            ) : (
+                <span class="text-2xl font-bold">{firstLetter}</span>
+            )}
+        </div>
+
+        {/* Text Content */}
+        <div class="flex-1 min-w-0 space-y-2">
+            <div class="flex items-center gap-2">
+                <h3 class={cn(
+                    "font-bold text-lg text-zinc-800 truncate pr-4 transition-colors duration-300",
+                    "group-hover:text-zinc-900"
+                )}>
+                    {link.name}
+                </h3>
+            </div>
+            
+            {link.description && (
+                <p class="text-sm text-zinc-500 line-clamp-2 leading-relaxed group-hover:text-zinc-600 transition-colors">
+                    {link.description}
+                </p>
+            )}
+
+            {/* Semester Badge if available */}
+            {link.semester && (
+                <div class="flex items-center gap-2 pt-1">
+                    <span class={cn(
+                        "text-xs font-medium px-2.5 py-1 rounded-full",
+                        color.bg,
+                        color.text
+                    )}>
+                        Semester {link.semester}
+                    </span>
+                </div>
+            )}
+        </div>
+
+        {/* Arrow indicator */}
+        <div class={cn(
+            "shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
+            "bg-zinc-100 text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white",
+            "group-hover:translate-x-1"
+        )}>
+            <Icon name="lucide:arrow-right" class="w-4 h-4" />
+        </div>
+    </div>
+  </div>
+</a>

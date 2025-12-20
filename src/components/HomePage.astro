@@ -1,0 +1,222 @@
+---
+import { SITE_CONFIG } from "../lib/constants";
+import { getAllLinks, getCategories } from "../lib/data";
+import { groupByCategory } from "../lib/category-utils";
+import MeshGradient from "./ui/MeshGradient.astro";
+import ProfileCard from "./features/profile-card/ProfileCard.astro";
+import LinkCard from "./features/LinkCard.astro";
+import { Icon } from "astro-icon/components";
+import { candyColors } from "../lib/colors";
+
+
+const links = await getAllLinks();
+const categories = await getCategories();
+const groupedLinks = groupByCategory(links, categories);
+
+// Flatten links for easier searching in DOM
+// Actually we render all of them and toggle visibility.
+---
+
+<main class="min-h-screen relative overflow-hidden bg-[#fafafa]">
+    {/* Background */}
+    <MeshGradient />
+
+    <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
+        {/* Profile & Search */}
+        <div class="max-w-4xl mx-auto mb-12">
+            <ProfileCard />
+        </div>
+
+
+        <div class="max-w-4xl mx-auto pb-20" id="links-container">
+            {(() => {
+                let globalIndex = 0;
+                return categories.map((category, categoryIdx) => {
+                    const categoryLinks = groupedLinks.get(category.id) || [];
+                    if (categoryLinks.length === 0) return null;
+
+                    // Get header color and consume one index
+                    const headerColorIndex = globalIndex++;
+                    const headerColor = candyColors[headerColorIndex % candyColors.length];
+
+                    return (
+                        <section class="mb-16 link-section" data-category={category.id}>
+                            {/* Enhanced Section Header - uses unique color */}
+                            <div class="flex items-center gap-4 mb-8 px-1">
+                                <div class="flex items-center gap-4">
+                                    {/* Enhanced Icon Box - larger with glow */}
+                                    <div 
+                                        class={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${headerColor.bg} ${headerColor.text}`}
+                                        style={`box-shadow: 0 8px 20px -4px ${headerColor.glow};`}
+                                    >
+                                        {category.icon ? (
+                                            <Icon name={`lucide:${category.icon}`} class="w-6 h-6" />
+                                        ) : (
+                                            <span class="text-xl font-bold">{category.title.charAt(0).toUpperCase()}</span>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Title & Description */}
+                                    <div class="flex flex-col gap-0.5">
+                                        <h2 class="text-2xl font-bold text-zinc-800 leading-tight">
+                                            {category.title}
+                                        </h2>
+                                        {category.description && (
+                                            <p class={`text-sm font-medium ${headerColor.text}`}>
+                                                {category.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    {/* Enhanced Badge Count - uses category color */}
+                                    <span class={`text-sm font-bold px-3 py-1.5 rounded-full ${headerColor.bg} ${headerColor.text}`}>
+                                        {categoryLinks.length}
+                                    </span>
+                                </div>
+                                
+                                {/* Gradient divider line */}
+                                <div class="h-0.5 flex-1 rounded-full" style={`background: linear-gradient(to right, ${headerColor.glow}50, transparent);`}></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
+                                {categoryLinks.map((link) => {
+                                    const currentIndex = globalIndex++;
+                                    return <LinkCard link={link} index={currentIndex} />;
+                                })}
+                            </div>
+                        </section>
+                    );
+                });
+            })()}
+        </div>
+
+        {/* Empty State */}
+        <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
+            <div class="bg-zinc-100 p-4 rounded-full mb-4">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-x text-zinc-400"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+            <h3 class="text-lg font-medium text-zinc-900">Tidak ada hasil ditemukan</h3>
+            <p class="text-zinc-500 mt-1">Coba kata kunci lain atau ubah kategori.</p>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Client-side logic for search, category filtering, and animations
+    document.addEventListener('astro:page-load', () => {
+        init();
+    });
+
+    // Also run on initial load in case view transitions aren't used or first load
+    init();
+
+    function init() {
+        const searchInput = document.getElementById('search-input') as HTMLInputElement;
+        const linkSections = document.querySelectorAll('.link-section');
+        const linkCards = document.querySelectorAll('.link-card-item');
+        const emptyState = document.getElementById('empty-state');
+        const profileInfo = document.getElementById('profile-info');
+        const profileDivider = document.getElementById('profile-divider');
+        const searchWrapper = document.getElementById('search-wrapper');
+
+        let searchQuery = '';
+
+        function filterLinks() {
+            let hasVisibleLinks = false;
+            const query = searchQuery;
+
+            linkCards.forEach((card) => {
+                const name = (card.getAttribute('data-name') || '').toLowerCase();
+                const category = card.getAttribute('data-category') || '';
+                const element = card as HTMLElement;
+                const parentSection = element.closest('.link-section') as HTMLElement;
+
+                // Match Logic - Search only (no category filter)
+                const matchesSearch = name.includes(query);
+                
+                if (matchesSearch) {
+                    element.classList.remove('hidden');
+                    element.style.display = ''; // Reset to default (block)
+                    hasVisibleLinks = true;
+                    if (parentSection) {
+                        parentSection.classList.remove('hidden');
+                        parentSection.style.display = '';
+                    } 
+                } else {
+                    element.classList.add('hidden');
+                    element.style.display = 'none'; // Force hide
+                }
+            });
+
+            // Check sections for emptiness
+            linkSections.forEach(section => {
+                const visibleCards = Array.from(section.querySelectorAll('.link-card-item')).filter(card => {
+                    return (card as HTMLElement).style.display !== 'none';
+                });
+                
+                if (visibleCards.length === 0) {
+                    section.classList.add('hidden');
+                    section.style.display = 'none';
+                } else {
+                    section.classList.remove('hidden');
+                    section.style.display = '';
+                }
+            });
+
+            // Toggle Empty State
+            if (!hasVisibleLinks && searchQuery) {
+                emptyState?.classList.remove('hidden');
+                emptyState?.style.removeProperty('display');
+                if (emptyState) emptyState.style.display = 'flex';
+            } else {
+                emptyState?.classList.add('hidden');
+                if (emptyState) emptyState.style.display = 'none';
+            }
+        }
+
+        // Search Input Listener - only filter links, no profile card effect
+        searchInput?.addEventListener('input', (e) => {
+            const target = e.target as HTMLInputElement;
+            searchQuery = target.value.trim().toLowerCase();
+            filterLinks();
+        });
+
+        // Note: Profile card animation is now handled by CSS :focus-within
+        // JS only needed for keeping card hidden when there's search text on blur
+        searchInput?.addEventListener('blur', () => {
+            const wrapper = document.getElementById('search-wrapper');
+            if (searchQuery && searchQuery.length > 0) {
+                // Keep hidden state when there's text
+                wrapper?.classList.add('has-text');
+            } else {
+                wrapper?.classList.remove('has-text');
+            }
+        });
+        
+        searchInput?.addEventListener('input', () => {
+            const wrapper = document.getElementById('search-wrapper');
+            if (!searchQuery || searchQuery.length === 0) {
+                wrapper?.classList.remove('has-text');
+            }
+        });
+
+
+        // Keyboard Shortcut (Cmd+K)
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput?.focus();
+            }
+        });
+        
+        // Initial filter run
+        filterLinks();
+    }
+
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+</script>

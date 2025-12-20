@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import '@fontsource/inter/index.css';
+import { SITE_CONFIG } from '../lib/constants';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="keywords" content="link directory, personal repository, resource collection, tools" />
+    <meta name="author" content={SITE_CONFIG.author} />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+    <link rel="preconnect" href="https://docs.google.com" />
+    <link rel="preconnect" href="https://googleusercontent.com" />
+
+    <!-- Preload LCP -->
+    <link
+      rel="preload"
+      href="/avatar.webp"
+      as="image"
+      type="image/webp"
+      crossorigin
+    />
+
+    <title>{title}</title>
+  </head>
+  <body class="font-sans antialiased bg-zinc-50">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-lg"
+    >
+      Langsung ke konten
+    </a>
+    <main id="main-content" class="min-h-screen">
+      <slot />
+    </main>
+    
+    <!-- Footer -->
+    <footer class="relative z-10 py-8 text-center">
+      <div class="container mx-auto px-4">
+        <p class="text-sm text-zinc-400 font-medium">
+          Made with ❤️ and ☕ by <span class="text-zinc-600">alditpra</span>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

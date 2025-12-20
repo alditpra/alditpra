@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fafafa;
+  --foreground: #18181b;
+
+  /* Candy Color Palette */
+  --candy-teal: #35e2c3;
+  --candy-blue: #14d0f0;
+  --candy-purple: #7f73ff;
+  --candy-pink: #ff83c3;
+  --candy-yellow: #ffe552;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Candy colors for Tailwind */
+  --color-candy-teal: var(--candy-teal);
+  --color-candy-blue: var(--candy-blue);
+  --color-candy-purple: var(--candy-purple);
+  --color-candy-pink: var(--candy-pink);
+  --color-candy-yellow: var(--candy-yellow);
+}
+
+body {
+  background: linear-gradient(135deg, 
+    rgba(127, 115, 255, 0.08) 0%, 
+    rgba(20, 208, 240, 0.06) 25%, 
+    rgba(53, 226, 195, 0.08) 50%, 
+    rgba(255, 131, 195, 0.06) 75%, 
+    rgba(127, 115, 255, 0.08) 100%
+  );
+  background-attachment: fixed;
+  color: var(--foreground);
+  min-height: 100vh;
+}
+
+/* Animated gradient for title */
+@keyframes gradient-x {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 8s ease-in-out infinite;
+}

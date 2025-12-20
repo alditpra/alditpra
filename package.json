@@ -1,0 +1,29 @@
+{
+  "name": "aldit-pra-astro",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^9.0.2",
+    "@fontsource/inter": "^5.2.8",
+    "@iconify-json/lucide": "^1.2.81",
+    "@tailwindcss/vite": "4.0.0-beta.1",
+    "astro": "^5.0.0",
+    "astro-icon": "^1.1.5",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.0.0",
+    "papaparse": "^5.5.3",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "4.0.0-beta.1"
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.5.2",
+    "typescript": "^5.0.0"
+  }
+}

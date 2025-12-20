@@ -1,0 +1,55 @@
+---
+import { cn } from "../../../lib/utils";
+import type { Category } from "../../../types";
+import { getColorByIndex } from "../../../lib/colors";
+
+interface Props {
+  categories: Category[];
+  activeCategory?: string;
+}
+
+const { categories, activeCategory = 'all' } = Astro.props;
+---
+
+<div class="flex flex-wrap items-center justify-center gap-3 mb-12" id="category-section">
+    {/* All Button - Special styling with CSS variables */}
+    <button
+        type="button"
+        data-category="all"
+        class={cn(
+            "group relative px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-300 ease-out category-btn",
+            "bg-gradient-to-r from-candy-purple to-candy-blue text-white shadow-lg",
+            "hover:shadow-xl hover:scale-105 active"
+        )}
+        style="--tw-shadow-color: var(--candy-purple); --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px var(--tw-shadow-color);"
+    >
+        <span class="relative z-10 flex items-center gap-2">
+            ✨ Semua
+        </span>
+    </button>
+
+    {categories.map((category, index) => {
+        const color = getColorByIndex(index);
+        return (
+            <button
+                type="button"
+                data-category={category.id}
+                class={cn(
+                    "group relative px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-300 ease-out category-btn",
+                    "bg-white/60 backdrop-blur-md border border-white/80 text-zinc-700",
+                    "hover:bg-white hover:shadow-lg hover:scale-105 hover:border-transparent",
+                    color.border
+                )}
+            >
+                <span class="relative z-10 flex items-center gap-2 capitalize">
+                    {category.title}
+                </span>
+                {/* Candy glow on hover */}
+                <div 
+                    class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                    style={`box-shadow: 0 8px 25px -5px ${color.glow};`}
+                ></div>
+            </button>
+        );
+    })}
+</div>

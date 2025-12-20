@@ -1,0 +1,269 @@
+---
+import Layout from "../layouts/Layout.astro";
+import MeshGradient from "../components/ui/MeshGradient.astro";
+import { getAllLinks, getLinkById, getLevelOneItemsByLink, getCategories } from "../lib/data";
+import { getColorByIndex, candyColors } from "../lib/colors";
+import { getLinkColorIndex } from "../lib/category-utils";
+import { Icon } from "astro-icon/components";
+import { cn } from "../lib/utils";
+
+const { id } = Astro.params;
+const linkData = await getLinkById(id);
+const items = await getLevelOneItemsByLink(id);
+
+if (!linkData) {
+  return Astro.redirect('/404');
+}
+
+// Get the same color this link has on the home page
+const allLinks = await getAllLinks();
+const categories = await getCategories();
+const pageColorIndex = getLinkColorIndex(id, allLinks, categories);
+const pageColor = candyColors[pageColorIndex % candyColors.length];
+---
+
+<Layout title={`${linkData.name} - alditpra`}>
+    <main class="min-h-screen relative overflow-hidden bg-[#fafafa]">
+        <MeshGradient />
+
+        <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
+            {/* Header / Back Navigation */}
+            <div class="mb-8">
+                {/* Enhanced Kembali Button */}
+                <a 
+                    href="/" 
+                    class="inline-flex items-center gap-3 mb-6 group"
+                >
+                    <div class={cn(
+                        "p-2.5 rounded-2xl transition-all duration-300",
+                        "bg-white/60 backdrop-blur-md border border-white/80",
+                        "group-hover:bg-white group-hover:shadow-lg group-hover:scale-105",
+                        "group-hover:border-candy-purple"
+                    )}
+                    style="--hover-glow: var(--candy-purple);"
+                    >
+                        <Icon name="lucide:arrow-left" class="w-5 h-5 text-zinc-600 group-hover:text-candy-purple transition-colors" />
+                    </div>
+                    <span class="font-semibold text-zinc-600 group-hover:text-zinc-900 transition-colors">Kembali</span>
+                </a>
+
+                {/* Header Card with Gradient Icon */}
+                <div class="relative bg-white/50 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/60 shadow-xl overflow-hidden">
+                    {/* Subtle gradient overlay */}
+                    <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
+                    
+                    <div class="relative flex items-start gap-5 sm:gap-6">
+                        {/* Candy Color Icon - matching home page color */}
+                        <div 
+                            class={cn(
+                                "shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center shadow-lg",
+                                pageColor.bg
+                            )}
+                            style={`box-shadow: 0 8px 25px -5px ${pageColor.glow};`}
+                        >
+                            {linkData.icon ? (
+                                <Icon name={`lucide:${linkData.icon}`} class={cn("w-8 h-8 sm:w-10 sm:h-10", pageColor.text)} />
+                            ) : (
+                                <span class={cn("font-bold text-3xl sm:text-4xl uppercase", pageColor.text)}>
+                                    {linkData.name.charAt(0)}
+                                </span>
+                            )}
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            {/* Title - matching home page color */}
+                            <h1 
+                                class={cn("text-2xl sm:text-3xl font-extrabold mb-2", pageColor.text)}
+                            >
+                                {linkData.name}
+                            </h1>
+                            <p class="text-zinc-600 leading-relaxed text-base sm:text-lg">
+                                {linkData.description || "Detail materi dan referensi pembelajaran."}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Content: Google Drive Iframe or Item List */}
+            <div class="space-y-6">
+                {(() => {
+                    // Check if is Google Drive Folder
+                    const driveFolderMatch = linkData.link && linkData.link.match(/drive\.google\.com\/drive\/folders\/([a-zA-Z0-9_-]+)/);
+                    
+                    if (driveFolderMatch) {
+                        const folderId = driveFolderMatch[1];
+                        return (
+                            <div class="relative">
+                                {/* Header Bar - Candy/Glassmorphism Style */}
+                                <div class="bg-white/50 backdrop-blur-xl rounded-t-3xl border border-b-0 border-white/60 p-5 sm:p-6">
+                                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                        {/* Title with icon */}
+                                        <div class="flex items-center gap-3">
+                                            <div 
+                                                class={cn("w-10 h-10 rounded-2xl flex items-center justify-center", pageColor.bg)}
+                                                style={`box-shadow: 0 4px 15px -3px ${pageColor.glow};`}
+                                            >
+                                                <Icon name="lucide:folder-open" class={cn("w-5 h-5", pageColor.text)} />
+                                            </div>
+                                            <div>
+                                                <h2 class="text-lg sm:text-xl font-bold text-zinc-800">
+                                                    Isi Folder
+                                                </h2>
+                                                <p class="text-xs text-zinc-500">Klik file untuk membuka</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                                            {/* View Toggle Buttons - Pill Style */}
+                                            <div class="flex items-center gap-1.5 p-1 bg-zinc-100/80 rounded-2xl">
+                                                <button 
+                                                    id="view-grid" 
+                                                    class="group p-2.5 rounded-xl bg-transparent hover:bg-white transition-all duration-200"
+                                                    title="Tampilan Grid"
+                                                    onclick="document.getElementById('drive-iframe').src = document.getElementById('drive-iframe').src.replace('#list', '#grid'); this.classList.add('bg-white', 'shadow-sm'); this.nextElementSibling.classList.remove('bg-white', 'shadow-sm');"
+                                                >
+                                                    <Icon name="lucide:layout-grid" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 transition-colors" />
+                                                </button>
+                                                <button 
+                                                    id="view-list" 
+                                                    class="group p-2.5 rounded-xl bg-white shadow-sm transition-all duration-200"
+                                                    title="Tampilan List"
+                                                    onclick="document.getElementById('drive-iframe').src = document.getElementById('drive-iframe').src.replace('#grid', '#list'); this.classList.add('bg-white', 'shadow-sm'); this.previousElementSibling.classList.remove('bg-white', 'shadow-sm');"
+                                                >
+                                                    <Icon name="lucide:list" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 transition-colors" />
+                                                </button>
+                                            </div>
+                                            
+                                            {/* Open in New Tab - Candy Chip Style */}
+                                            <a 
+                                                href={linkData.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class={cn(
+                                                    "group inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl transition-all duration-300",
+                                                    "bg-white/80 border border-white hover:border-transparent",
+                                                    "hover:scale-105 hover:shadow-lg"
+                                                )}
+                                                style={`--hover-bg: ${pageColor.glow}15;`}
+                                            >
+                                                <Icon name="lucide:external-link" class={cn("w-4 h-4 transition-colors", pageColor.text)} />
+                                                <span class={cn("font-semibold text-sm transition-colors hidden sm:inline", pageColor.text)}>
+                                                    Buka di Tab Baru
+                                                </span>
+                                                <span class={cn("font-semibold text-sm sm:hidden", pageColor.text)}>
+                                                    Buka
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                {/* Iframe Container */}
+                                <div class="relative w-full h-[70vh] bg-white/60 backdrop-blur-md rounded-b-3xl border border-t-0 border-white/60 shadow-xl overflow-hidden">
+                                    {/* Skeleton Loader */}
+                                    <div class="absolute inset-0 flex items-center justify-center bg-white/90 iframe-skeleton">
+                                        <div class="flex flex-col items-center gap-4">
+                                            <div class={cn("w-12 h-12 rounded-full border-4 border-t-transparent animate-spin", `border-[${pageColor.glow}]`)} style={`border-color: ${pageColor.glow}40; border-top-color: ${pageColor.glow};`}></div>
+                                            <p class="text-zinc-500 font-medium">Memuat Google Drive...</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <iframe
+                                        id="drive-iframe"
+                                        src={`https://drive.google.com/embeddedfolderview?id=${folderId}#list`}
+                                        width="100%"
+                                        height="100%"
+                                        style="border:0;"
+                                        title="Google Drive Folder"
+                                        class="relative z-10"
+                                        onload="this.parentElement.querySelector('.iframe-skeleton').style.display='none'"
+                                    ></iframe>
+                                </div>
+                            </div>
+                        );
+                    }
+
+                    // Empty State
+                    if (items.length === 0) {
+                        return (
+                            <div class="text-center py-16 bg-white/40 backdrop-blur-md rounded-3xl border border-white/60 shadow-lg">
+                                <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-zinc-100 flex items-center justify-center">
+                                    <Icon name="lucide:inbox" class="w-8 h-8 text-zinc-400" />
+                                </div>
+                                <p class="text-zinc-500 font-medium">Belum ada konten untuk topik ini.</p>
+                            </div>
+                        );
+                    }
+
+                    // Item List View
+                    return (
+                        <div class="grid gap-4">
+                            {items.map((item, index) => {
+                                const color = getColorByIndex(index);
+                                return (
+                                    <a
+                                        href={item.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="group block bg-white/60 hover:bg-white backdrop-blur-sm border border-white/80 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                                    >
+                                        <div class="flex items-center gap-3">
+                                            {/* Item Icon with Candy Color - Compact */}
+                                            <div 
+                                                class={cn(
+                                                    "shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
+                                                    "group-hover:scale-110 group-hover:rotate-3",
+                                                    color.bg
+                                                )}
+                                                style={`box-shadow: 0 4px 15px -3px ${color.glow};`}
+                                            >
+                                                {item.icon ? (
+                                                    <Icon name={`lucide:${item.icon}`} class={cn("w-5 h-5", color.text)} />
+                                                ) : (
+                                                    <span class={cn("text-lg font-bold", color.text)}>
+                                                        {item.title.charAt(0).toUpperCase()}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            
+                                            <div class="flex-1 min-w-0">
+                                                {/* Type Badge - Compact */}
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <span class={cn(
+                                                        "text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider",
+                                                        color.bg,
+                                                        color.text
+                                                    )}>
+                                                        {item.type || 'Link'}
+                                                    </span>
+                                                </div>
+                                                <h3 class="font-semibold text-base sm:text-lg text-zinc-900 truncate group-hover:text-zinc-700 transition-colors">
+                                                    {item.title}
+                                                </h3>
+                                                {item.description && (
+                                                    <p class="text-sm text-zinc-500 line-clamp-2 leading-relaxed mt-0.5">
+                                                        {item.description}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            
+                                            {/* Arrow - Compact */}
+                                            <div class={cn(
+                                                "shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
+                                                "bg-zinc-100 text-zinc-400",
+                                                "group-hover:bg-zinc-900 group-hover:text-white group-hover:translate-x-1"
+                                            )}>
+                                                <Icon name="lucide:arrow-right" class="w-4 h-4" />
+                                            </div>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    );
+                })()}
+            </div>
+        </div>
+    </main>
+</Layout>

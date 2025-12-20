@@ -1,0 +1,76 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Social links configuration with candy colors
+const socialLinks = [
+  {
+    name: "GitHub",
+    href: "https://github.com/alditpra",
+    icon: "github",
+    bgClass: "bg-candy-purple/15 hover:bg-candy-purple/25",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)]",
+    iconColorClass: "text-candy-purple"
+  },
+  {
+    name: "Email",
+    href: "mailto:alditpra@gmail.com",
+    icon: "mail",
+    bgClass: "bg-candy-blue/15 hover:bg-candy-blue/25",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)]",
+    iconColorClass: "text-candy-blue"
+  },
+  {
+    name: "Meet",
+    href: "https://meet.google.com/nnb-unix-kyy",
+    icon: "video",
+    bgClass: "bg-candy-teal/15 hover:bg-candy-teal/25",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)]",
+    iconColorClass: "text-candy-teal"
+  },
+  {
+    name: "Facebook",
+    href: "https://facebook.com/aldit",
+    icon: "facebook",
+    bgClass: "bg-candy-blue/15 hover:bg-candy-blue/25",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)]",
+    iconColorClass: "text-candy-blue"
+  },
+  {
+    name: "WhatsApp",
+    href: "https://wa.me/628158141112",
+    icon: "message-circle",
+    bgClass: "bg-candy-teal/15 hover:bg-candy-teal/25",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)]",
+    iconColorClass: "text-candy-teal"
+  }
+];
+---
+
+<div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+    {socialLinks.map((link) => (
+        <a 
+            href={link.href} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class={`
+                group inline-flex items-center gap-2 
+                px-4 py-2 rounded-full
+                ${link.bgClass}
+                transition-all duration-300 ease-out
+                hover:scale-105 hover:shadow-md
+                border border-transparent hover:border-white/50
+            `}
+            title={link.name}
+        >
+            {/* Icon */}
+            <span class={`${link.iconColorClass} transition-transform duration-300 group-hover:scale-110`}>
+                <Icon name={`lucide:${link.icon}`} class="w-4 h-4" />
+            </span>
+            
+            {/* Label */}
+            <span class={`text-sm font-medium ${link.textClass}`}>
+                {link.name}
+            </span>
+        </a>
+    ))}
+</div>

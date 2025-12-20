@@ -1,0 +1,242 @@
+---
+import { SITE_CONFIG } from "../../../lib/constants";
+import SocialLinks from "./SocialLinks.astro";
+import SearchBar from "../../ui/SearchBar.astro";
+---
+
+<header class="mb-12">
+    <div class="relative backdrop-blur-xl bg-white/70 border border-white/50 rounded-3xl shadow-lg p-6 sm:p-8" id="profile-card">
+        {/* Subtle gradient overlay */}
+        <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl" />
+
+        <div class="relative flex flex-col sm:flex-row items-center sm:items-start gap-5 transition-all duration-500 ease-out" id="profile-info">
+            {/* Avatar with animated gradient ring */}
+            <div class="shrink-0 group p-6 -m-6">
+                <div class="relative">
+                    {/* Dreamy Halo - Pulsing glow behind avatar */}
+                    <div class="absolute -inset-6 rounded-full bg-gradient-to-br from-purple-400/30 via-cyan-400/20 to-teal-400/30 blur-2xl animate-pulse-slow"></div>
+                    
+                    {/* Animated Gradient Ring - Instagram Story Effect */}
+                    <div class="absolute -inset-1 rounded-full bg-gradient-conic animate-spin-slow opacity-90"></div>
+                    
+                    {/* White gap ring */}
+                    <div class="absolute -inset-0.5 rounded-full bg-white"></div>
+                    
+                    {/* Avatar Container - no shadow */}
+                    <div
+                        class="relative rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3"
+                    >
+                        <img
+                            src="/avatar.webp"
+                            alt={SITE_CONFIG.name}
+                            width="112"
+                            height="112"
+                            class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white"
+                            loading="eager"
+                        />
+                        {/* Online Status Indicator */}
+                        <div class="absolute bottom-1 right-1 w-5 h-5 bg-candy-teal rounded-full border-3 border-white shadow-md">
+                            <div class="absolute inset-0 rounded-full bg-candy-teal animate-ping opacity-75"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Info */}
+            <div class="flex-1 text-center sm:text-left">
+                {/* Name with animated gradient */}
+                <h1
+                    class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1 animate-gradient-x"
+                    style="background: linear-gradient(135deg, var(--candy-purple) 0%, var(--candy-blue) 50%, var(--candy-teal) 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
+                >
+                    {SITE_CONFIG.name}
+                </h1>
+
+                {/* Description - improved styling */}
+                <p class="text-base sm:text-lg text-zinc-700 font-normal leading-relaxed mb-5 max-w-lg">
+                    {SITE_CONFIG.description}
+                </p>
+
+                <SocialLinks />
+            </div>
+        </div>
+
+        {/* Divider */}
+        <div class="h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent my-6 transition-all duration-500 ease-out" id="profile-divider" />
+
+        {/* Search Bar */}
+        <div class="relative" id="search-wrapper">
+            <SearchBar />
+        </div>
+    </div>
+</header>
+
+<style>
+    /* Animated gradient for name */
+    @keyframes gradient-x {
+        0%, 100% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+    }
+    
+    .animate-gradient-x {
+        animation: gradient-x 6s ease-in-out infinite;
+    }
+    
+    /* Conic gradient for avatar ring - Instagram story effect */
+    .bg-gradient-conic {
+        background: conic-gradient(
+            from 0deg,
+            #7f73ff,
+            #14d0f0,
+            #35e2c3,
+            #f59e0b,
+            #ec4899,
+            #7f73ff
+        );
+    }
+    
+    /* Slow spin animation */
+    @keyframes spin-slow {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .animate-spin-slow {
+        animation: spin-slow 4s linear infinite;
+    }
+    
+    /* Dreamy floating orb animations */
+    @keyframes float-slow {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(15px, -10px) scale(1.05);
+        }
+        66% {
+            transform: translate(-10px, 15px) scale(0.95);
+        }
+    }
+    
+    @keyframes float-slow-reverse {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+        }
+        33% {
+            transform: translate(-15px, 10px) scale(0.95);
+        }
+        66% {
+            transform: translate(10px, -15px) scale(1.05);
+        }
+    }
+    
+    @keyframes pulse-slow {
+        0%, 100% {
+            opacity: 0.3;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        50% {
+            opacity: 0.5;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+    }
+    
+    .animate-float-slow {
+        animation: float-slow 8s ease-in-out infinite;
+    }
+    
+    .animate-float-slow-reverse {
+        animation: float-slow-reverse 10s ease-in-out infinite;
+    }
+    
+    .animate-pulse-slow {
+        animation: pulse-slow 6s ease-in-out infinite;
+    }
+    
+    /* Avatar dreamy glow */
+    .avatar-glow {
+        box-shadow: 
+            0 0 25px 6px rgba(147, 112, 219, 0.4),
+            0 0 50px 12px rgba(20, 208, 240, 0.3),
+            0 0 80px 20px rgba(53, 226, 195, 0.2);
+    }
+    
+    /* Profile card hide/show animation - CSS only using :focus-within */
+    #profile-info {
+        max-height: 500px;
+        opacity: 1;
+        margin-bottom: 0;
+        transform: translateY(0);
+        /* 
+           Trick to fix clipping: 
+           Set overflow: visible by default so ring isn't clipped.
+           Delay the overflow transition so it stays hidden *during* the expansion animation, 
+           then becomes visible.
+        */
+        overflow: visible;
+        transition: 
+            max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+            margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+            overflow 0s linear 0.5s; /* Delay overflow change to visible */
+    }
+    
+    /* Hide profile when search is focused */
+    #profile-card:focus-within #profile-info,
+    #search-wrapper.has-text ~ #profile-info,
+    .has-text #profile-info {
+        max-height: 0;
+        opacity: 0;
+        margin-bottom: 0;
+        transform: translateY(-10px);
+        overflow: hidden; /* Must be hidden to animate height */
+        pointer-events: none;
+        /* Immediate overflow hide when starting collapse */
+        transition: 
+            max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+            margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+            overflow 0s linear 0s;
+    }
+    
+    /* Divider hide/show animation */
+    #profile-divider {
+        transition: 
+            max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+            margin 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: 10px;
+        overflow: hidden;
+    }
+    
+    /* Hide divider when search is focused */
+    #profile-card:focus-within #profile-divider {
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+    /* Search wrapper - smaller balanced gaps */
+    #search-wrapper {
+        transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    
+    #profile-card:focus-within #search-wrapper,
+    #search-wrapper.has-text {
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+</style>
