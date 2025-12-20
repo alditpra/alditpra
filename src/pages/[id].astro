@@ -115,7 +115,6 @@ try {
                                 "shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center shadow-lg",
                                 pageColor.bg
                             )}
-                            style={`box-shadow: 0 8px 25px -5px ${pageColor.glow};`}
                         >
                             {linkData.icon ? (
                                 <Icon name={`lucide:${linkData.icon}`} class={cn("w-8 h-8 sm:w-10 sm:h-10", pageColor.text)} />
@@ -157,8 +156,7 @@ try {
                                         {/* Title with icon */}
                                         <div class="flex items-center gap-3">
                                             <div 
-                                                class={cn("w-10 h-10 rounded-2xl flex items-center justify-center", pageColor.bg)}
-                                                style={`box-shadow: 0 4px 15px -3px ${pageColor.glow};`}
+                                                class={cn("w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg", pageColor.bg)}
                                             >
                                                 <Icon name="lucide:folder-open" class={cn("w-5 h-5", pageColor.text)} />
                                             </div>
@@ -201,7 +199,6 @@ try {
                                                     "bg-white/80 border border-white hover:border-transparent",
                                                     "hover:scale-105 hover:shadow-lg"
                                                 )}
-                                                style={`--hover-bg: ${pageColor.glow}15;`}
                                             >
                                                 <Icon name="lucide:external-link" class={cn("w-4 h-4 transition-colors", pageColor.text)} />
                                                 <span class={cn("font-semibold text-sm transition-colors hidden sm:inline", pageColor.text)}>
@@ -220,7 +217,7 @@ try {
                                     {/* Skeleton Loader */}
                                     <div class="absolute inset-0 flex items-center justify-center bg-white/90 iframe-skeleton">
                                         <div class="flex flex-col items-center gap-4">
-                                            <div class={cn("w-12 h-12 rounded-full border-4 border-t-transparent animate-spin", `border-[${pageColor.glow}]`)} style={`border-color: ${pageColor.glow}40; border-top-color: ${pageColor.glow};`}></div>
+                                            <div class="w-12 h-12 rounded-full border-4 border-zinc-300 border-t-transparent animate-spin"></div>
                                             <p class="text-zinc-500 font-medium">Memuat Google Drive...</p>
                                         </div>
                                     </div>
@@ -268,11 +265,10 @@ try {
                                             {/* Item Icon with Candy Color - Compact */}
                                             <div 
                                                 class={cn(
-                                                    "shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300",
+                                                    "shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg",
                                                     "group-hover:scale-110 group-hover:rotate-3",
                                                     color.bg
                                                 )}
-                                                style={`box-shadow: 0 4px 15px -3px ${color.glow};`}
                                             >
                                                 {item.icon ? (
                                                     <Icon name={`lucide:${item.icon}`} class={cn("w-5 h-5", color.text)} />

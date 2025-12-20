@@ -1,10 +1,5 @@
 ---
 import '../styles/global.css';
-// Self-hosted fonts - only load needed weights
-import '@fontsource/inter/400.css';  // Regular
-import '@fontsource/inter/600.css';  // Semibold
-import '@fontsource/inter/700.css';  // Bold
-import '@fontsource/inter/800.css';  // Extrabold
 import { SITE_CONFIG } from '../lib/constants';
 import { ViewTransitions } from 'astro:transitions';
 
@@ -22,7 +17,7 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="generator" content={Astro.generator} />
     <meta name="keywords" content="link directory, personal repository, resource collection, tools" />
     <meta name="author" content={SITE_CONFIG.author} />
