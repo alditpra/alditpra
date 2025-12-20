@@ -67,6 +67,9 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
 
     <title>{title}</title>
     
+    <!-- Inline Critical CSS for instant above-the-fold rendering -->
+    <style>:root{--background:#fafafa;--foreground:#18181b;--candy-teal:#35e2c3;--candy-blue:#14d0f0;--candy-purple:#7f73ff;--candy-pink:#ff83c3;--candy-yellow:#ffe552}*,::before,::after{box-sizing:border-box;border-width:0;border-style:solid}html{-webkit-text-size-adjust:100%;tab-size:4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Helvetica Neue',Arial,sans-serif}body{margin:0;background:linear-gradient(135deg,rgba(127,115,255,0.08) 0%,rgba(20,208,240,0.06) 25%,rgba(53,226,195,0.08) 50%,rgba(255,131,195,0.06) 75%,rgba(127,115,255,0.08) 100%);background-attachment:fixed;color:var(--foreground);min-height:100vh;line-height:1.5}h1,h2,h3{margin:0;font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}img,svg{display:block;vertical-align:middle;max-width:100%;height:auto}</style>
+    
     <!-- Smooth page transitions -->
     <ViewTransitions />
   </head>
