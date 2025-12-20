@@ -1,5 +1,10 @@
 ---
 import '../styles/global.css';
+// Self-hosted fonts - only load needed weights
+import '@fontsource/inter/400.css';  // Regular
+import '@fontsource/inter/600.css';  // Semibold
+import '@fontsource/inter/700.css';  // Bold
+import '@fontsource/inter/800.css';  // Extrabold
 import { SITE_CONFIG } from '../lib/constants';
 import { ViewTransitions } from 'astro:transitions';
 
@@ -22,32 +27,15 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
     <meta name="keywords" content="link directory, personal repository, resource collection, tools" />
     <meta name="author" content={SITE_CONFIG.author} />
     
+
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <!-- Preconnect for faster font loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
     <!-- Preconnect for Google Sheets data -->
     <link rel="preconnect" href="https://docs.google.com" />
-    
-    <!-- Google Fonts - Inter with only needed weights and display=swap -->
-    <link 
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" 
-      rel="stylesheet"
-    />
-    
-    <!-- Preload critical font file for better performance -->
-    <link
-      rel="preload"
-      href="https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+
 
     <!-- Preload LCP image -->
     <link
