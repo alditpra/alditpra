@@ -265,34 +265,64 @@ async function fetchAndParseCategories(): Promise<Category[]> {
     }
 }
 
-const appDataCache: { promise: Promise<AppData> | null } = { promise: null };
+// Cache with expiration time
+interface CachedData {
+    data: Promise<AppData>;
+    timestamp: number;
+}
+
+const appDataCache: { cached: CachedData | null } = { cached: null };
+
+// Cache duration: 5 minutes (matches ISR expiration)
+const CACHE_DURATION_MS = 5 * 60 * 1000; // 300,000ms = 5 minutes
 
 export const getAppData = async (): Promise<AppData> => {
-    // Skip cache in development mode for auto-refresh when spreadsheet data changes
     const isDev = import.meta.env.DEV;
+    const now = Date.now();
 
-    if (!isDev && appDataCache.promise) {
-        return appDataCache.promise;
+    // In development, skip cache for instant updates
+    if (isDev) {
+        return fetchFreshData();
     }
 
-    const dataPromise = Promise.all([
+    // In production, use time-based cache
+    if (appDataCache.cached) {
+        const age = now - appDataCache.cached.timestamp;
+
+        // Return cached data if still fresh (< 5 minutes old)
+        if (age < CACHE_DURATION_MS) {
+            return appDataCache.cached.data;
+        }
+
+        // Cache expired, log for debugging
+        console.log(`[Data Cache] Expired (age: ${Math.round(age / 1000)}s), fetching fresh data`);
+    }
+
+    // Fetch fresh data and cache it
+    const dataPromise = fetchFreshData();
+    appDataCache.cached = {
+        data: dataPromise,
+        timestamp: now,
+    };
+
+    return dataPromise;
+};
+
+// Helper function to fetch fresh data
+async function fetchFreshData(): Promise<AppData> {
+    const [links, levelOneItems, categories] = await Promise.all([
         fetchAndParseLinks(),
         fetchAndParseLevelOneItems(),
         fetchAndParseCategories(),
-    ]).then(([links, levelOneItems, categories]) => ({
+    ]);
+
+    return {
         links,
         levelOneItems,
         categories,
         lastUpdated: new Date().toISOString(),
-    }));
-
-    // Only cache in production
-    if (!isDev) {
-        appDataCache.promise = dataPromise;
-    }
-
-    return dataPromise;
-};
+    };
+}
 
 export async function getLinkById(id: string): Promise<Link | undefined> {
     const { links } = await getAppData();

@@ -10,7 +10,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // https://astro.build/config
 export default defineConfig({
     output: 'server',
-    adapter: vercel(),
+    adapter: vercel({
+        isr: {
+            // Revalidate cache every 5 minutes (300 seconds)
+            expiration: 300,
+            // Exclude paths that should never be cached
+            exclude: [],
+        },
+    }),
     integrations: [icon()],
     vite: {
         plugins: [tailwindcss()],
