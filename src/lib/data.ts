@@ -52,7 +52,7 @@ async function fetchSheetData(url: string): Promise<string> {
             const response = await fetch(url, {
                 signal: controller.signal,
                 headers: {
-                    'Cache-Control': 'public, max-age=300', // 5 minutes
+                    'Cache-Control': 'public, max-age=300, stale-while-revalidate=600', // 5 min cache, 10 min stale
                 },
             });
 

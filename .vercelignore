@@ -1,0 +1,26 @@
+# Development files
+node_modules
+.git
+.astro
+*.log
+npm-debug.log*
+
+# Testing
+*.test.js
+*.spec.js
+__tests__
+
+# Documentation
+README.md
+LICENSE
+docs/
+
+# Scripts
+scripts/
+
+# Source maps
+*.map
+
+# Cache
+.cache
+.turbo

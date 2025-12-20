@@ -190,26 +190,7 @@ import SearchBar from "../../ui/SearchBar.astro";
             overflow 0s linear 0.5s; /* Delay overflow change to visible */
     }
     
-    /* Hide profile when search is focused */
-    #profile-card:focus-within #profile-info,
-    #search-wrapper.has-text ~ #profile-info,
-    .has-text #profile-info {
-        max-height: 0;
-        opacity: 0;
-        margin-bottom: 0;
-        transform: translateY(-10px);
-        overflow: hidden; /* Must be hidden to animate height */
-        pointer-events: none;
-        /* Immediate overflow hide when starting collapse */
-        transition: 
-            max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-            margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-            overflow 0s linear 0s;
-    }
-    
-    /* Divider hide/show animation */
+    /* Divider transition styles */
     #profile-divider {
         transition: 
             max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -219,24 +200,65 @@ import SearchBar from "../../ui/SearchBar.astro";
         overflow: hidden;
     }
     
-    /* Hide divider when search is focused */
-    #profile-card:focus-within #profile-divider {
-        max-height: 0;
-        opacity: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-    
-    /* Search wrapper - smaller balanced gaps */
+    /* Search wrapper base styles */
     #search-wrapper {
         transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         padding-top: 0;
         padding-bottom: 0;
     }
     
-    #profile-card:focus-within #search-wrapper,
-    #search-wrapper.has-text {
-        padding-top: 0.25rem;
-        padding-bottom: 0.25rem;
+    
+    /* Hide profile when search is focused - DESKTOP ONLY */
+    @media (min-width: 640px) {
+        #profile-card:focus-within #profile-info,
+        #search-wrapper.has-text ~ #profile-info,
+        .has-text #profile-info {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+            transform: translateY(-10px);
+            overflow: hidden; /* Must be hidden to animate height */
+            pointer-events: none;
+            /* Immediate overflow hide when starting collapse */
+            transition: 
+                max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                overflow 0s linear 0s;
+        }
+        
+        /* Hide divider when search is focused - DESKTOP ONLY */
+        #profile-card:focus-within #profile-divider {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        
+        /* Search wrapper - smaller balanced gaps - DESKTOP ONLY */
+        #profile-card:focus-within #search-wrapper,
+        #search-wrapper.has-text {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+    }
+    
+    /* Mobile: Keep profile card visible when search is focused */
+    @media (max-width: 639px) {
+        #profile-info {
+            /* Always visible on mobile */
+            max-height: none !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+            overflow: visible !important;
+            pointer-events: auto !important;
+        }
+        
+        #profile-divider {
+            /* Always visible on mobile */
+            max-height: 10px !important;
+            opacity: 1 !important;
+        }
     }
 </style>

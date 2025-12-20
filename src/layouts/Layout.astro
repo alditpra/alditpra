@@ -50,9 +50,11 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
     <meta name="theme-color" content="#7f73ff" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
 
-    <!-- Resource hints for Google Sheets data fetching -->
-    <link rel="dns-prefetch" href="https://docs.google.com" />
+    <!-- Resource hints for critical domains -->
     <link rel="preconnect" href="https://docs.google.com" crossorigin />
+    <link rel="dns-prefetch" href="https://docs.google.com" />
+    <link rel="preconnect" href="https://drive.google.com" crossorigin />
+    <link rel="dns-prefetch" href="https://drive.google.com" />
 
     <!-- Preload LCP image -->
     <link
@@ -61,7 +63,6 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
       as="image"
       type="image/webp"
       fetchpriority="high"
-      crossorigin
     />
 
     <title>{title}</title>
