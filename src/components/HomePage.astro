@@ -144,13 +144,5 @@ try {
 </main>
 
 <script>
-  // Lazy load search for better performance
-  if (typeof window !== 'undefined') {
-    // Use dynamic import to reduce initial bundle
-    import('../scripts/search').then(module => {
-      // Search module auto-initializes
-    }).catch(err => {
-      console.error('Failed to load search:', err);
-    });
-  }
+  import '../scripts/search';
 </script>
