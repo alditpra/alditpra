@@ -8,25 +8,81 @@ import { Icon } from "astro-icon/components";
 import { cn } from "../lib/utils";
 
 const { id } = Astro.params;
-const linkData = await getLinkById(id);
-const items = await getLevelOneItemsByLink(id);
 
-if (!linkData) {
-  return Astro.redirect('/404');
+let linkData;
+let items = [];
+let allLinks = [];
+let categories = [];
+let pageColorIndex = 0;
+let pageColor = candyColors[0];
+let hasError = false;
+let errorMessage = '';
+
+try {
+    linkData = await getLinkById(id);
+    
+    if (!linkData) {
+        // Link not found - redirect to home instead of crashing
+        return Astro.redirect('/');
+    }
+    
+    // Fetch related data
+    items = await getLevelOneItemsByLink(id);
+    allLinks = await getAllLinks();
+    categories = await getCategories();
+    
+    // Get the same color this link has on the home page
+    pageColorIndex = getLinkColorIndex(id, allLinks, categories);
+    pageColor = candyColors[pageColorIndex % candyColors.length];
+} catch (error) {
+    console.error(`[Page ${id}] Error fetching data:`, error);
+    hasError = true;
+    errorMessage = 'Gagal memuat data halaman. Silakan coba lagi.';
+    // Don't throw - render error UI instead
 }
-
-// Get the same color this link has on the home page
-const allLinks = await getAllLinks();
-const categories = await getCategories();
-const pageColorIndex = getLinkColorIndex(id, allLinks, categories);
-const pageColor = candyColors[pageColorIndex % candyColors.length];
 ---
 
-<Layout title={`${linkData.name} - alditpra`}>
+<Layout title={linkData?.name ? `${linkData.name} - alditpra` : 'alditpra'}>
     <main class="min-h-screen relative overflow-hidden bg-[#fafafa]">
         <MeshGradient />
 
         <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
+            {/* Error State */}
+            {hasError && (
+                <div class="max-w-2xl mx-auto text-center py-20">
+                    <div class="bg-white/60 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-white/60 shadow-xl">
+                        <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center">
+                            <Icon name="lucide:alert-triangle" class="w-10 h-10 text-red-600" />
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 mb-3">
+                            {errorMessage}
+                        </h2>
+                        <p class="text-zinc-600 mb-6 leading-relaxed">
+                            Terjadi kesalahan saat mengambil data dari Google Sheets.
+                        </p>
+                        <div class="flex gap-3 justify-center">
+                            <a 
+                                href="/"
+                                class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-zinc-300 text-zinc-700 font-semibold rounded-2xl hover:bg-zinc-50 transition-colors duration-300"
+                            >
+                                <Icon name="lucide:home" class="w-5 h-5" />
+                                Kembali ke Home
+                            </a>
+                            <button 
+                                onclick="window.location.reload()" 
+                                class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-candy-purple to-candy-pink text-white font-semibold rounded-2xl hover:scale-105 transition-transform duration-300 shadow-lg"
+                            >
+                                <Icon name="lucide:refresh-cw" class="w-5 h-5" />
+                                Coba Lagi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Normal Content - only show if no error */}
+            {!hasError && linkData && (
+                <>
             {/* Header / Back Navigation */}
             <div class="mb-8">
                 {/* Enhanced Kembali Button */}
@@ -264,6 +320,8 @@ const pageColor = candyColors[pageColorIndex % candyColors.length];
                     );
                 })()}
             </div>
+            </>
+            )}
         </div>
     </main>
 </Layout>

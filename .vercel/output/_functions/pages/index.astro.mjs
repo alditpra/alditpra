@@ -1,5 +1,5 @@
-import { e as createComponent, m as maybeRenderHead, h as addAttribute, k as renderComponent, r as renderTemplate, f as createAstro, s as spreadAttributes, l as renderScript } from '../chunks/astro/server_CZWJ3hdx.mjs';
-import { h as $$Icon, S as SITE_CONFIG, f as cn, j as getColorByIndex, b as getAllLinks, c as getCategories, k as groupByCategory, e as $$MeshGradient, i as candyColors, $ as $$Layout } from '../chunks/utils_DrGUlCO-.mjs';
+import { e as createComponent, m as maybeRenderHead, h as addAttribute, k as renderComponent, r as renderTemplate, f as createAstro, s as spreadAttributes, n as renderScript, l as Fragment } from '../chunks/astro/server_CEVrwVh7.mjs';
+import { h as $$Icon, S as SITE_CONFIG, i as cn, j as getColorByIndex, b as getAllLinks, c as getCategories, k as groupByCategory, f as $$MeshGradient, e as candyColors, $ as $$Layout } from '../chunks/utils_Dqgdi9QZ.mjs';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';
 
@@ -177,22 +177,38 @@ Semester ${link.semester} </span> </div>`} </div>  <div${addAttribute(cn(
 }, "/home/alditpra/Github Repository/alditpra/src/components/features/LinkCard.astro", void 0);
 
 const $$HomePage = createComponent(async ($$result, $$props, $$slots) => {
-  const links = await getAllLinks();
-  const categories = await getCategories();
-  const groupedLinks = groupByCategory(links, categories);
-  return renderTemplate`${maybeRenderHead()}<main class="min-h-screen relative overflow-hidden bg-[#fafafa]">  ${renderComponent($$result, "MeshGradient", $$MeshGradient, {})} <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">  <div class="max-w-4xl mx-auto mb-12"> ${renderComponent($$result, "ProfileCard", $$ProfileCard, {})} </div> <div class="max-w-4xl mx-auto pb-20" id="links-container"> ${(() => {
+  let links = [];
+  let categories = [];
+  let groupedLinks = /* @__PURE__ */ new Map();
+  let hasError = false;
+  try {
+    links = await getAllLinks();
+    categories = await getCategories();
+    groupedLinks = groupByCategory(links, categories);
+  } catch (error) {
+    console.error("[HomePage] Error fetching data:", error);
+    hasError = true;
+  }
+  return renderTemplate`${maybeRenderHead()}<main class="min-h-screen relative overflow-hidden bg-[#fafafa]">  ${renderComponent($$result, "MeshGradient", $$MeshGradient, {})} <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">  ${hasError && renderTemplate`<div class="max-w-2xl mx-auto text-center py-20"> <div class="bg-white/60 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-white/60 shadow-xl"> <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center"> ${renderComponent($$result, "Icon", $$Icon, { "name": "lucide:alert-triangle", "class": "w-10 h-10 text-red-600" })} </div> <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 mb-3">
+Gagal Memuat Data
+</h2> <p class="text-zinc-600 mb-6 leading-relaxed">
+Terjadi kesalahan saat mengambil data dari Google Sheets. 
+                        Silakan refresh halaman atau coba lagi nanti.
+</p> <button onclick="window.location.reload()" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-candy-purple to-candy-pink text-white font-semibold rounded-2xl hover:scale-105 transition-transform duration-300 shadow-lg"> ${renderComponent($$result, "Icon", $$Icon, { "name": "lucide:refresh-cw", "class": "w-5 h-5" })}
+Refresh Halaman
+</button> </div> </div>`}  ${!hasError && renderTemplate`${renderComponent($$result, "Fragment", Fragment, {}, { "default": async ($$result2) => renderTemplate`<div class="max-w-4xl mx-auto mb-12"> ${renderComponent($$result2, "ProfileCard", $$ProfileCard, {})} </div> <div class="max-w-4xl mx-auto pb-20" id="links-container"> ${(() => {
     let globalIndex = 0;
     return categories.map((category, categoryIdx) => {
       const categoryLinks = groupedLinks.get(category.id) || [];
       if (categoryLinks.length === 0) return null;
       const headerColorIndex = globalIndex++;
       const headerColor = candyColors[headerColorIndex % candyColors.length];
-      return renderTemplate`<section class="mb-16 link-section"${addAttribute(category.id, "data-category")}>  <div class="flex items-center gap-4 mb-8 px-1"> <div class="flex items-center gap-4">  <div${addAttribute(`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${headerColor.bg} ${headerColor.text}`, "class")}${addAttribute(`box-shadow: 0 8px 20px -4px ${headerColor.glow};`, "style")}> ${category.icon ? renderTemplate`${renderComponent($$result, "Icon", $$Icon, { "name": `lucide:${category.icon}`, "class": "w-6 h-6" })}` : renderTemplate`<span class="text-xl font-bold">${category.title.charAt(0).toUpperCase()}</span>`} </div>  <div class="flex flex-col gap-0.5"> <h2 class="text-2xl font-bold text-zinc-800 leading-tight"> ${category.title} </h2> ${category.description && renderTemplate`<p${addAttribute(`text-sm font-medium ${headerColor.text}`, "class")}> ${category.description} </p>`} </div>  <span${addAttribute(`text-sm font-bold px-3 py-1.5 rounded-full ${headerColor.bg} ${headerColor.text}`, "class")}> ${categoryLinks.length} </span> </div>  <div class="h-0.5 flex-1 rounded-full"${addAttribute(`background: linear-gradient(to right, ${headerColor.glow}50, transparent);`, "style")}></div> </div> <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7"> ${categoryLinks.map((link) => {
+      return renderTemplate`<section class="mb-16 link-section"${addAttribute(category.id, "data-category")}>  <div class="flex items-center gap-4 mb-8 px-1"> <div class="flex items-center gap-4">  <div${addAttribute(`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${headerColor.bg} ${headerColor.text}`, "class")}${addAttribute(`box-shadow: 0 8px 20px -4px ${headerColor.glow};`, "style")}> ${category.icon ? renderTemplate`${renderComponent($$result2, "Icon", $$Icon, { "name": `lucide:${category.icon}`, "class": "w-6 h-6" })}` : renderTemplate`<span class="text-xl font-bold">${category.title.charAt(0).toUpperCase()}</span>`} </div>  <div class="flex flex-col gap-0.5"> <h2 class="text-2xl font-bold text-zinc-800 leading-tight"> ${category.title} </h2> ${category.description && renderTemplate`<p${addAttribute(`text-sm font-medium ${headerColor.text}`, "class")}> ${category.description} </p>`} </div>  <span${addAttribute(`text-sm font-bold px-3 py-1.5 rounded-full ${headerColor.bg} ${headerColor.text}`, "class")}> ${categoryLinks.length} </span> </div>  <div class="h-0.5 flex-1 rounded-full"${addAttribute(`background: linear-gradient(to right, ${headerColor.glow}50, transparent);`, "style")}></div> </div> <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7"> ${categoryLinks.map((link) => {
         const currentIndex = globalIndex++;
-        return renderTemplate`${renderComponent($$result, "LinkCard", $$LinkCard, { "link": link, "index": currentIndex })}`;
+        return renderTemplate`${renderComponent($$result2, "LinkCard", $$LinkCard, { "link": link, "index": currentIndex })}`;
       })} </div> </section>`;
     });
-  })()} </div>  <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center"> <div class="bg-zinc-100 p-4 rounded-full mb-4"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-x text-zinc-400"><path d="m13.5 8.5-5 5"></path><path d="m8.5 8.5 5 5"></path><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg> </div> <h3 class="text-lg font-medium text-zinc-900">Tidak ada hasil ditemukan</h3> <p class="text-zinc-500 mt-1">Coba kata kunci lain atau ubah kategori.</p> </div> </div> </main> ${renderScript($$result, "/home/alditpra/Github Repository/alditpra/src/components/HomePage.astro?astro&type=script&index=0&lang.ts")}`;
+  })()} </div> <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center"> <div class="bg-zinc-100 p-4 rounded-full mb-4"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-x text-zinc-400"><path d="m13.5 8.5-5 5"></path><path d="m8.5 8.5 5 5"></path><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg> </div> <h3 class="text-lg font-medium text-zinc-900">Tidak ada hasil ditemukan</h3> <p class="text-zinc-500 mt-1">Coba kata kunci lain atau ubah kategori.</p> </div> ` })}`} </div> </main> ${renderScript($$result, "/home/alditpra/Github Repository/alditpra/src/components/HomePage.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/home/alditpra/Github Repository/alditpra/src/components/HomePage.astro", void 0);
 
 const $$Index = createComponent(($$result, $$props, $$slots) => {

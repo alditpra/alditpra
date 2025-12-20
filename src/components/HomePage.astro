@@ -9,9 +9,20 @@ import { Icon } from "astro-icon/components";
 import { candyColors } from "../lib/colors";
 
 
-const links = await getAllLinks();
-const categories = await getCategories();
-const groupedLinks = groupByCategory(links, categories);
+let links = [];
+let categories = [];
+let groupedLinks = new Map();
+let hasError = false;
+
+try {
+    links = await getAllLinks();
+    categories = await getCategories();
+    groupedLinks = groupByCategory(links, categories);
+} catch (error) {
+    console.error('[HomePage] Error fetching data:', error);
+    hasError = true;
+    // Will render error UI below
+}
 
 // Flatten links for easier searching in DOM
 // Actually we render all of them and toggle visibility.
@@ -22,6 +33,35 @@ const groupedLinks = groupByCategory(links, categories);
     <MeshGradient />
 
     <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
+        {/* Error State */}
+        {hasError && (
+            <div class="max-w-2xl mx-auto text-center py-20">
+                <div class="bg-white/60 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-white/60 shadow-xl">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center">
+                        <Icon name="lucide:alert-triangle" class="w-10 h-10 text-red-600" />
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 mb-3">
+                        Gagal Memuat Data
+                    </h2>
+                    <p class="text-zinc-600 mb-6 leading-relaxed">
+                        Terjadi kesalahan saat mengambil data dari Google Sheets. 
+                        Silakan refresh halaman atau coba lagi nanti.
+                    </p>
+                    <button 
+                        onclick="window.location.reload()" 
+                        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-candy-purple to-candy-pink text-white font-semibold rounded-2xl hover:scale-105 transition-transform duration-300 shadow-lg"
+                    >
+                        <Icon name="lucide:refresh-cw" class="w-5 h-5" />
+                        Refresh Halaman
+                    </button>
+                </div>
+            </div>
+        )}
+        
+        {/* Normal Content - only show if no error */}
+        {!hasError && (
+            <>
+
         {/* Profile & Search */}
         <div class="max-w-4xl mx-auto mb-12">
             <ProfileCard />
@@ -98,6 +138,8 @@ const groupedLinks = groupByCategory(links, categories);
             <h3 class="text-lg font-medium text-zinc-900">Tidak ada hasil ditemukan</h3>
             <p class="text-zinc-500 mt-1">Coba kata kunci lain atau ubah kategori.</p>
         </div>
+            </>
+        )}
     </div>
 </main>
 
