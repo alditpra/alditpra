@@ -1,6 +1,5 @@
-import { e as createComponent, m as maybeRenderHead, h as addAttribute, k as renderComponent, r as renderTemplate, f as createAstro, s as spreadAttributes, l as renderScript } from '../chunks/astro/server_Bfy99Apq.mjs';
-import 'piccolore';
-import { h as $$Icon, S as SITE_CONFIG, f as cn, j as getColorByIndex, b as getAllLinks, c as getCategories, k as groupByCategory, e as $$MeshGradient, i as candyColors, $ as $$Layout } from '../chunks/utils_Dth_Kbog.mjs';
+import { e as createComponent, m as maybeRenderHead, h as addAttribute, k as renderComponent, r as renderTemplate, f as createAstro, s as spreadAttributes, l as renderScript } from '../chunks/astro/server_BWEPh-Qp.mjs';
+import { h as $$Icon, S as SITE_CONFIG, f as cn, j as getColorByIndex, b as getAllLinks, c as getCategories, k as groupByCategory, e as $$MeshGradient, i as candyColors, $ as $$Layout } from '../chunks/utils_DPyJ14CC.mjs';
 import 'clsx';
 /* empty css                                 */
 export { renderers } from '../renderers.mjs';

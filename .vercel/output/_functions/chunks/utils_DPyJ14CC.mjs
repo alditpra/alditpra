@@ -1,5 +1,4 @@
-import { e as createComponent, f as createAstro, h as addAttribute, n as renderHead, o as renderSlot, r as renderTemplate, m as maybeRenderHead, s as spreadAttributes, k as renderComponent, u as unescapeHTML, p as Fragment } from './astro/server_Bfy99Apq.mjs';
-import 'piccolore';
+import { e as createComponent, f as createAstro, h as addAttribute, n as renderHead, o as renderSlot, r as renderTemplate, m as maybeRenderHead, s as spreadAttributes, k as renderComponent, u as unescapeHTML, p as Fragment } from './astro/server_BWEPh-Qp.mjs';
 import { clsx } from 'clsx';
 /* empty css                        */
 /* empty css                         */
@@ -16,7 +15,7 @@ const SHEET_URLS = {
 const FETCH_TIMEOUT = 1e4;
 const SITE_CONFIG = {
   name: "alditpra",
-  description: "Web ini dibangun menggunakan Astro dan Tailwind CSS 4, dengan Google Sheets sebagai database/CMS-nya.",
+  description: "Web ini dibangun menggunakan Astro dan Tailwind CSS 4, dengan Google Sheets sebagai database-nya. Solusi gratis tanpa bayar.",
   author: "Aldit Pratyasto"
 };
 
@@ -25,7 +24,7 @@ const $$Layout = createComponent(($$result, $$props, $$slots) => {
   const Astro2 = $$result.createAstro($$Astro$1, $$props, $$slots);
   Astro2.self = $$Layout;
   const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astro2.props;
-  return renderTemplate`<html lang="id"> <head><meta charset="UTF-8"><meta name="description"${addAttribute(description, "content")}><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="keywords" content="link directory, personal repository, resource collection, tools"><meta name="author"${addAttribute(SITE_CONFIG.author, "content")}><!-- Open Graph --><meta property="og:title"${addAttribute(title, "content")}><meta property="og:description"${addAttribute(description, "content")}><meta property="og:type" content="website"><!-- Preconnect --><link rel="preconnect" href="https://lh3.googleusercontent.com"><link rel="preconnect" href="https://docs.google.com"><link rel="preconnect" href="https://googleusercontent.com"><!-- Preload LCP --><link rel="preload" href="/avatar.webp" as="image" type="image/webp" crossorigin><title>${title}</title>${renderHead()}</head> <body class="font-sans antialiased bg-zinc-50"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-lg">
+  return renderTemplate`<html lang="id"> <head><meta charset="UTF-8"><meta name="description"${addAttribute(description, "content")}><meta name="viewport" content="width=device-width"><link rel="icon" href="/favicon.ico"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="keywords" content="link directory, personal repository, resource collection, tools"><meta name="author"${addAttribute(SITE_CONFIG.author, "content")}><!-- Open Graph --><meta property="og:title"${addAttribute(title, "content")}><meta property="og:description"${addAttribute(description, "content")}><meta property="og:type" content="website"><!-- Preconnect --><link rel="preconnect" href="https://lh3.googleusercontent.com"><link rel="preconnect" href="https://docs.google.com"><link rel="preconnect" href="https://googleusercontent.com"><!-- Preload LCP --><link rel="preload" href="/avatar.webp" as="image" type="image/webp" crossorigin><title>${title}</title>${renderHead()}</head> <body class="font-sans antialiased bg-zinc-50"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-lg">
 Langsung ke konten
 </a> <main id="main-content" class="min-h-screen"> ${renderSlot($$result, $$slots["default"])} </main> <!-- Footer --> <footer class="relative z-10 py-8 text-center"> <div class="container mx-auto px-4"> <p class="text-sm text-zinc-400 font-medium">
 Made with ❤️ and ☕ by <span class="text-zinc-600">alditpra</span> </p> </div> </footer> </body></html>`;

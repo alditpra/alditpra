@@ -17,10 +17,8 @@ export default defineConfig({
         resolve: {
             alias: {
                 "@": path.resolve(__dirname, "./src"),
+                "piccolore": path.resolve(__dirname, "./src/mocks/piccolore.ts"),
             },
-        },
-        ssr: {
-            noExternal: ['piccolore'],
         },
     },
 });
