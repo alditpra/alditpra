@@ -224,36 +224,14 @@ try {
                                     
                                     <iframe
                                         id="drive-iframe"
-                                        data-src={`https://drive.google.com/embeddedfolderview?id=${folderId}#list`}
+                                        src={`https://drive.google.com/embeddedfolderview?id=${folderId}#list`}
                                         width="100%"
                                         height="100%"
                                         style="border:0;"
                                         title="Google Drive Folder"
                                         class="relative z-10"
-                                        loading="lazy"
                                         onload="this.parentElement.querySelector('.iframe-skeleton').style.display='none'"
                                     ></iframe>
-                                    <script is:inline>
-                                        // Lazy load iframe when visible
-                                        (function() {
-                                            const iframe = document.getElementById('drive-iframe');
-                                            if (!iframe || iframe.src) return;
-                                            
-                                            const observer = new IntersectionObserver((entries) => {
-                                                entries.forEach(entry => {
-                                                    if (entry.isIntersecting) {
-                                                        const src = iframe.getAttribute('data-src');
-                                                        if (src) {
-                                                            iframe.src = src;
-                                                            observer.disconnect();
-                                                        }
-                                                    }
-                                                });
-                                            }, { rootMargin: '50px' });
-                                            
-                                            observer.observe(iframe);
-                                        })();
-                                    </script>
                                 </div>
                             </div>
                         );
