@@ -16,7 +16,7 @@ export const FETCH_TIMEOUT = 10000;
 // Site metadata
 export const SITE_CONFIG = {
     name: "alditpra",
-    description: "Web ini dibangun menggunakan Astro dan Tailwind CSS 4, dengan Google Sheets sebagai database/CMS-nya.",
+    description: "Web ini dibangun menggunakan Astro dan Tailwind CSS 4, dengan Google Sheets sebagai database-nya. Solusi gratis tanpa bayar.",
     tagline: "Organized, Accessible, Always Updated",
     author: "Aldit Pratyasto",
 } as const;

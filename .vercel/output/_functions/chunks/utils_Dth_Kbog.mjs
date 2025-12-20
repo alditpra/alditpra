@@ -3,6 +3,7 @@ import 'piccolore';
 import { clsx } from 'clsx';
 /* empty css                        */
 /* empty css                         */
+import Papa from 'papaparse';
 import { getIconData, iconToSVG } from '@iconify/utils';
 import { twMerge } from 'tailwind-merge';
 
@@ -27,7 +28,7 @@ const $$Layout = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate`<html lang="id"> <head><meta charset="UTF-8"><meta name="description"${addAttribute(description, "content")}><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><meta name="generator"${addAttribute(Astro2.generator, "content")}><meta name="keywords" content="link directory, personal repository, resource collection, tools"><meta name="author"${addAttribute(SITE_CONFIG.author, "content")}><!-- Open Graph --><meta property="og:title"${addAttribute(title, "content")}><meta property="og:description"${addAttribute(description, "content")}><meta property="og:type" content="website"><!-- Preconnect --><link rel="preconnect" href="https://lh3.googleusercontent.com"><link rel="preconnect" href="https://docs.google.com"><link rel="preconnect" href="https://googleusercontent.com"><!-- Preload LCP --><link rel="preload" href="/avatar.webp" as="image" type="image/webp" crossorigin><title>${title}</title>${renderHead()}</head> <body class="font-sans antialiased bg-zinc-50"> <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-zinc-900 focus:text-white focus:rounded-lg">
 Langsung ke konten
 </a> <main id="main-content" class="min-h-screen"> ${renderSlot($$result, $$slots["default"])} </main> <!-- Footer --> <footer class="relative z-10 py-8 text-center"> <div class="container mx-auto px-4"> <p class="text-sm text-zinc-400 font-medium">
-Designed by <span class="text-zinc-600">${SITE_CONFIG.author}</span> </p> </div> </footer> </body></html>`;
+Made with ❤️ and ☕ by <span class="text-zinc-600">alditpra</span> </p> </div> </footer> </body></html>`;
 }, "/home/alditpra/Github Repository/alditpra/src/layouts/Layout.astro", void 0);
 
 const $$MeshGradient = createComponent(($$result, $$props, $$slots) => {
@@ -243,7 +244,6 @@ async function fetchAndParseLinks() {
       console.warn("Invalid CSV format for links, using fallback");
       return getFallbackLinks();
     }
-    const Papa = (await import('papaparse')).default;
     const parsed = Papa.parse(csvText, {
       header: true,
       skipEmptyLines: true,
@@ -266,7 +266,6 @@ async function fetchAndParseLinks() {
 async function fetchAndParseLevelOneItems() {
   try {
     const csvText = await fetchSheetData(SHEET_URLS.level1);
-    const Papa = (await import('papaparse')).default;
     const parsed = Papa.parse(csvText, {
       header: true,
       skipEmptyLines: true
@@ -290,7 +289,6 @@ async function fetchAndParseCategories() {
       console.warn("Invalid CSV format for categories, using fallback");
       return getFallbackCategories();
     }
-    const Papa = (await import('papaparse')).default;
     const parsed = Papa.parse(csvText, {
       header: true,
       skipEmptyLines: true,

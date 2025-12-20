@@ -8,6 +8,7 @@ import {
     getFallbackCategories,
     retryOperation
 } from "./error-handler";
+import Papa from 'papaparse';
 
 interface RawLinkRow {
     id?: string;
@@ -173,8 +174,6 @@ async function fetchAndParseLinks(): Promise<Link[]> {
             return getFallbackLinks() as Link[];
         }
 
-        // Dynamic import papaparse untuk mengurangi bundle size
-        const Papa = (await import('papaparse')).default;
         const parsed = Papa.parse<RawLinkRow>(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -207,8 +206,6 @@ async function fetchAndParseLevelOneItems(): Promise<LevelOneItem[]> {
         // Using SHEET_URLS.level1 as 'level 1' content source
         const csvText = await fetchSheetData(SHEET_URLS.level1);
 
-        // Dynamic import papaparse
-        const Papa = (await import('papaparse')).default;
         const parsed = Papa.parse<RawLevelOneRow>(csvText, {
             header: true,
             skipEmptyLines: true,
@@ -241,8 +238,6 @@ async function fetchAndParseCategories(): Promise<Category[]> {
             return getFallbackCategories();
         }
 
-        // Dynamic import papaparse
-        const Papa = (await import('papaparse')).default;
         const parsed = Papa.parse<RawCategoryRow>(csvText, {
             header: true,
             skipEmptyLines: true,
