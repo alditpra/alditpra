@@ -145,6 +145,21 @@ html.dark body::before {
   /* More blur for softer dark mode aesthetic */
 }
 
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
 
 /* Dark mode body - Auto system preference - Animated Mesh */
 @media (prefers-color-scheme: dark) {
