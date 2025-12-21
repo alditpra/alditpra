@@ -4,6 +4,9 @@ export function initSearch() {
     const linkCards = document.querySelectorAll('.link-card-item');
     const emptyState = document.getElementById('empty-state');
 
+    // Force visible initially to prevent layout glitch
+    linkCards.forEach(card => card.classList.remove('hidden'));
+
     let searchQuery = '';
 
     function filterLinks() {
