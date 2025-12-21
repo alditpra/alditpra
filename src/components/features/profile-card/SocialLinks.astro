@@ -1,39 +1,32 @@
 ---
 import { Icon } from "astro-icon/components";
+import { candyColors } from "../../../lib/colors";
 
-// Social links configuration with candy colors
+// Social links configuration - using sequential candy colors
 const socialLinks = [
   {
     name: "GitHub",
     href: "https://github.com/alditpra",
     icon: "github",
-    bgClass: "bg-candy-purple/20 hover:bg-candy-purple/30",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_60%)]",
-    iconColorClass: "text-candy-purple dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]"
+    color: candyColors[0] // purple
   },
   {
     name: "Email",
     href: "mailto:alditpra@gmail.com",
     icon: "mail",
-    bgClass: "bg-candy-blue/20 hover:bg-candy-blue/30",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_60%)]",
-    iconColorClass: "text-candy-blue dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_40%)]"
+    color: candyColors[2]
   },
   {
     name: "Facebook",
     href: "https://facebook.com/aldit",
     icon: "facebook",
-    bgClass: "bg-candy-blue/20 hover:bg-candy-blue/30",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_60%)]",
-    iconColorClass: "text-candy-blue dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_40%)]"
+    color: candyColors[1]
   },
   {
     name: "WhatsApp",
     href: "https://wa.me/628158141112",
     icon: "message-circle",
-    bgClass: "bg-candy-teal/20 hover:bg-candy-teal/30",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_60%)]",
-    iconColorClass: "text-candy-teal dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_40%)]"
+    color: candyColors[4] // teal
   }
 ];
 ---
@@ -45,21 +38,22 @@ const socialLinks = [
             target="_blank" 
             rel="noopener noreferrer" 
             class={`
-                group inline-flex items-center gap-2 
+                group inline-flex items-center justify-center gap-2 
+                flex-1 min-w-[120px]
                 px-4 py-2 rounded-full
-                ${link.bgClass}
+                ${link.color.bg} hover:${link.color.bg.replace('/20', '/30')}
                 transition-all duration-300 ease-out
                 hover:scale-105
             `}
             title={link.name}
         >
             {/* Icon */}
-            <span class={`${link.iconColorClass} transition-transform duration-300 group-hover:scale-110`}>
+            <span class={`${link.color.text} transition-transform duration-300 group-hover:scale-110`}>
                 <Icon name={`lucide:${link.icon}`} class="w-4 h-4" />
             </span>
             
             {/* Label */}
-            <span class={`text-sm font-medium ${link.textClass}`}>
+            <span class={`text-sm font-medium ${link.color.text}`}>
                 {link.name}
             </span>
         </a>
