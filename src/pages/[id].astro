@@ -85,13 +85,20 @@ try {
                 <>
             {/* Header / Back Navigation */}
             <div class="mb-8">
-                {/* Enhanced Kembali Button */}
+                {/* Enhanced Kembali Button - matching LinkCard style */}
                 <a 
                     href="/" 
-                    class="inline-flex items-center gap-2 px-4 py-2.5 mb-6 group bg-white/60 backdrop-blur-md border border-white/80 rounded-2xl transition-all duration-300 hover:bg-white hover:shadow-lg hover:scale-105 hover:border-candy-purple"
+                    class={cn(
+                        "inline-flex items-center gap-2 px-5 py-3 mb-6 group relative",
+                        "rounded-3xl border-2 backdrop-blur-md",
+                        "bg-gradient-to-br from-white/80 to-white/40",
+                        "transition-all duration-500 ease-out",
+                        "hover:-translate-y-1 hover:scale-[1.02]",
+                        pageColor.border
+                    )}
                 >
-                    <Icon name="lucide:arrow-left" class="w-5 h-5 text-zinc-600 group-hover:text-candy-purple transition-colors" />
-                    <span class="font-semibold text-zinc-600 group-hover:text-zinc-900 transition-colors">Kembali</span>
+                    <Icon name="lucide:arrow-left" class={cn("w-5 h-5 transition-colors", pageColor.text)} />
+                    <span class={cn("font-semibold transition-colors", pageColor.text)}>Kembali</span>
                 </a>
 
                 {/* Header Card with Gradient Icon */}
