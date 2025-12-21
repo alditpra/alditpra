@@ -9,12 +9,9 @@
 
 
 :root {
-  /* Light mode (default) - Enhanced glassmorphism */
+  /* Light mode (default) */
   --background: #fafafa;
   --foreground: #18181b;
-  --card-bg: rgba(255, 255, 255, 0.75);
-  /* Increased transparency: 0.85→0.75 */
-  --card-border: rgba(255, 255, 255, 0.5);
   --text-primary: #18181b;
   --text-secondary: #3f3f46;
   --divider: #e4e4e7;
@@ -27,30 +24,20 @@
   --candy-yellow: #ffe552;
 }
 
-/* Dark mode - Manual toggle with .dark class - Dreamy adjustments */
+/* Dark mode - Manual toggle */
 html.dark {
   --background: #18181b;
-  /* Lightened: #0a0a0a→#18181b for softer feel */
   --foreground: #fafafa;
-  --card-bg: rgba(24, 24, 27, 0.6);
-  /* More transparent: 0.7→0.6 for glassmorphism */
-  --card-border: rgba(63, 63, 70, 0.3);
-  /* Softer border: 0.5→0.3 */
   --text-primary: #fafafa;
   --text-secondary: #a1a1aa;
   --divider: #3f3f46;
 }
 
-/* Dark mode - Auto-detect system preference - Dreamy adjustments */
+/* Dark mode - Auto-detect system preference */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
     --background: #18181b;
-    /* Lightened: #0a0a0a→#18181b */
     --foreground: #fafafa;
-    --card-bg: rgba(24, 24, 27, 0.6);
-    /* More transparent: 0.7→0.6 */
-    --card-border: rgba(63, 63, 70, 0.3);
-    /* Softer border: 0.5→0.3 */
     --text-primary: #fafafa;
     --text-secondary: #a1a1aa;
     --divider: #3f3f46;
@@ -86,8 +73,9 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode body - Manual toggle - Dark with candy glows */
-html.dark body {
+/* Dark mode body - Manual toggle & Auto preference */
+html.dark body,
+:root:not(.light) body {
   background:
     radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.15) 0%, transparent 40%),
     radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.12) 0%, transparent 40%),
@@ -96,70 +84,23 @@ html.dark body {
     #0a0a0f;
 }
 
-/* Dark mode body - Auto system preference */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) body {
-    background:
-      radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.12) 0%, transparent 40%),
-      radial-gradient(circle at 50% 70%, rgba(255, 131, 195, 0.14) 0%, transparent 40%),
-      radial-gradient(circle at 20% 80%, rgba(53, 226, 195, 0.1) 0%, transparent 35%),
-      #0a0a0f;
-  }
-}
-
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.5s ease-out forwards;
-}
-
-
-
-
-/* Animations removed - specific animations are now scoped in components */
 
 /* ========================================
-   GLOBAL SMOOTH THEME TRANSITION
+   OPTIMIZED THEME TRANSITION
    ======================================== */
 
-/* Apply transition to common elements for smooth theme switching */
-body,
-body::before,
-body::after,
-div,
-span,
-a,
-button,
-input,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-svg,
-path {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 300ms;
-  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+/* Only transition theme-related properties where needed */
+* {
+  transition: background-color 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Exclude elements that shouldn't transition or have custom transitions */
+/* Exclude animations and custom transitions */
 .no-transition,
 .animate-spin,
-.animate-ping {
+.animate-ping,
+[class*="animate-"] {
   transition: none !important;
 }
 
