@@ -206,8 +206,8 @@ h6,
 p,
 svg,
 path {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, filter, transform;
-  transition-duration: 700ms;
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
