@@ -50,7 +50,7 @@ try {
             {/* Error State */}
             {hasError && (
                 <div class="max-w-2xl mx-auto text-center py-20">
-                    <div class="bg-white/60 backdrop-blur-xl rounded-3xl p-8 sm:p-12 border border-white/60 shadow-xl">
+                    <div class="bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-8 sm:p-12 border border-white/60 dark:border-zinc-700/50 shadow-xl transition-all duration-300">
                         <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center">
                             <Icon name="lucide:alert-triangle" class="w-10 h-10 text-red-600" />
                         </div>
@@ -90,7 +90,7 @@ try {
                     href="/" 
                     class={cn(
                         "inline-flex items-center gap-2 px-5 py-3 mb-6 group relative",
-                        "rounded-3xl border-2 backdrop-blur-md",
+                        "rounded-3xl border-2 transition-all duration-300",
                     "bg-gradient-to-br from-white/80 to-white/40 dark:from-zinc-800/80 dark:to-zinc-800/40",
                         "transition-all duration-500 ease-out",
                         "hover:-translate-y-1 hover:scale-[1.02]",
@@ -103,7 +103,7 @@ try {
                 </a>
 
                 {/* Header Card with Gradient Icon */}
-                <div class="relative bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden">
+                <div class="relative bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-6 sm:p-8 border border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden transition-all duration-300">
                     {/* Subtle gradient overlay */}
                     <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
                     
@@ -150,7 +150,7 @@ try {
                         return (
                             <div class="relative">
                                 {/* Header Bar - Candy/Glassmorphism Style */}
-                                <div class="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-t-3xl border border-b-0 border-white/60 dark:border-zinc-700/50 p-5 sm:p-6">
+                                <div class="bg-white/70 dark:bg-zinc-900/70 rounded-t-3xl border border-b-0 border-white/60 dark:border-zinc-700/50 p-5 sm:p-6 transition-all duration-300">
                                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                         {/* Title with icon */}
                                         <div class="flex items-center gap-3">
@@ -212,7 +212,7 @@ try {
                                 </div>
                                 
                                 {/* Iframe Container */}
-                                <div class="relative w-full h-[70vh] bg-white/90 backdrop-blur-md rounded-b-3xl border border-t-0 border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden">
+                                <div class="relative w-full h-[70vh] bg-white/95 rounded-b-3xl border border-t-0 border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden transition-all duration-300">
                                     {/* Skeleton Loader */}
                                     <div class="absolute inset-0 flex items-center justify-center bg-white/90 iframe-skeleton">
                                         <div class="flex flex-col items-center gap-4">
@@ -239,7 +239,7 @@ try {
                     // Empty State
                     if (items.length === 0) {
                         return (
-                            <div class="text-center py-16 bg-white/40 backdrop-blur-md rounded-3xl border border-white/60 shadow-lg">
+                            <div class="text-center py-16 bg-white/70 dark:bg-zinc-900/70 rounded-3xl border border-white/60 dark:border-zinc-700/50 shadow-lg transition-all duration-300">
                                 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-zinc-100 flex items-center justify-center">
                                     <Icon name="lucide:inbox" class="w-8 h-8 text-zinc-400" />
                                 </div>
@@ -258,7 +258,7 @@ try {
                                         href={item.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="group block bg-white/60 dark:bg-zinc-900/60 hover:bg-white dark:hover:bg-zinc-900 backdrop-blur-sm border border-white/80 dark:border-zinc-700/50 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                                        class="group block bg-white/70 dark:bg-zinc-900/70 hover:bg-white/80 dark:hover:bg-zinc-900/80 border border-white/80 dark:border-zinc-700/50 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
                                     >
                                         <div class="flex items-center gap-3">
                                             {/* Item Icon with Candy Color - Compact */}

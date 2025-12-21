@@ -72,77 +72,40 @@ html.dark {
 }
 
 body {
-  /* Base clean background */
-  background-color: #fafafa;
+  /* Light mode - Soft pastel dreamy candy gradient */
+  background: linear-gradient(135deg,
+      #fdfbff 0%,
+      #f3f0ff 15%,
+      rgba(127, 115, 255, 0.1) 30%,
+      rgba(20, 208, 240, 0.08) 50%,
+      rgba(255, 131, 195, 0.1) 70%,
+      #fff5fb 85%,
+      #fafafa 100%);
   color: var(--foreground);
   min-height: 100vh;
   transition: background 0.3s ease, color 0.3s ease;
-  position: relative;
-  overflow-x: hidden;
 }
 
-/* Animated Mesh Gradient - Floating Candy Orbs */
-body::before {
-  content: '';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.5;
-  /* Light mode opacity */
-
-  /* Multiple radial gradients creating floating orbs */
-  background:
-    /* Purple orb - top left */
-    radial-gradient(circle at 20% 20%, rgba(127, 115, 255, 0.4) 0%, transparent 50%),
-    /* Blue orb - top right */
-    radial-gradient(circle at 80% 10%, rgba(20, 208, 240, 0.35) 0%, transparent 50%),
-    /* Pink orb - middle */
-    radial-gradient(circle at 50% 50%, rgba(255, 131, 195, 0.3) 0%, transparent 50%),
-    /* Yellow orb - bottom left */
-    radial-gradient(circle at 10% 80%, rgba(255, 229, 82, 0.35) 0%, transparent 50%),
-    /* Teal orb - bottom right */
-    radial-gradient(circle at 90% 90%, rgba(53, 226, 195, 0.4) 0%, transparent 50%);
-
-  filter: blur(60px);
-  /* Animation removed - static background */
-}
-
-/* Ensure content stays above background */
-body>* {
-  position: relative;
-  z-index: 1;
-}
-
-
-/* Dark mode body - Manual toggle - Animated Mesh */
+/* Dark mode body - Manual toggle - Dark with candy glows */
 html.dark body {
-  background-color: #18181b;
-  /* Darker base for contrast */
+  background:
+    radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 70%, rgba(255, 131, 195, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(53, 226, 195, 0.1) 0%, transparent 35%),
+    #0a0a0f;
 }
 
-html.dark body::before {
-  opacity: 0.3;
-  /* Reduced opacity for dark mode */
-
-  /* Darker, more subtle candy orbs for dark mode */
-  background:
-    /* Purple orb - top left */
-    radial-gradient(circle at 20% 20%, rgba(127, 115, 255, 0.25) 0%, transparent 50%),
-    /* Blue orb - top right */
-    radial-gradient(circle at 80% 10%, rgba(20, 208, 240, 0.2) 0%, transparent 50%),
-    /* Pink orb - middle */
-    radial-gradient(circle at 50% 50%, rgba(255, 131, 195, 0.18) 0%, transparent 50%),
-    /* Yellow orb - bottom left */
-    radial-gradient(circle at 10% 80%, rgba(255, 229, 82, 0.2) 0%, transparent 50%),
-    /* Teal orb - bottom right */
-    radial-gradient(circle at 90% 90%, rgba(53, 226, 195, 0.25) 0%, transparent 50%);
-
-  filter: blur(80px);
-  /* More blur for softer dark mode aesthetic */
+/* Dark mode body - Auto system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) body {
+    background:
+      radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 50% 70%, rgba(255, 131, 195, 0.14) 0%, transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(53, 226, 195, 0.1) 0%, transparent 35%),
+      #0a0a0f;
+  }
 }
 
 @keyframes fade-in-up {
@@ -161,25 +124,7 @@ html.dark body::before {
   animation: fade-in-up 0.5s ease-out forwards;
 }
 
-/* Dark mode body - Auto system preference - Animated Mesh */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) body {
-    background-color: #18181b;
-  }
 
-  :root:not(.light) body::before {
-    opacity: 0.3;
-
-    background:
-      radial-gradient(circle at 20% 20%, rgba(127, 115, 255, 0.25) 0%, transparent 50%),
-      radial-gradient(circle at 80% 10%, rgba(20, 208, 240, 0.2) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(255, 131, 195, 0.18) 0%, transparent 50%),
-      radial-gradient(circle at 10% 80%, rgba(255, 229, 82, 0.2) 0%, transparent 50%),
-      radial-gradient(circle at 90% 90%, rgba(53, 226, 195, 0.25) 0%, transparent 50%);
-
-    filter: blur(80px);
-  }
-}
 
 
 /* Animations removed - specific animations are now scoped in components */
