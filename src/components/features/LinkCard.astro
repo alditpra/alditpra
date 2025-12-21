@@ -49,21 +49,20 @@ const firstLetter = link.name.charAt(0).toUpperCase();
   data-name={link.name.toLowerCase()}
   data-category={link.category || 'kuliah'}
 >
-  <div class="relative h-full transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-[1.02]">
-    {/* Card Background with subtle candy tint */}
+  <div class="relative h-full transition-all duration-500 ease-out group-hover:-translate-y-3 group-hover:scale-[1.03] group-hover:rotate-1">
+    {/* Card Background - Consistent glassmorphism */}
     <div 
         class={cn(
-            "absolute inset-0 rounded-3xl border-2 backdrop-blur-md transition-all duration-300",
-            "bg-gradient-to-br from-white/80 to-white/40",
-            "border-white/60 group-hover:border-transparent",
-            color.border
+            "absolute inset-0 rounded-3xl backdrop-blur-md transition-all duration-300",
+            "bg-white/60 dark:bg-zinc-900/60"
         )}
+        style="box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);"
     ></div>
     
-    {/* Enhanced Glow Effect */}
+    {/* Ambient Glow Effect - Dreamy subtle presence, ethereal on hover */}
     <div
-        class="absolute inset-0 rounded-3xl opacity-0 transition-all duration-500 group-hover:opacity-100"
-        style={`box-shadow: 0 20px 40px -10px ${color.glow};`}
+        class="absolute inset-0 rounded-3xl opacity-5 transition-all duration-500 group-hover:opacity-30"
+        style={`box-shadow: 0 0 40px -10px ${color.glow}, 0 20px 40px -20px ${color.glow};`}
     ></div>
 
     {/* Content */}
@@ -72,11 +71,11 @@ const firstLetter = link.name.charAt(0).toUpperCase();
         <div 
             class={cn(
                 "shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300",
-                "group-hover:scale-110 group-hover:rotate-6 group-hover:shadow-lg",
+                "group-hover:scale-125 group-hover:rotate-12",
                 color.bg,
                 color.text
             )}
-            style={`box-shadow: 0 4px 15px -3px ${color.glow};`}
+            style={`box-shadow: 0 0 25px -5px ${color.glow}, 0 8px 25px -10px ${color.glow};`}
         >
             {iconName ? (
                 <Icon name={`lucide:${iconName}`} class="w-7 h-7" />
@@ -89,15 +88,15 @@ const firstLetter = link.name.charAt(0).toUpperCase();
         <div class="flex-1 min-w-0 space-y-2">
             <div class="flex items-center gap-2">
                 <h3 class={cn(
-                    "font-bold text-lg text-zinc-800 truncate pr-4 transition-colors duration-300",
-                    "group-hover:text-zinc-900"
+                    "font-bold text-lg text-zinc-800 dark:text-zinc-100 truncate pr-4 transition-colors duration-300",
+                    "group-hover:text-zinc-900 dark:group-hover:text-white"
                 )}>
                     {link.name}
                 </h3>
             </div>
             
             {link.description && (
-                <p class="text-sm text-zinc-500 line-clamp-2 leading-relaxed group-hover:text-zinc-600 transition-colors">
+                <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
                     {link.description}
                 </p>
             )}
@@ -116,11 +115,12 @@ const firstLetter = link.name.charAt(0).toUpperCase();
             )}
         </div>
 
-        {/* Arrow indicator */}
+        {/* Arrow indicator - Candy colored */}
         <div class={cn(
             "shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
-            "bg-zinc-100 text-zinc-400 group-hover:bg-zinc-900 group-hover:text-white",
-            "group-hover:translate-x-1"
+            color.bg,
+            color.text,
+            "group-hover:translate-x-2 group-hover:scale-110"
         )}>
             <Icon name="lucide:arrow-right" class="w-4 h-4" />
         </div>

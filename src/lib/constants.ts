@@ -16,7 +16,7 @@ export const FETCH_TIMEOUT = 10000;
 // Site metadata
 export const SITE_CONFIG = {
     name: "alditpra",
-    description: "Web ini dibangun menggunakan Astro 5 dan Tailwind CSS 4, dengan Google Sheets sebagai database-nya. Solusi gratisan anti ribet.",
+    description: "Open Source Project menggunakan Astro 5 dan Tailwind CSS 4, dengan Google Sheets sebagai database-nya. Solusi gratisan.",
     tagline: "Organized, Accessible, Always Updated",
     author: "Aldit Pratyasto",
     url: "https://alditpra.vercel.app", // Update with your actual domain

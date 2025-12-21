@@ -43,7 +43,7 @@ try {
 ---
 
 <Layout title={linkData?.name ? `${linkData.name} - alditpra` : 'alditpra'}>
-    <main class="min-h-screen relative overflow-hidden bg-[#fafafa]">
+    <main class="min-h-screen relative overflow-hidden">
         <MeshGradient />
 
         <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
@@ -91,9 +91,10 @@ try {
                     class={cn(
                         "inline-flex items-center gap-2 px-5 py-3 mb-6 group relative",
                         "rounded-3xl border-2 backdrop-blur-md",
-                        "bg-gradient-to-br from-white/80 to-white/40",
+                    "bg-gradient-to-br from-white/80 to-white/40 dark:from-zinc-800/80 dark:to-zinc-800/40",
                         "transition-all duration-500 ease-out",
                         "hover:-translate-y-1 hover:scale-[1.02]",
+                        "dark:border-zinc-700",
                         pageColor.border
                     )}
                 >
@@ -102,7 +103,7 @@ try {
                 </a>
 
                 {/* Header Card with Gradient Icon */}
-                <div class="relative bg-white/50 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/60 shadow-xl overflow-hidden">
+                <div class="relative bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden">
                     {/* Subtle gradient overlay */}
                     <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
                     
@@ -130,7 +131,7 @@ try {
                             >
                                 {linkData.name}
                             </h1>
-                            <p class="text-zinc-600 leading-relaxed text-base sm:text-lg">
+                            <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed text-base sm:text-lg">
                                 {linkData.description || "Detail materi dan referensi pembelajaran."}
                             </p>
                         </div>
@@ -149,7 +150,7 @@ try {
                         return (
                             <div class="relative">
                                 {/* Header Bar - Candy/Glassmorphism Style */}
-                                <div class="bg-white/50 backdrop-blur-xl rounded-t-3xl border border-b-0 border-white/60 p-5 sm:p-6">
+                                <div class="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-t-3xl border border-b-0 border-white/60 dark:border-zinc-700/50 p-5 sm:p-6">
                                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                         {/* Title with icon */}
                                         <div class="flex items-center gap-3">
@@ -159,31 +160,31 @@ try {
                                                 <Icon name="lucide:folder-open" class={cn("w-5 h-5", pageColor.text)} />
                                             </div>
                                             <div>
-                                                <h2 class="text-lg sm:text-xl font-bold text-zinc-800">
+                                                <h2 class="text-lg sm:text-xl font-bold text-zinc-800 dark:text-zinc-100">
                                                     Isi Folder
                                                 </h2>
-                                                <p class="text-xs text-zinc-500">Klik file untuk membuka</p>
+                                                <p class="text-xs text-zinc-500 dark:text-zinc-400">Klik file untuk membuka</p>
                                             </div>
                                         </div>
                                         
                                         <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end">
                                             {/* View Toggle Buttons - Pill Style */}
-                                            <div class="flex items-center gap-1.5 p-1 bg-zinc-100/80 rounded-2xl">
+                                            <div class="flex items-center gap-1.5 p-1 bg-zinc-100/80 dark:bg-zinc-800/80 rounded-2xl">
                                                 <button 
                                                     id="view-grid" 
-                                                    class="group p-2.5 rounded-xl bg-transparent hover:bg-white transition-all duration-200"
+                                                    class="group p-2.5 rounded-xl bg-transparent hover:bg-white dark:hover:bg-zinc-700 transition-all duration-200"
                                                     title="Tampilan Grid"
-                                                    onclick="document.getElementById('drive-iframe').src = document.getElementById('drive-iframe').src.replace('#list', '#grid'); this.classList.add('bg-white', 'shadow-sm'); this.nextElementSibling.classList.remove('bg-white', 'shadow-sm');"
+                                                    onclick="document.getElementById('drive-iframe').src = document.getElementById('drive-iframe').src.replace('#list', '#grid'); this.classList.add('bg-white', 'dark:bg-zinc-700', 'shadow-sm'); this.nextElementSibling.classList.remove('bg-white', 'dark:bg-zinc-700', 'shadow-sm');"
                                                 >
-                                                    <Icon name="lucide:layout-grid" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 transition-colors" />
+                                                    <Icon name="lucide:layout-grid" class="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition-colors" />
                                                 </button>
                                                 <button 
                                                     id="view-list" 
-                                                    class="group p-2.5 rounded-xl bg-white shadow-sm transition-all duration-200"
+                                                    class="group p-2.5 rounded-xl bg-white dark:bg-zinc-700 shadow-sm transition-all duration-200"
                                                     title="Tampilan List"
-                                                    onclick="document.getElementById('drive-iframe').src = document.getElementById('drive-iframe').src.replace('#grid', '#list'); this.classList.add('bg-white', 'shadow-sm'); this.previousElementSibling.classList.remove('bg-white', 'shadow-sm');"
+                                                    onclick="document.getElementById('drive-iframe').src = document.getElementById('drive-iframe').src.replace('#grid', '#list'); this.classList.add('bg-white', 'dark:bg-zinc-700', 'shadow-sm'); this.previousElementSibling.classList.remove('bg-white', 'dark:bg-zinc-700', 'shadow-sm');"
                                                 >
-                                                    <Icon name="lucide:list" class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 transition-colors" />
+                                                    <Icon name="lucide:list" class="w-4 h-4 text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition-colors" />
                                                 </button>
                                             </div>
                                             
@@ -194,7 +195,7 @@ try {
                                                 rel="noopener noreferrer"
                                                 class={cn(
                                                     "group inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl transition-all duration-300",
-                                                    "bg-white/80 border border-white hover:border-transparent",
+                                                    "bg-white/80 dark:bg-zinc-800/80 border border-white dark:border-zinc-700 hover:border-transparent",
                                                     "hover:scale-105 hover:shadow-lg"
                                                 )}
                                             >
@@ -211,7 +212,7 @@ try {
                                 </div>
                                 
                                 {/* Iframe Container */}
-                                <div class="relative w-full h-[70vh] bg-white/60 backdrop-blur-md rounded-b-3xl border border-t-0 border-white/60 shadow-xl overflow-hidden">
+                                <div class="relative w-full h-[70vh] bg-white/90 backdrop-blur-md rounded-b-3xl border border-t-0 border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden">
                                     {/* Skeleton Loader */}
                                     <div class="absolute inset-0 flex items-center justify-center bg-white/90 iframe-skeleton">
                                         <div class="flex flex-col items-center gap-4">
@@ -257,7 +258,7 @@ try {
                                         href={item.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="group block bg-white/60 hover:bg-white backdrop-blur-sm border border-white/80 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
+                                        class="group block bg-white/60 dark:bg-zinc-900/60 hover:bg-white dark:hover:bg-zinc-900 backdrop-blur-sm border border-white/80 dark:border-zinc-700/50 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
                                     >
                                         <div class="flex items-center gap-3">
                                             {/* Item Icon with Candy Color - Compact */}
@@ -288,11 +289,11 @@ try {
                                                         {item.type || 'Link'}
                                                     </span>
                                                 </div>
-                                                <h3 class="font-semibold text-base sm:text-lg text-zinc-900 truncate group-hover:text-zinc-700 transition-colors">
+                                                <h3 class="font-semibold text-base sm:text-lg text-zinc-900 dark:text-zinc-100 truncate group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
                                                     {item.title}
                                                 </h3>
                                                 {item.description && (
-                                                    <p class="text-sm text-zinc-500 line-clamp-2 leading-relaxed mt-0.5">
+                                                    <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed mt-0.5">
                                                         {item.description}
                                                     </p>
                                                 )}
@@ -301,8 +302,8 @@ try {
                                             {/* Arrow - Compact */}
                                             <div class={cn(
                                                 "shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
-                                                "bg-zinc-100 text-zinc-400",
-                                                "group-hover:bg-zinc-900 group-hover:text-white group-hover:translate-x-1"
+                                                "bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500",
+                                                "group-hover:bg-zinc-900 dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-zinc-900 group-hover:translate-x-1"
                                             )}>
                                                 <Icon name="lucide:arrow-right" class="w-4 h-4" />
                                             </div>

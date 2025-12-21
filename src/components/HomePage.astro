@@ -29,7 +29,7 @@ try {
 // Actually we render all of them and toggle visibility.
 ---
 
-<main class="min-h-screen relative overflow-hidden bg-[#fafafa]">
+<main class="min-h-screen relative overflow-hidden">
     {/* Background */}
     <MeshGradient />
 
@@ -41,10 +41,10 @@ try {
                     <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center">
                         <Icon name="lucide:alert-triangle" class="w-10 h-10 text-red-600" />
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 mb-3">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100 mb-3">
                         Gagal Memuat Data
                     </h2>
-                    <p class="text-zinc-600 mb-6 leading-relaxed">
+                    <p class="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
                         Terjadi kesalahan saat mengambil data dari Google Sheets. 
                         Silakan refresh halaman atau coba lagi nanti.
                     </p>
@@ -82,40 +82,56 @@ try {
 
                     return (
                         <section class="mb-16 link-section" data-category={category.id}>
-                            {/* Enhanced Section Header - uses unique color */}
-                            <div class="flex items-center gap-4 mb-8 px-1">
-                                <div class="flex items-center gap-4">
-                                    {/* Enhanced Icon Box - larger with glow */}
+                            {/* Enhanced Section Header - Table of Contents Style */}
+                            <div class="mb-8">
+                                {/* Full-width Glass Container */}
+                                <div class="flex items-center gap-4 px-6 py-3.5
+                                            bg-white/30 dark:bg-zinc-900/20
+                                            backdrop-blur-xl
+                                            border border-white/40 dark:border-white/8
+                                            rounded-2xl
+                                            shadow-lg shadow-black/5
+                                            hover:shadow-xl hover:border-white/60 dark:hover:border-white/15
+                                            transition-all duration-300
+                                            group">
+                                    
+                                    {/* Icon Box - with matching glow */}
                                     <div 
-                                        class={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg ${headerColor.bg} ${headerColor.text}`}
+                                        class={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${headerColor.bg} ${headerColor.text}`}
+                                        style={`box-shadow: 0 0 25px -5px ${headerColor.glow}, 0 8px 25px -10px ${headerColor.glow};`}
                                     >
                                         {category.icon ? (
-                                            <Icon name={`lucide:${category.icon}`} class="w-6 h-6" />
+                                            <Icon name={`lucide:${category.icon}`} class="w-5 h-5" />
                                         ) : (
-                                            <span class="text-xl font-bold">{category.title.charAt(0).toUpperCase()}</span>
+                                            <span class="text-lg font-bold">{category.title.charAt(0).toUpperCase()}</span>
                                         )}
                                     </div>
                                     
-                                    {/* Title & Description */}
-                                    <div class="flex flex-col gap-0.5">
-                                        <h2 class="text-2xl font-bold text-zinc-800 leading-tight">
-                                            {category.title}
-                                        </h2>
-                                        {category.description && (
-                                            <p class={`text-sm font-medium ${headerColor.text}`}>
-                                                {category.description}
-                                            </p>
-                                        )}
+                                    {/* Vertical Separator */}
+                                    <div class="w-px h-8 bg-gradient-to-b from-transparent via-zinc-300/50 dark:via-zinc-600/50 to-transparent flex-shrink-0"></div>
+                                    
+                                    {/* Title */}
+                                    <h2 class="text-xl sm:text-2xl font-bold text-zinc-800 dark:text-zinc-200 transition-colors flex-shrink-0">
+                                        {category.title}
+                                    </h2>
+                                    
+                                    {/* Long Arrow - solid line with arrowhead */}
+                                    <div class="flex-1 min-w-[2rem] flex items-center mx-3 relative">
+                                        {/* Line with arrow - single seamless element */}
+                                        <div class="flex-1 flex items-center">
+                                            <div class="flex-1 h-[2px] bg-gradient-to-r from-zinc-300/70 via-zinc-300/50 to-zinc-300/70 dark:from-zinc-600/60 dark:via-zinc-600/40 dark:to-zinc-600/60 rounded-l-full"></div>
+                                        </div>
+                                        {/* Arrow positioned to align perfectly with line */}
+                                        <div class="flex items-center h-full">
+                                            <span class="text-zinc-400/80 dark:text-zinc-500/70 text-sm leading-none block" style="margin-top: -1px;">►</span>
+                                        </div>
                                     </div>
                                     
-                                    {/* Enhanced Badge Count - uses category color */}
-                                    <span class={`text-sm font-bold px-3 py-1.5 rounded-full ${headerColor.bg} ${headerColor.text}`}>
+                                    {/* Badge Count */}
+                                    <span class={`text-base font-bold px-4 py-1.5 rounded-full flex-shrink-0 ${headerColor.bg} ${headerColor.text} transition-all`}>
                                         {categoryLinks.length}
                                     </span>
                                 </div>
-                                
-                                {/* Gradient divider line */}
-                                <div class="h-0.5 flex-1 rounded-full bg-gradient-to-r from-zinc-300/50 to-transparent"></div>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
@@ -135,8 +151,8 @@ try {
             <div class="bg-zinc-100 p-4 rounded-full mb-4">
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-x text-zinc-400"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
             </div>
-            <h3 class="text-lg font-medium text-zinc-900">Tidak ada hasil ditemukan</h3>
-            <p class="text-zinc-500 mt-1">Coba kata kunci lain atau ubah kategori.</p>
+            <h3 class="text-lg font-medium text-zinc-900 dark:text-zinc-100">Tidak ada hasil ditemukan</h3>
+            <p class="text-zinc-500 dark:text-zinc-400 mt-1">Coba kata kunci lain atau ubah kategori.</p>
         </div>
             </>
         )}

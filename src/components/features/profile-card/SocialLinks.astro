@@ -7,41 +7,33 @@ const socialLinks = [
     name: "GitHub",
     href: "https://github.com/alditpra",
     icon: "github",
-    bgClass: "bg-candy-purple/15 hover:bg-candy-purple/25",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)]",
-    iconColorClass: "text-candy-purple"
+    bgClass: "bg-candy-purple/20 hover:bg-candy-purple/30",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_60%)]",
+    iconColorClass: "text-candy-purple dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]"
   },
   {
     name: "Email",
     href: "mailto:alditpra@gmail.com",
     icon: "mail",
-    bgClass: "bg-candy-blue/15 hover:bg-candy-blue/25",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)]",
-    iconColorClass: "text-candy-blue"
-  },
-  {
-    name: "Meet",
-    href: "https://meet.google.com/nnb-unix-kyy",
-    icon: "video",
-    bgClass: "bg-candy-teal/15 hover:bg-candy-teal/25",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)]",
-    iconColorClass: "text-candy-teal"
+    bgClass: "bg-candy-blue/20 hover:bg-candy-blue/30",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_60%)]",
+    iconColorClass: "text-candy-blue dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_40%)]"
   },
   {
     name: "Facebook",
     href: "https://facebook.com/aldit",
     icon: "facebook",
-    bgClass: "bg-candy-blue/15 hover:bg-candy-blue/25",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)]",
-    iconColorClass: "text-candy-blue"
+    bgClass: "bg-candy-blue/20 hover:bg-candy-blue/30",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-blue),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_60%)]",
+    iconColorClass: "text-candy-blue dark:text-[color:color-mix(in_srgb,var(--candy-blue),white_40%)]"
   },
   {
     name: "WhatsApp",
     href: "https://wa.me/628158141112",
     icon: "message-circle",
-    bgClass: "bg-candy-teal/15 hover:bg-candy-teal/25",
-    textClass: "text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)]",
-    iconColorClass: "text-candy-teal"
+    bgClass: "bg-candy-teal/20 hover:bg-candy-teal/30",
+    textClass: "text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_60%)]",
+    iconColorClass: "text-candy-teal dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_40%)]"
   }
 ];
 ---
@@ -57,8 +49,7 @@ const socialLinks = [
                 px-4 py-2 rounded-full
                 ${link.bgClass}
                 transition-all duration-300 ease-out
-                hover:scale-105 hover:shadow-md
-                border border-transparent hover:border-white/50
+                hover:scale-105
             `}
             title={link.name}
         >

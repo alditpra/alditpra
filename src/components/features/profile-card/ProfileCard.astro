@@ -2,10 +2,12 @@
 import { SITE_CONFIG } from "../../../lib/constants";
 import SocialLinks from "./SocialLinks.astro";
 import SearchBar from "../../ui/SearchBar.astro";
+import { Icon } from "astro-icon/components";
 ---
 
 <header class="mb-12">
-    <div class="relative backdrop-blur-xl bg-white/70 border border-white/50 rounded-3xl shadow-lg p-6 sm:p-8" id="profile-card">
+    <div class="relative backdrop-blur-xl rounded-3xl p-6 sm:p-8" id="profile-card" style="background-color: var(--card-bg); box-shadow: 0 0 60px -15px rgba(127, 115, 255, 0.15), 0 25px 80px -25px rgba(20, 208, 240, 0.10), 0 8px 32px -8px rgba(0, 0, 0, 0.1);">
+        
         {/* Subtle gradient overlay */}
         <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl" />
 
@@ -44,17 +46,27 @@ import SearchBar from "../../ui/SearchBar.astro";
 
             {/* Info */}
             <div class="flex-1 text-center sm:text-left">
-                {/* Name with animated gradient */}
+                {/* Name with animated gradient - Full candy spectrum */}
                 <h1
                     class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1 animate-gradient-x"
-                    style="background: linear-gradient(135deg, var(--candy-purple) 0%, var(--candy-blue) 50%, var(--candy-teal) 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
+                    style="background: linear-gradient(135deg, var(--candy-purple) 0%, var(--candy-blue) 25%, var(--candy-pink) 50%, var(--candy-yellow) 75%, var(--candy-teal) 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
                 >
                     {SITE_CONFIG.name}
                 </h1>
 
                 {/* Description - improved styling */}
-                <p class="text-base sm:text-lg text-zinc-700 font-normal leading-relaxed mb-5 max-w-lg">
-                    {SITE_CONFIG.description}
+                <p class="text-base sm:text-lg font-normal leading-relaxed mb-5 max-w-lg" style="color: var(--text-secondary);">
+                    Modern link management system built with Astro 5 and Tailwind CSS 4. Leveraging{' '}
+                    <a 
+                        href="https://docs.google.com/spreadsheets/d/1Tmj_ERd9KKvaKoGPEkczNb8iAJpTfkGHl7OUoahQlW0/edit?usp=drive_link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1 text-candy-purple hover:text-candy-blue font-semibold transition-colors underline decoration-candy-purple/30 hover:decoration-candy-blue/50"
+                    >
+                        Google Sheets
+                        <Icon name="lucide:external-link" class="w-4 h-4" />
+                    </a>
+                    {' '}as a headless CMS for effortless content updates.
                 </p>
 
                 <SocialLinks />
@@ -62,7 +74,7 @@ import SearchBar from "../../ui/SearchBar.astro";
         </div>
 
         {/* Divider */}
-        <div class="h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent my-6 transition-all duration-500 ease-out" id="profile-divider" />
+        <div class="h-px my-6 transition-all duration-500 ease-out" id="profile-divider" style="background: linear-gradient(to right, transparent, var(--divider), transparent);" />
 
         {/* Search Bar */}
         <div class="relative" id="search-wrapper">
@@ -210,7 +222,7 @@ import SearchBar from "../../ui/SearchBar.astro";
     
     /* Hide profile when search is focused - DESKTOP ONLY */
     @media (min-width: 640px) {
-        #profile-card:focus-within #profile-info,
+        #profile-card:has(#search-input:focus) #profile-info,
         #search-wrapper.has-text ~ #profile-info,
         .has-text #profile-info {
             max-height: 0;
@@ -229,7 +241,7 @@ import SearchBar from "../../ui/SearchBar.astro";
         }
         
         /* Hide divider when search is focused - DESKTOP ONLY */
-        #profile-card:focus-within #profile-divider {
+        #profile-card:has(#search-input:focus) #profile-divider {
             max-height: 0;
             opacity: 0;
             margin-top: 0;
@@ -237,7 +249,7 @@ import SearchBar from "../../ui/SearchBar.astro";
         }
         
         /* Search wrapper - smaller balanced gaps - DESKTOP ONLY */
-        #profile-card:focus-within #search-wrapper,
+        #profile-card:has(#search-input:focus) #search-wrapper,
         #search-wrapper.has-text {
             padding-top: 0.25rem;
             padding-bottom: 0.25rem;
