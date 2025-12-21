@@ -109,44 +109,32 @@ html.dark body,
    DARK MODE DREAMY ENHANCEMENTS
    ======================================== */
 
-/* Soft ambient glow - wider blur, lower opacity */
+/* Dark mode link card glow effects */
 html.dark .link-card-item {
   filter: drop-shadow(0 0 40px rgba(127, 115, 255, 0.08));
-  /* Wider blur, softer: 15px 0.15 → 40px 0.08 */
 }
 
 html.dark .link-card-item:hover {
   filter: drop-shadow(0 0 50px rgba(127, 115, 255, 0.2));
-  /* Dreamy hover: 30px 0.4 → 50px 0.2 */
 }
 
-/* Candy color backgrounds - PASTEL saturation (dreamy, not neon) */
+/* Candy color backgrounds for dark mode */
 html.dark .bg-candy-purple\/20 {
   background-color: rgba(127, 115, 255, 0.20) !important;
-  /* Reduced: 0.35→0.20 */
 }
 
 html.dark .bg-candy-blue\/20 {
   background-color: rgba(20, 208, 240, 0.20) !important;
-  /* Reduced: 0.35→0.20 */
 }
 
 html.dark .bg-candy-teal\/20 {
   background-color: rgba(53, 226, 195, 0.20) !important;
-  /* Reduced: 0.35→0.20 */
 }
 
 html.dark .bg-candy-pink\/20 {
   background-color: rgba(255, 131, 195, 0.20) !important;
-  /* Reduced: 0.35→0.20 */
 }
 
 html.dark .bg-candy-yellow\/20 {
   background-color: rgba(255, 229, 82, 0.20) !important;
-  /* Reduced: 0.35→0.20 */
 }
-
-/* Social badge class removed - unused */
-
-/* REMOVED brightness filters - natural candy colors are perfect */
-/* Brightness filters made colors too "electric" - removing for organic feel */

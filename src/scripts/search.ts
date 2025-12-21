@@ -53,33 +53,33 @@ export function initSearch() {
         }
     }
 
-    // Search Input Listener - only filter links, no profile card effect
+    // Search Input Listener - filter links and manage wrapper state
     searchInput?.addEventListener('input', (e) => {
         const target = e.target as HTMLInputElement;
         searchQuery = target.value.trim().toLowerCase();
         filterLinks();
-    });
 
-    // Note: Profile card animation is now handled by CSS :focus-within
-    // JS only needed for keeping card hidden when there's search text on blur
-    searchInput?.addEventListener('blur', () => {
+        // Update wrapper state based on search query
         const wrapper = document.getElementById('search-wrapper');
-        if (searchQuery && searchQuery.length > 0) {
-            // Keep hidden state when there's text
+        if (searchQuery.length > 0) {
             wrapper?.classList.add('has-text');
         } else {
             wrapper?.classList.remove('has-text');
         }
     });
 
-    searchInput?.addEventListener('input', () => {
+    // Note: Profile card animation is handled by CSS :focus-within
+    // Keep hidden state when there's text on blur
+    searchInput?.addEventListener('blur', () => {
         const wrapper = document.getElementById('search-wrapper');
-        if (!searchQuery || searchQuery.length === 0) {
+        if (searchQuery.length > 0) {
+            wrapper?.classList.add('has-text');
+        } else {
             wrapper?.classList.remove('has-text');
         }
     });
 
-    // Keyboard Shortcut (Cmd+K)
+    // Keyboard Shortcut (Cmd+K or Ctrl+K)
     document.addEventListener('keydown', (e) => {
         if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
             e.preventDefault();

@@ -22,17 +22,6 @@ const ALLOWED_DOMAINS = [
   'medium.com',
 ];
 
-// Trusted domains that can be linked without warnings
-const TRUSTED_DOMAINS = [
-  '*.google.com',
-  '*.googleusercontent.com',
-  'google.com',
-  'docs.google.com',
-  'drive.google.com',
-  'meet.google.com',
-  'wa.me',
-];
-
 /**
  * Sanitizes and validates external URLs
  */
