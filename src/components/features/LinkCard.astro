@@ -45,7 +45,7 @@ const firstLetter = link.name.charAt(0).toUpperCase();
 <a
   href={href}
   {...externalLinkProps}
-  class={cn("group relative block w-full h-full link-card-item transform-gpu isolate", className, externalLinkProps.className)}
+  class={cn("group relative block w-full h-full link-card-item", className, externalLinkProps.className)}
   data-name={link.name.toLowerCase()}
   data-category={link.category || 'kuliah'}
 >
