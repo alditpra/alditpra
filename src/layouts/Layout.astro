@@ -52,18 +52,20 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } = Astr
     <meta name="theme-color" content="#7f73ff" />
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
 
-    <!-- Resource hints for critical domains -->
-    <link rel="preconnect" href="https://docs.google.com" crossorigin />
+    <!-- Resource hints for critical domains - Optimized order -->
+    <link rel="preconnect" href="https://docs.google.com" />
+    <link rel="preconnect" href="https://drive.google.com" />
     <link rel="dns-prefetch" href="https://docs.google.com" />
-    <link rel="preconnect" href="https://drive.google.com" crossorigin />
     <link rel="dns-prefetch" href="https://drive.google.com" />
 
-    <!-- Preload LCP image -->
+    <!-- Preload LCP image - Responsive -->
     <link
       rel="preload"
-      href="/avatar.webp"
+      href="/avatar-desktop.webp"
       as="image"
       type="image/webp"
+      imagesrcset="/avatar-desktop.webp 208w, /avatar-mobile.webp 308w"
+      imagesizes="(min-width: 640px) 104px, 154px"
       fetchpriority="high"
     />
 
