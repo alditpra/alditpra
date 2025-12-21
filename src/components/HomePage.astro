@@ -146,6 +146,21 @@ try {
             })()}
         </div>
 
+        {/* Critical Fallback Script for Production Rendering */}
+        <script is:inline>
+            (function() {
+                // Force visible immediately to prevent hydration glitches
+                const cards = document.querySelectorAll('.link-card-item');
+                cards.forEach(c => {
+                    c.classList.remove('hidden');
+                    c.style.display = ''; 
+                    c.style.opacity = '';
+                });
+                const sections = document.querySelectorAll('.link-section');
+                sections.forEach(s => s.classList.remove('hidden'));
+            })();
+        </script>
+
         {/* Empty State */}
         <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
             <div class="bg-zinc-100 p-4 rounded-full mb-4">
