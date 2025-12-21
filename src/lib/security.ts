@@ -2,28 +2,9 @@
  * Security utilities for the application
  */
 
-// Allowed domains for external links
-const ALLOWED_DOMAINS = [
-  '*.google.com',
-  '*.googleusercontent.com',
-  'google.com',
-  'docs.google.com',
-  'drive.google.com',
-  'meet.google.com',
-  'facebook.com',
-  'wa.me',
-  'whatsapp.com',
-  'instagram.com',
-  'twitter.com',
-  'linkedin.com',
-  'youtube.com',
-  'github.com',
-  'stackoverflow.com',
-  'medium.com',
-];
-
 /**
  * Sanitizes and validates external URLs
+ * Only blocks dangerous protocols - all HTTPS/HTTP domains are allowed
  */
 export function sanitizeUrl(url: string | undefined): string {
   if (!url || typeof url !== 'string') {
@@ -46,24 +27,13 @@ export function sanitizeUrl(url: string | undefined): string {
   try {
     const urlObj = new URL(trimmedUrl.startsWith('http') ? trimmedUrl : `https://${trimmedUrl}`);
 
-    // Only allow http and https protocols
+    // Only allow http and https protocols (blocks javascript:, data:, file:, etc.)
     if (!['http:', 'https:'].includes(urlObj.protocol)) {
       console.warn('Blocked insecure protocol:', urlObj.protocol);
       return '#';
     }
 
-    // Check domain against allowlist
-    const hostname = urlObj.hostname.toLowerCase();
-    const isAllowed = ALLOWED_DOMAINS.some(domain =>
-      hostname === domain || hostname.endsWith(`.${domain}`)
-    );
-
-    if (!isAllowed) {
-      console.warn('Blocked external domain:', hostname);
-      return '#';
-    }
-
-    // Return the normalized URL
+    // Return the normalized URL - all HTTPS/HTTP domains are allowed
     return urlObj.toString();
   } catch (error) {
     console.warn('Invalid URL format:', trimmedUrl, error);
@@ -90,3 +60,33 @@ export function getExternalLinkProps(url: string): {
     rel: 'noopener noreferrer',
   };
 }
+
+/**
+ * Detects if a URL is a Google Drive folder
+ */
+export function isGoogleDriveFolder(url: string | undefined): boolean {
+  if (!url || typeof url !== 'string') {
+    return false;
+  }
+  return /drive\.google\.com\/drive\/folders\/[a-zA-Z0-9_-]+/.test(url);
+}
+
+/**
+ * Detects if a URL is an external link (not a relative path)
+ */
+export function isExternalLink(url: string | undefined): boolean {
+  if (!url || typeof url !== 'string') {
+    return false;
+  }
+
+  const trimmed = url.trim();
+
+  // Relative URLs are not external
+  if (trimmed.startsWith('/') || trimmed.startsWith('#')) {
+    return false;
+  }
+
+  // URLs with protocol or www are external
+  return /^(https?:\/\/|www\.)/.test(trimmed);
+}
+

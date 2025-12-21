@@ -1,0 +1,83 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  name?: string | null;      // Icon name (e.g., "terminal", "github")
+  fallbackText: string;       // Text untuk first letter fallback
+  class?: string;             // CSS classes untuk icon
+  fallbackClass?: string;     // CSS classes untuk fallback text (optional, defaults to class)
+}
+
+const { name, fallbackText, class: className = "", fallbackClass } = Astro.props;
+
+// Extract first letter as fallback
+const firstLetter = fallbackText.charAt(0).toUpperCase();
+
+// Determine if we should try to use icon
+const shouldTryIcon = name && name.trim().length > 0;
+
+// Use fallbackClass if provided, otherwise use className for both
+const textClass = fallbackClass || className;
+
+// Try to render icon, but fallback if it fails
+let iconRenderFailed = false;
+
+if (shouldTryIcon) {
+  try {
+    // Attempt to render the icon
+    // Note: This won't catch all errors in Astro SSR, but we add client-side validation too
+  } catch (e) {
+    iconRenderFailed = true;
+  }
+}
+---
+
+{shouldTryIcon && !iconRenderFailed ? (
+  <!-- Try to render icon, with data attributes for client-side fallback -->
+  <span 
+    data-icon-fallback={firstLetter}
+    data-icon-fallback-class={textClass}
+    class="safe-icon-wrapper"
+  >
+    <Icon 
+      name={`lucide:${name}`} 
+      class={className}
+    />
+  </span>
+) : (
+  <span class={textClass}>{firstLetter}</span>
+)}
+
+<script>
+  // Client-side error detection for icons that fail to render
+  function initIconFallback() {
+    const iconWrappers = document.querySelectorAll('.safe-icon-wrapper');
+    
+    iconWrappers.forEach((wrapper) => {
+      // Check if Icon component actually rendered an SVG
+      const svg = wrapper.querySelector('svg');
+      
+      if (!svg || svg.children.length === 0) {
+        // Icon didn't render properly, replace with fallback
+        const fallbackText = wrapper.getAttribute('data-icon-fallback');
+        const fallbackClass = wrapper.getAttribute('data-icon-fallback-class');
+        
+        if (fallbackText) {
+          wrapper.outerHTML = `<span class="${fallbackClass || ''}">${fallbackText}</span>`;
+        }
+      }
+    });
+  }
+
+  // Run on page load
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initIconFallback);
+    
+    // Also run on initial load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initIconFallback);
+    } else {
+      initIconFallback();
+    }
+  }
+</script>

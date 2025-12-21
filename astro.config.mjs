@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // https://astro.build/config
 export default defineConfig({
     output: 'server',
+    prefetch: false, // Disable prefetch to avoid performance issues with many links
     adapter: vercel({
         isr: {
             // Revalidate cache every 5 minutes (300 seconds) for fresh data
@@ -21,7 +22,7 @@ export default defineConfig({
         imagesConfig: {
             sizes: [320, 640, 768, 1024, 1280, 1536],
             formats: ['image/webp', 'image/avif'],
-            domains: ['docs.google.com', 'drive.google.com'],
+            // Removed domains restriction to allow all external domains
         },
     }),
     integrations: [

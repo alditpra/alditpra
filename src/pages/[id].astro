@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import MeshGradient from "../components/ui/MeshGradient.astro";
+import SafeIcon from "../components/ui/SafeIcon.astro";
 import { getAllLinks, getLinkById, getLevelOneItemsByLink, getCategories } from "../lib/data";
 import { getColorByIndex, candyColors } from "../lib/colors";
 import { getLinkColorIndex } from "../lib/category-utils";
@@ -106,20 +107,18 @@ try {
                     <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
                     
                     <div class="relative flex items-start gap-5 sm:gap-6">
-                        {/* Candy Color Icon - matching home page color */}
                         <div 
                             class={cn(
                                 "shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center shadow-lg",
                                 pageColor.bg
                             )}
                         >
-                            {linkData.icon ? (
-                                <Icon name={`lucide:${linkData.icon}`} class={cn("w-8 h-8 sm:w-10 sm:h-10", pageColor.text)} />
-                            ) : (
-                                <span class={cn("font-bold text-3xl sm:text-4xl uppercase", pageColor.text)}>
-                                    {linkData.name.charAt(0)}
-                                </span>
-                            )}
+                            <SafeIcon 
+                                name={linkData.icon}
+                                fallbackText={linkData.name}
+                                class={cn("w-8 h-8 sm:w-10 sm:h-10", pageColor.text)}
+                                fallbackClass={cn("font-bold text-3xl sm:text-4xl uppercase", pageColor.text)}
+                            />
                         </div>
                         
                         <div class="flex-1 min-w-0">
@@ -259,7 +258,6 @@ try {
                                         class="group block bg-white/70 dark:bg-zinc-900/70 hover:bg-white/80 dark:hover:bg-zinc-900/80 border border-white/80 dark:border-zinc-700/50 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
                                     >
                                         <div class="flex items-center gap-3">
-                                            {/* Item Icon with Candy Color - Compact */}
                                             <div 
                                                 class={cn(
                                                     "shrink-0 w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shadow-lg",
@@ -267,13 +265,12 @@ try {
                                                     color.bg
                                                 )}
                                             >
-                                                {item.icon ? (
-                                                    <Icon name={`lucide:${item.icon}`} class={cn("w-5 h-5", color.text)} />
-                                                ) : (
-                                                    <span class={cn("text-lg font-bold", color.text)}>
-                                                        {item.title.charAt(0).toUpperCase()}
-                                                    </span>
-                                                )}
+                                                <SafeIcon 
+                                                    name={item.icon}
+                                                    fallbackText={item.title}
+                                                    class={cn("w-5 h-5", color.text)}
+                                                    fallbackClass={cn("text-lg font-bold", color.text)}
+                                                />
                                             </div>
                                             
                                             <div class="flex-1 min-w-0">

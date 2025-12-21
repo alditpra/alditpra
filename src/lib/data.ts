@@ -93,7 +93,7 @@ async function fetchSheetData(url: string): Promise<string> {
     }, 2, 1000); // 2 retries with 1 second base delay
 }
 
-function transformLink(row: RawLinkRow): Link | null {
+function transformLink(row: RawLinkRow, index: number): Link | null {
     const id = row.id?.trim().toLowerCase();
     const name = row.name?.trim();
 
@@ -101,9 +101,42 @@ function transformLink(row: RawLinkRow): Link | null {
         return null;
     }
 
+    // FontAwesome to Lucide + invalid icon name mapping
+    const iconMap: Record<string, string> = {
+        'object-group': 'layout-grid',
+        'book': 'book-open',
+        'video': 'play-circle',
+        'file-alt': 'file-text',
+        'cog': 'settings',
+        'certificate': 'award',
+        'tools': 'wrench',
+        'book-code': 'notebook-pen', // Fix: book-code doesn't exist in lucide
+    };
+
     // Trim and validate icon - empty string should become undefined
-    const iconValue = row.icon?.trim().toLowerCase();
-    const validIcon = iconValue && iconValue.length > 0 ? iconValue : undefined;
+    const rawIcon = row.icon?.trim().toLowerCase();
+    // Map to valid lucide icon if needed, otherwise use as-is
+    const validIcon = rawIcon && rawIcon.length > 0
+        ? (iconMap[rawIcon] || rawIcon)
+        : undefined;
+
+    const linkUrl = row.link?.trim() || undefined;
+
+    // AUTO-DETECT LEVEL based on link type:
+    // - Google Drive folder link → level 1 (show iframe)
+    // - Empty/no link → level 1 (show level one items list)
+    // - Any other link → level 0 (direct external link)
+    let autoLevel: number;
+    if (!linkUrl) {
+        // No link = internal page with level one items
+        autoLevel = 1;
+    } else if (/drive\.google\.com\/drive\/folders\/[a-zA-Z0-9_-]+/.test(linkUrl)) {
+        // Google Drive folder = internal page with iframe
+        autoLevel = 1;
+    } else {
+        // Has link but not Google Drive folder = direct link
+        autoLevel = 0;
+    }
 
     return {
         id,
@@ -111,10 +144,10 @@ function transformLink(row: RawLinkRow): Link | null {
         description: row.description?.trim() || "",
         icon: validIcon,
         category: row.category?.trim().toLowerCase() || "kuliah",
-        link: row.link?.trim() || undefined,
-        level: parseInt(row.level || "1", 10) || 1,
-        active: parseInt(row.active || "0", 10) || 0,
-        order: parseInt(row.order || "0", 10) || 0,
+        link: linkUrl,
+        level: autoLevel,
+        active: 1, // All links are active by default
+        order: index, // Use array index as order (follows sheet order)
     };
 }
 
@@ -185,8 +218,8 @@ async function fetchAndParseLinks(): Promise<Link[]> {
         }
 
         const links = parsed.data
-            .map(transformLink)
-            .filter((l): l is Link => l !== null && l.active === 1)
+            .map((row, index) => transformLink(row, index))
+            .filter((l): l is Link => l !== null) // All items are active by default now
             .sort((a, b) => a.order - b.order);
 
         if (links.length === 0) {

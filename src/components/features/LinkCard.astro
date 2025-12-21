@@ -1,7 +1,8 @@
 ---
 import { cn } from "../../lib/utils";
-import { sanitizeUrl, getExternalLinkProps } from "../../lib/security";
+import { sanitizeUrl } from "../../lib/security";
 import { getColorByIndex } from "../../lib/colors";
+import SafeIcon from "../ui/SafeIcon.astro";
 import { Icon } from "astro-icon/components";
 import type { Link } from "../../types";
 
@@ -21,7 +22,14 @@ const color = getColorByIndex(index);
 const isDirectLink = link.level === 0 && link.link;
 const sanitizedLink = link.link ? sanitizeUrl(link.link) : '#';
 const href = isDirectLink && sanitizedLink !== '#' ? sanitizedLink : `/${link.id}`;
-const externalLinkProps = isDirectLink && sanitizedLink !== '#' ? getExternalLinkProps(sanitizedLink) : {};
+
+// For direct external links (level 0), open in new tab
+// For internal pages (level 1) or relative links, stay in same tab
+const shouldOpenInNewTab = isDirectLink && sanitizedLink !== '#';
+const externalLinkProps = shouldOpenInNewTab ? {
+  target: '_blank',
+  rel: 'noopener noreferrer',
+} : {};
 
 // FontAwesome to Lucide icon name mapping (for migrated data)
 const faToLucideMap: Record<string, string> = {
@@ -37,15 +45,12 @@ const faToLucideMap: Record<string, string> = {
 // Get icon name: try spreadsheet value, then map legacy FA names
 const rawIcon = link.icon;
 const iconName = rawIcon ? (faToLucideMap[rawIcon] || rawIcon) : null;
-
-// First letter fallback
-const firstLetter = link.name.charAt(0).toUpperCase();
 ---
 
 <a
   href={href}
   {...externalLinkProps}
-  class={cn("group relative block w-full h-full link-card-item", className, externalLinkProps.className)}
+  class={cn("group relative block w-full h-full link-card-item", className)}
   data-name={link.name.toLowerCase()}
   data-category={link.category || 'kuliah'}
 >
@@ -77,11 +82,12 @@ const firstLetter = link.name.charAt(0).toUpperCase();
             )}
             style={`box-shadow: 0 0 25px -5px ${color.glow}, 0 8px 25px -10px ${color.glow};`}
         >
-            {iconName ? (
-                <Icon name={`lucide:${iconName}`} class="w-7 h-7" />
-            ) : (
-                <span class="text-2xl font-bold">{firstLetter}</span>
-            )}
+            <SafeIcon 
+                name={iconName} 
+                fallbackText={link.name}
+                class="w-7 h-7"
+                fallbackClass="text-2xl font-bold"
+            />
         </div>
 
         {/* Text Content */}
