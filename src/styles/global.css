@@ -73,17 +73,29 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode body - Manual toggle */
+/* Explicit light mode body - Manual toggle */
+html.light body {
+  background: linear-gradient(135deg,
+      #fdfbff 0%,
+      #f3f0ff 15%,
+      rgba(127, 115, 255, 0.1) 30%,
+      rgba(20, 208, 240, 0.08) 50%,
+      rgba(255, 131, 195, 0.1) 70%,
+      #fff5fb 85%,
+      #fafafa 100%) !important;
+}
+
+/* Dark mode body - Manual toggle (higher specificity) */
 html.dark body {
   background:
     radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.15) 0%, transparent 40%),
     radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.12) 0%, transparent 40%),
     radial-gradient(circle at 50% 70%, rgba(255, 131, 195, 0.14) 0%, transparent 40%),
     radial-gradient(circle at 20% 80%, rgba(53, 226, 195, 0.1) 0%, transparent 35%),
-    #0a0a0f;
+    #0a0a0f !important;
 }
 
-/* Dark mode body - Auto system preference */
+/* Dark mode body - Auto system preference (lowest priority) */
 @media (prefers-color-scheme: dark) {
   html:not(.dark):not(.light) body {
     background:
@@ -94,6 +106,7 @@ html.dark body {
       #0a0a0f;
   }
 }
+
 
 
 /* ========================================
