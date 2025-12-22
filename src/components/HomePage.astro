@@ -85,8 +85,8 @@ try {
                         <section class="mb-16 link-section" data-category={category.id}>
                             {/* Enhanced Section Header - Table of Contents Style */}
                             <div class="mb-8">
-                                {/* Full-width Glass Container */}
-                                <div class="flex items-center gap-4 px-6 py-3.5
+                                {/* Full-width Glass Container - with flex-wrap for small screens */}
+                                <div class="flex flex-wrap items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3.5
                                             bg-white/70 dark:bg-zinc-900/70
                                             border border-white/40 dark:border-zinc-700/30
                                             rounded-2xl
@@ -107,16 +107,16 @@ try {
                                         />
                                     </div>
                                     
-                                    {/* Vertical Separator */}
-                                    <div class="w-px h-8 bg-gradient-to-b from-transparent via-zinc-300/50 dark:via-zinc-600/50 to-transparent flex-shrink-0"></div>
+                                    {/* Vertical Separator - hidden on very small screens */}
+                                    <div class="hidden xs:block w-px h-8 bg-gradient-to-b from-transparent via-zinc-300/50 dark:via-zinc-600/50 to-transparent flex-shrink-0"></div>
                                     
-                                    {/* Title */}
-                                    <h2 class="text-xl sm:text-2xl font-bold text-zinc-800 dark:text-zinc-200 transition-colors flex-shrink-0">
+                                    {/* Title - can wrap on small screens */}
+                                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-zinc-800 dark:text-zinc-200 transition-colors">
                                         {category.title}
                                     </h2>
                                     
-                                    {/* Long Arrow - solid line with arrowhead */}
-                                    <div class="flex-1 min-w-[2rem] flex items-center mx-3 relative">
+                                    {/* Long Arrow - grows to fill space, hidden on very small if title wraps */}
+                                    <div class="hidden sm:flex flex-1 min-w-[2rem] items-center mx-3 relative">
                                         {/* Line with arrow - single seamless element */}
                                         <div class="flex-1 flex items-center">
                                             <div class="flex-1 h-[2px] bg-gradient-to-r from-zinc-300/70 via-zinc-300/50 to-zinc-300/70 dark:from-zinc-600/60 dark:via-zinc-600/40 dark:to-zinc-600/60 rounded-l-full"></div>
@@ -127,8 +127,8 @@ try {
                                         </div>
                                     </div>
                                     
-                                    {/* Badge Count */}
-                                    <span class={`text-base font-bold px-4 py-1.5 rounded-full flex-shrink-0 ${headerColor.bg} ${headerColor.text} transition-all`}>
+                                    {/* Badge Count - will wrap to new line on tiny screens if needed */}
+                                    <span class={`text-sm sm:text-base font-bold px-3 sm:px-4 py-1.5 rounded-full flex-shrink-0 ${headerColor.bg} ${headerColor.text} transition-all ml-auto sm:ml-0`}>
                                         {categoryLinks.length}
                                     </span>
                                 </div>
