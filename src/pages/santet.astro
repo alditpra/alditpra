@@ -1,135 +1,84 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import MeshGradient from '../components/ui/MeshGradient.astro';
-import AssignmentTypeSelector from '../components/PromptGenerator/AssignmentTypeSelector.astro';
-import AcademicForm from '../components/PromptGenerator/AcademicForm.astro';
+/**
+ * SANTET - Saran ANti TElat Tugas
+ * Prompt Generator untuk Tugas Kuliah
+ * 
+ * Uses modular architecture:
+ * - PromptLayout: Shared layout component
+ * - SantetForm: Topic-specific form
+ * - LivePreview: Shared preview component
+ */
+import PromptLayout from '../components/PromptGenerator/PromptLayout.astro';
 import LivePreview from '../components/PromptGenerator/LivePreview.astro';
+import SantetForm from '../generators/santet/SantetForm.astro';
+import AssignmentTypeSelector from '../generators/santet/AssignmentTypeSelector.astro';
 
-const title = 'SANTET - Saran ANti TElat Tugas';
-const description = 'Prompt generator untuk tugas kuliah yang efektif dan terstruktur.';
+const title = 'SANTET - Senjata ANti TElat Tugas';
+const subtitle = 'Senjata ANti TElat Tugas';
+const description = 'Generator prompt AI untuk membantu mahasiswa menyelesaikan tugas tepat waktu.';
 ---
 
-<Layout title={title} description={description}>
-  <main class="min-h-screen relative">
-    {/* Background */}
-    <MeshGradient />
-    
-    <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-7xl">
-      
-      
-      {/* Header + Assignment Selector - Side by Side on Desktop */}
-      <div class="max-w-7xl mx-auto mb-12">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
-          {/* Left: Header */}
-          <div class="relative rounded-3xl p-6 sm:p-8 bg-white/70 dark:bg-zinc-900/70 transition-all duration-300"
-               style="box-shadow: 0 0 60px -15px rgba(127, 115, 255, 0.15), 0 25px 80px -25px rgba(20, 208, 240, 0.10), 0 8px 32px -8px rgba(0, 0, 0, 0.1);">
-            
-            {/* Subtle gradient overlay */}
-            <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
-            
-            <div class="relative">
-              <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4
-                          bg-candy-purple/10 border border-candy-purple/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-purple">
-                  <path d="M12 6V2H8"/>
-                  <path d="m8 18-4 4V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2Z"/>
-                  <path d="M2 12h2"/>
-                  <path d="M9 11v2"/>
-                  <path d="M15 11v2"/>
-                  <path d="M20 12h2"/>
-                </svg>
-                <span class="text-sm font-semibold text-candy-purple">Saran ANti TElat Tugas</span>
-              </div>
-              
-              <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black mb-3 tracking-tight"
-                     style="color: var(--candy-purple); filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));">
-                SANTET
-              </h1>
-              
-              <p class="text-sm sm:text-base font-medium" style="color: var(--text-secondary);">
-                Prompt generator untuk tugas kuliah yang efektif dan terstruktur.
-              </p>
-            </div>
-          </div>
+<PromptLayout 
+  title={title} 
+  subtitle={subtitle} 
+  description={description}
+  formTitle="Detail Tugas"
+>
+  <!-- Back Navigation -->
+  <a slot="back-nav" 
+     href="/" 
+     class="inline-flex items-center gap-2 px-5 py-3 mb-6 rounded-3xl transition-all duration-300
+            bg-white/80 dark:bg-zinc-800/80 border border-white/60 dark:border-zinc-700/50
+            hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg group"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-purple transition-transform group-hover:-translate-x-1">
+      <path d="m12 19-7-7 7-7"/>
+      <path d="M19 12H5"/>
+    </svg>
+    <span class="font-semibold text-candy-purple">Kembali</span>
+  </a>
 
-          {/* Right: Assignment Type Selector */}
-          <div class="relative rounded-3xl p-6 sm:p-8 bg-white/70 dark:bg-zinc-900/70 transition-all duration-300"
-               style="box-shadow: 0 0 60px -15px rgba(127, 115, 255, 0.15), 0 25px 80px -25px rgba(20, 208, 240, 0.10), 0 8px 32px -8px rgba(0, 0, 0, 0.1);">
-            
-            {/* Subtle gradient overlay */}
-            <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
-            
-            <div class="relative h-full flex flex-col">
-              <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">
-                Pilih Jenis Tugas
-              </h3>
-              
-              <div class="flex-1 flex flex-col gap-3">
-                <AssignmentTypeSelector />
-              </div>
-            </div>
-          </div>
+  <!-- Header Icon Slot -->
+  <svg slot="header-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-purple">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
+  </svg>
 
-        </div>
-      </div>
-
-      
-      {/* Main Content - 2 Column Layout */}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-        
-        {/* Left Column - Form */}
-        <div class="order-2 lg:order-1">
-          <div class="relative rounded-3xl p-6 sm:p-8 bg-white/70 dark:bg-zinc-900/70 transition-all duration-300"
-               style="box-shadow: 0 0 60px -15px rgba(127, 115, 255, 0.15), 0 25px 80px -25px rgba(20, 208, 240, 0.10), 0 8px 32px -8px rgba(0, 0, 0, 0.1);">
-            <!-- Subtle gradient overlay -->
-            <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
-            <div class="relative">
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-3" style="color: var(--text-primary);">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center
-                          bg-candy-purple/20 
-                          text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]"
-                   style="box-shadow: 0 0 25px -5px var(--candy-purple), 0 8px 25px -10px var(--candy-purple);">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 20h9"/>
-                  <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-                  <path d="m15 5 3 3"/>
-                </svg>
-              </div>
-              Detail Tugas
-            </h2>
-              <AcademicForm />
-            </div>
-          </div>
-        </div>
-        
-        {/* Right Column - Live Preview */}
-        <div class="order-1 lg:order-2 lg:sticky lg:top-8 lg:self-start h-fit">
-          <LivePreview />
-        </div>
-        
-      </div>
-      
-      {/* Footer Note */}
-      <div class="max-w-3xl mx-auto mt-12 relative rounded-3xl p-6
-                  bg-white/70 dark:bg-zinc-900/70 transition-all duration-300"
-           style="box-shadow: 0 0 40px -15px rgba(127, 115, 255, 0.1), 0 15px 60px -25px rgba(20, 208, 240, 0.08), 0 8px 32px -8px rgba(0, 0, 0, 0.05);">
-        <!-- Subtle gradient overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/3 via-transparent to-candy-teal/3 pointer-events-none rounded-3xl"></div>
-        <div class="relative">
-        <p class="text-sm text-center" style="color: var(--text-secondary);">
-          💡 <strong>Tips:</strong> Prompt yang dihasilkan dapat disesuaikan sesuai kebutuhan. 
-          Semakin detail informasi yang diberikan, semakin baik hasil promptnya.
-        </p>
-        </div>
-      </div>
-      
+  <!-- Warning Card (below description) -->
+  <div slot="header-extra" class="mt-4 p-3 rounded-xl bg-amber-50/80 dark:bg-amber-900/20 border border-amber-200/50 dark:border-amber-700/30">
+    <div class="flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600 dark:text-amber-400 flex-shrink-0">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+        <path d="M12 9v4"/>
+        <path d="M12 17h.01"/>
+      </svg>
+      <p class="text-xs text-amber-700 dark:text-amber-400/90">AI bisa keliru (halusinasi). Verifikasi semua fakta, referensi, dan data. Gunakan hasil untuk belajar, bukan copy-paste.</p>
     </div>
-  </main>
-</Layout>
+  </div>
+
+  <!-- Type Selector Slot -->
+  <Fragment slot="type-selector">
+    <h3 class="text-lg font-semibold mb-4" style="color: var(--text-primary);">
+      Pilih Jenis Tugas
+    </h3>
+    <div class="flex-1 flex flex-col gap-3">
+      <AssignmentTypeSelector />
+    </div>
+  </Fragment>
+
+  <!-- Form Slot -->
+  <Fragment slot="form">
+    <SantetForm />
+  </Fragment>
+
+  <!-- Preview Slot -->
+  <Fragment slot="preview">
+    <LivePreview />
+  </Fragment>
+</PromptLayout>
 
 <script>
-  import { PromptGenerator, debounce } from '../scripts/tugas-kuliah-generator';
+  import { PromptGenerator, debounce } from '../generators/santet/generator';
   
   function initPromptGenerator() {
     // Initialize generator
@@ -184,50 +133,58 @@ const description = 'Prompt generator untuk tugas kuliah yang efektif dan terstr
       // Update preview with change highlighting
       if (previewEl) {
         if (prompt && prompt.length > 10) {
-          // Detect if content changed
-          const hasChanged = previousPrompt && previousPrompt !== prompt;
+          // Format prompt with markdown
+          const formatText = (text: string) => text
+            .replace(/\*\*([^*]+):\*\*/g, '<strong>$1:</strong>')
+            .replace(/\*\[([^\]]+)\]\*/g, '<em>[$1]</em>');
+          
+          // Find changed words between old and new text
+          const findChangedWords = (oldText: string, newText: string): Set<string> => {
+            const oldWords = new Set(oldText.split(/\s+/).filter(w => w.length > 2));
+            const newWords = newText.split(/\s+/).filter(w => w.length > 2);
+            const changed = new Set<string>();
+            
+            newWords.forEach(word => {
+              if (!oldWords.has(word) && word.length > 2) {
+                changed.add(word);
+              }
+            });
+            return changed;
+          };
+          
+          // Detect if content changed (compare with previous)
+          const hasChanged = previousPrompt.length > 0 && previousPrompt !== prompt;
           
           if (hasChanged) {
-            // Apply change highlighting
-            const oldLines = previousPrompt.split('\n');
-            const newLines = prompt.split('\n');
-            const maxLines = Math.max(oldLines.length, newLines.length);
+            // Find words that are new/changed
+            const changedWords = findChangedWords(previousPrompt, prompt);
             
-            const htmlParts: string[] = [];
+            // Format and highlight changed words
+            let formattedPrompt = formatText(prompt);
             
-            for (let i = 0; i < maxLines; i++) {
-              const oldLine = oldLines[i] || '';
-              const newLine = newLines[i] || '';
-              
-              // Format line with markdown
-              let lineHtml = newLine
-                .replace(/\*\*([^*]+):\*\*/g, '<strong>$1:</strong>')
-                .replace(/\*\[([^\]]+)\]\*/g, '<em>[$1]</em>');
-              
-              // Highlight if changed
-              if (oldLine !== newLine) {
-                htmlParts.push(`<span class="highlight-change">${lineHtml}</span>`);
-              } else {
-                htmlParts.push(lineHtml);
-              }
+            // Only highlight if there are specific changed words (not too many)
+            if (changedWords.size > 0 && changedWords.size <= 15) {
+              changedWords.forEach(word => {
+                // Escape special regex chars and create pattern
+                const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(${escaped})`, 'g');
+                formattedPrompt = formattedPrompt.replace(regex, '<span class="highlight-change">$1</span>');
+              });
             }
             
-            previewEl.innerHTML = htmlParts.join('<br>');
+            previewEl.innerHTML = formattedPrompt.replace(/\n/g, '<br>');
             
-            // Remove highlight after animation
+            // Remove highlight class after animation completes
             setTimeout(() => {
               previewEl.querySelectorAll('.highlight-change').forEach(el => {
                 el.classList.remove('highlight-change');
               });
-            }, 1200);
+            }, 1600);
             
           } else {
-            // First render - no highlighting
-            const formattedPrompt = prompt
-              .replace(/\*\*([^*]+):\*\*/g, '<strong>$1:</strong>')
-              .replace(/\*\[([^\]]+)\]\*/g, '<em>[$1]</em>');
-            
-            previewEl.innerHTML = formattedPrompt.replace(/\n/g, '<br>');
+            // First render or no change - just format without highlight
+            const formattedPrompt = formatText(prompt).replace(/\n/g, '<br>');
+            previewEl.innerHTML = formattedPrompt;
           }
           
           // Store for next comparison
@@ -350,20 +307,35 @@ const description = 'Prompt generator untuk tugas kuliah yang efektif dan terstr
     const resetToast = document.querySelector('#reset-toast');
     
     resetBtn?.addEventListener('click', () => {
-      if (confirm('Reset semua field? Prompt yang sudah dibuat akan hilang.')) {
-        // Reset form
+      if (confirm('Reset field form? Jenis tugas tetap dipertahankan.')) {
+        // Reset form (but keep assignment type through generator)
         form?.reset();
         
-        // Reset generator
-        currentAssignmentType = 'individual';
+        // Keep current assignment type, only reset other state
         currentTemplateStyle = 'standard';
         previousPrompt = '';
+        
+        // Partial reset generator - keep assignmentType
+        const keepAssignmentType = generator.getFormData().assignmentType;
         generator.reset();
+        if (keepAssignmentType) {
+          generator.updateField('assignmentType', keepAssignmentType);
+        }
         
-        // Dispatch form reset event to reset assignment type selector
-        window.dispatchEvent(new Event('form-reset'));
+        // Reset template style buttons visually
+        document.querySelectorAll('.template-style-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if ((btn as HTMLButtonElement).dataset.templateStyle === 'standard') {
+            btn.classList.add('active');
+          }
+        });
         
-        // Update prompt
+        // Hide group fields (if currently individual)
+        if (!generator.getFormData().isGroup && groupFields) {
+          groupFields.classList.add('hidden');
+        }
+        
+        // Update prompt (assignment type selector NOT reset)
         updatePrompt();
         
         // Show success toast

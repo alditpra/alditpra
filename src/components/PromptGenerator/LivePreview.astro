@@ -147,27 +147,72 @@
   </div>
 </div>
 
-<style>
-  /* Highlight animation for changed text */
+<style is:global>
+  /* Highlight animation for changed text - Smooth fade in/out */
   .highlight-change {
-    animation: highlight-flash 2s ease-in-out;
+    animation: highlight-glow 1.5s ease-in-out;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    display: inline;
   }
   
-  @keyframes highlight-flash {
+  @keyframes highlight-glow {
     0% {
-      background-color: rgba(250, 204, 21, 0.35);
+      background-color: transparent;
+      box-shadow: none;
     }
-    25% {
-      background-color: rgba(250, 204, 21, 0.25);
+    15% {
+      background-color: rgba(127, 115, 255, 0.3);
+      box-shadow: 0 0 8px rgba(127, 115, 255, 0.4);
+    }
+    30% {
+      background-color: rgba(127, 115, 255, 0.25);
+      box-shadow: 0 0 12px rgba(127, 115, 255, 0.35);
     }
     50% {
-      background-color: rgba(250, 204, 21, 0.15);
+      background-color: rgba(127, 115, 255, 0.2);
+      box-shadow: 0 0 8px rgba(127, 115, 255, 0.25);
     }
     75% {
-      background-color: rgba(250, 204, 21, 0.08);
+      background-color: rgba(127, 115, 255, 0.1);
+      box-shadow: 0 0 4px rgba(127, 115, 255, 0.15);
     }
     100% {
       background-color: transparent;
+      box-shadow: none;
+    }
+  }
+  
+  /* Dark mode highlight */
+  :global(.dark) .highlight-change {
+    animation: highlight-glow-dark 1.5s ease-in-out;
+  }
+  
+  @keyframes highlight-glow-dark {
+    0% {
+      background-color: transparent;
+      box-shadow: none;
+    }
+    15% {
+      background-color: rgba(127, 115, 255, 0.4);
+      box-shadow: 0 0 10px rgba(127, 115, 255, 0.5);
+    }
+    30% {
+      background-color: rgba(127, 115, 255, 0.35);
+      box-shadow: 0 0 15px rgba(127, 115, 255, 0.45);
+    }
+    50% {
+      background-color: rgba(127, 115, 255, 0.25);
+      box-shadow: 0 0 10px rgba(127, 115, 255, 0.3);
+    }
+    75% {
+      background-color: rgba(127, 115, 255, 0.12);
+      box-shadow: 0 0 5px rgba(127, 115, 255, 0.15);
+    }
+    100% {
+      background-color: transparent;
+      box-shadow: none;
     }
   }
   

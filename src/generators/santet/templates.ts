@@ -13,7 +13,7 @@ export interface PromptTemplate {
 const commonrefs = `\n**Referensi:**\nTuliskan 5-7 link referensi valid yang relevan dengan topik "{topic}" dalam bentuk URL saja (jurnal akademik, artikel ilmiah, atau sumber terpercaya).`;
 const detailedRefs = `\n**Referensi:**\nTuliskan 7-10 link referensi valid yang relevan dengan topik "{topic}" dalam bentuk URL saja, prioritaskan:\n- Jurnal akademik peer-reviewed (minimal 5)\n- Artikel ilmiah dari universitas terkemuka\n- Data atau report dari institusi resmi`;
 
-const baseContext = "Bertindaklah sebagai penulis akademik profesional dengan gaya bahasa Akademis & Formal. {difficultyInstruction}";
+const baseContext = "Bertindaklah sebagai penulis akademik profesional dengan gaya bahasa Akademis & Formal. {difficultyInstruction}{disciplineHint}";
 
 // Individual Assignment Templates
 export const individualTemplates: Record<string, PromptTemplate> = {
@@ -412,7 +412,7 @@ export const groupTemplates: Record<string, PromptTemplate> = {
       variations: {
          standard: `Saya adalah ketua kelompok untuk proyek Essay Akademik tentang "{topic}" di mata kuliah {subject}.
 Konteks: Tim terdiri dari {memberCount} orang.
-Gaya Bahasa: Akademis & Formal. {difficultyInstruction}
+Gaya Bahasa: Akademis & Formal. {difficultyInstruction}{disciplineHint}
 
 **Spesifikasi:**
 - Gaya sitasi: {citationStyle}
@@ -435,7 +435,7 @@ Bantu saya memimpin tim ini agar menghasilkan essay yang solid dan terpadu.`,
 
          detailed: `Saya adalah ketua kelompok untuk proyek Essay Akademik mendalam tentang "{topic}" di mata kuliah {subject}.
 Konteks: Tim terdiri dari {memberCount} orang.
-Gaya Bahasa: Akademis & Formal. {difficultyInstruction}
+Gaya Bahasa: Akademis & Formal. {difficultyInstruction}{disciplineHint}
 
 **Spesifikasi:**
 - Gaya sitasi: {citationStyle}
@@ -469,7 +469,7 @@ Berikan panduan teknis dan manajerial yang komprehensif.`,
 
          concise: `Ketua Kelompok Essay: "{topic}" ({subject})
 Tim: {memberCount} orang | Citation: {citationStyle}
-{difficultyInstruction}
+{difficultyInstruction}{disciplineHint}
 
 {teamChallenges}
 {specificRequirements}
@@ -534,7 +534,7 @@ ${detailedRefs}`,
 
          concise: `Group Presentation Lead: "{topic}"
 Tim: {memberCount} org.
-{difficultyInstruction}
+{difficultyInstruction}{disciplineHint}
 
 {teamChallenges}
 {specificRequirements}
@@ -598,7 +598,7 @@ ${detailedRefs}`,
 
          concise: `Group Case Study Lead: "{topic}"
 Tim: {memberCount} org.
-{difficultyInstruction}
+{difficultyInstruction}{disciplineHint}
 
 {teamChallenges}
 {specificRequirements}
@@ -659,7 +659,7 @@ ${detailedRefs}`,
 
          concise: `Group Analysis Lead: "{topic}"
 Tim: {memberCount} org.
-{difficultyInstruction}
+{difficultyInstruction}{disciplineHint}
 
 {teamChallenges}
 {specificRequirements}
@@ -722,7 +722,7 @@ ${detailedRefs}`,
 
          concise: `Group Report Lead: "{topic}"
 Tim: {memberCount} org.
-{difficultyInstruction}
+{difficultyInstruction}{disciplineHint}
 
 {teamChallenges}
 {specificRequirements}
@@ -783,7 +783,7 @@ ${detailedRefs}`,
 
          concise: `Group Review Lead: "{topic}"
 Tim: {memberCount} org.
-{difficultyInstruction}
+{difficultyInstruction}{disciplineHint}
 
 {teamChallenges}
 {specificRequirements}

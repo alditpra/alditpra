@@ -1,4 +1,4 @@
-import { getTemplate } from './tugas-kuliah-templates';
+import { getTemplate } from './templates';
 
 export interface FormData {
     assignmentType: string;
@@ -67,6 +67,20 @@ export class PromptGenerator {
             }
         }
 
+        // Conditional Spesifikasi Section - only include filled fields
+        const specItems: string[] = [];
+        if (citationStyle && citationStyle !== 'None') {
+            specItems.push(`- Gaya sitasi: ${citationStyle}`);
+        }
+        if (keyConcepts && keyConcepts.trim().length > 0) {
+            specItems.push(`- Konsep kunci: ${formattedConcepts}`);
+        }
+
+        // Build specifications section only if there are items
+        const specificationsSection = specItems.length > 0
+            ? `\n**Spesifikasi:**\n${specItems.join('\n')}\n`
+            : '';
+
         // Conditional Formatting: Headers for optional sections
         const requirementsContent = specificRequirements
             ? `\n**Requirements khusus:**\n${specificRequirements}`
@@ -83,13 +97,40 @@ export class PromptGenerator {
             challengesContent = `**Tantangan yang Dihadapi:**\n${list}`;
         }
 
+        // Discipline-Specific Hints (based on subject/mata kuliah)
+        const getDisciplineHint = (subjectText: string): string => {
+            const s = subjectText.toLowerCase();
+
+            // Informatika / Sistem Informasi
+            if (/informatika|sistem informasi|pemrograman|database|jaringan|software|ai|machine learning|data science|algoritma|basis data/.test(s)) {
+                return '\n**Konteks Disiplin:** Sertakan diagram teknis (flowchart/UML/ERD) jika relevan. Referensikan standar IEEE/ACM dan teknologi spesifik yang digunakan.';
+            }
+            // Bisnis Digital / E-Commerce
+            if (/bisnis digital|e-commerce|digital marketing|startup|platform digital|fintech|marketplace/.test(s)) {
+                return '\n**Konteks Disiplin:** Gunakan framework bisnis (Business Model Canvas, Value Proposition) dan metrics digital (CAC, LTV, conversion rate) jika applicable.';
+            }
+            // Manajemen
+            if (/manajemen|sdm|hrm|human resource|operasional|strategis|organisasi|leadership|msdm|pemasaran|marketing/.test(s)) {
+                return '\n**Konteks Disiplin:** Gunakan framework analisis (SWOT, Porter\'s Five Forces, PESTLE) dan sertakan implikasi manajerial yang actionable.';
+            }
+            // Ekonomi
+            if (/ekonomi|makroekonomi|mikroekonomi|fiskal|moneter|perdagangan|keuangan|akuntansi|perbankan/.test(s)) {
+                return '\n**Konteks Disiplin:** Sertakan data dari sumber resmi (BPS, World Bank, Bank Indonesia) dan grafik ekonomi jika relevan untuk memperkuat argumen.';
+            }
+
+            return ''; // No specific hint for unknown disciplines
+        };
+        const disciplineHint = getDisciplineHint(subject);
+        console.log('[SANTET DEBUG] Subject:', subject, '| Hint:', disciplineHint ? 'FOUND' : 'NONE');
+
         // Difficulty Level Mapping
         const difficultyMap: Record<string, string> = {
             'Very Easy': "Level: Sekolah Menengah Atas (SMA). Gunakan bahasa yang mudah dipahami, jelaskan konsep dasar secara eksplisit, hindari jargon akademik berat.",
-            'Easy': "Level: Mahasiswa Tahun Pertama (D3/S1 Awal). Fokus pada pengantar materi dan pemahaman konsep.",
-            'Medium': "Level: Mahasiswa Tingkat Akhir (S1). Standar akademik skripsi, analitis, dan argumentatif.",
-            'Hard': "Level: Magister (S2). Analisis kritis, sintesis teori kompleks, dan orisinalitas ide.",
-            'Very Hard': "Level: Doktoral (S3). Kontribusi kebaruan (novelty), filosofis, metodologi sangat ketat, dan standar publikasi jurnal Q1."
+            'Easy': "Level: Mahasiswa Tahun Pertama (Semester 1-2). Fokus pada pengantar materi dan pemahaman konsep dasar.",
+            'Medium': "Level: Mahasiswa Menengah (Semester 3-5). Standar akademik umum, mulai analitis, gunakan referensi jurnal.",
+            'Hard': "Level: Mahasiswa Tingkat Akhir (Semester 6+). Standar skripsi/tugas akhir, analitis dan argumentatif, metodologi jelas.",
+            'Very Hard': "Level: Cari Tantangan. Gunakan metode/tools GUI yang advanced (misal: framework analysis, software visualization, methodology tools canggih). Fokus pada kedalaman analisis dan pendekatan inovatif.",
+            'Extreme': "Level: Penasaran & Eksploratif. WAJIB melibatkan: (1) Layanan/API cloud (AWS, GCP, Azure, atau API publik), (2) Implementasi coding/scripting, (3) Automasi atau integrasi sistem. Cocok untuk proyek eksperimen teknis."
         };
         const difficultyInstruction = difficultyMap[difficultyLevel] || difficultyMap['Medium'];
 
@@ -99,6 +140,7 @@ export class PromptGenerator {
             .replace(/{subject}/g, subject || '*[Mata Kuliah]*')
             .replace(/{topic}/g, topic || '*[Topik]*')
             .replace(/{difficultyInstruction}/g, difficultyInstruction)
+            .replace(/{disciplineHint}/g, disciplineHint)
             .replace(/{citationStyle}/g, citationStyle)
             .replace(/{keyConcepts}/g, formattedConcepts)
             .replace(/{specificRequirements}/g, requirementsContent)
@@ -106,8 +148,15 @@ export class PromptGenerator {
             .replace(/{additionalInstructions}/g, instructionsContent)
             .replace(/{teamChallenges}/g, challengesContent);
 
+        // Remove hardcoded Spesifikasi section and replace with conditional one
+        // Match pattern: **Spesifikasi:** followed by lines starting with - until next section or empty line
+        prompt = prompt.replace(/\*\*Spesifikasi:\*\*\n(- [^\n]+\n?)+/g, specificationsSection);
+
         // Clean up any remaining empty placeholders
         prompt = prompt.replace(/\{\w+\}/g, '');
+
+        // Clean up multiple consecutive empty lines
+        prompt = prompt.replace(/\n{3,}/g, '\n\n');
 
         return prompt.trim();
     }
@@ -186,6 +235,7 @@ export class PromptGenerator {
     reset() {
         this.formData = {
             templateStyle: 'standard',
+            difficultyLevel: 'Medium',
             citationStyle: 'None',
             isGroup: false
         };
