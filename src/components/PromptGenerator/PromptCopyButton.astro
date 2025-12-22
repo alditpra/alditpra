@@ -1,0 +1,178 @@
+---
+interface Props {
+  targetText: string;
+  buttonText?: string;
+  successMessage?: string;
+}
+
+const { 
+  targetText, 
+  buttonText = "📋 Copy Prompt",
+  successMessage = "Prompt copied to clipboard!"
+} = Astro.props;
+---
+
+<button 
+  class="copy-button"
+  data-copy-text={targetText}
+  data-success-message={successMessage}
+>
+  <span class="button-icon">📋</span>
+  <span class="button-text">{buttonText}</span>
+</button>
+
+<style>
+  .copy-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+
+  .copy-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .copy-button:active {
+    transform: translateY(0);
+  }
+
+  .copy-button.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+
+  .button-icon {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+  }
+
+  .copy-button.success .button-icon {
+    transform: scale(1.2);
+  }
+
+  .button-text {
+    transition: opacity 0.2s ease;
+  }
+
+  @media (max-width: 768px) {
+    .copy-button {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9375rem;
+    }
+  }
+</style>
+
+<script>
+  // Copy to clipboard functionality
+  document.querySelectorAll<HTMLButtonElement>('.copy-button').forEach(button => {
+    button.addEventListener('click', async () => {
+      const text = button.dataset.copyText || '';
+      const successMsg = button.dataset.successMessage || 'Copied!';
+      const originalText = button.querySelector('.button-text')?.textContent || '';
+
+      try {
+        // Try modern clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback for older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        // Success feedback
+        button.classList.add('success');
+        const textSpan = button.querySelector('.button-text');
+        if (textSpan) {
+          textSpan.textContent = '✓ ' + successMsg;
+        }
+
+        // Show toast notification
+        showToast(successMsg, 'success');
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+          button.classList.remove('success');
+          if (textSpan) {
+            textSpan.textContent = originalText;
+          }
+        }, 2000);
+
+      } catch (err) {
+        console.error('Failed to copy:', err);
+        showToast('Failed to copy to clipboard', 'error');
+      }
+    });
+  });
+
+  // Simple toast notification
+  function showToast(message: string, type: 'success' | 'error' = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      background: ${type === 'success' ? '#10b981' : '#ef4444'};
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 10000;
+      animation: slideIn 0.3s ease;
+      font-weight: 500;
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 2500);
+  }
+
+  // Add CSS animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+</script>

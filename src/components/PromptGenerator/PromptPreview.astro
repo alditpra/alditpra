@@ -1,0 +1,338 @@
+---
+interface Props {
+  promptText: string;
+  qualityScore?: number;
+  isLoading?: boolean;
+  placeholder?: string;
+}
+
+const { 
+  promptText = '', 
+  qualityScore = 0,
+  isLoading = false,
+  placeholder = 'Your generated prompt will appear here...'
+} = Astro.props;
+---
+
+<div class="prompt-preview-container">
+  <!-- Quality Indicator -->
+  <div class="quality-indicator">
+    <div class="quality-header">
+      <span class="quality-label">Prompt Quality</span>
+      <span class="quality-score" data-score={qualityScore}>
+        <span class="score-value">{qualityScore}</span>%
+      </span>
+    </div>
+    <div class="quality-bar">
+      <div 
+        class="quality-fill" 
+        data-quality={qualityScore}
+        style={`width: ${qualityScore}%`}
+      ></div>
+    </div>
+    <p class="quality-suggestion" data-score={qualityScore}>
+      <!-- Suggestions will be injected by script -->
+    </p>
+  </div>
+
+  <!-- Preview Content -->
+  <div class="preview-content">
+    {isLoading ? (
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Generating prompt...</p>
+      </div>
+    ) : (
+      <div 
+        class="preview-text" 
+        data-placeholder={placeholder}
+        data-empty={promptText === ''}
+      >
+        {promptText || placeholder}
+      </div>
+    )}
+  </div>
+
+  <!-- Character Count -->
+  <div class="preview-footer">
+    <span class="char-count">
+      <span class="count-value">{promptText.length}</span> characters
+    </span>
+  </div>
+
+  <!-- Action Button Slot -->
+  <div class="preview-actions">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .prompt-preview-container {
+    background: var(--card-bg, rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color, rgba(0, 0, 0, 0.1));
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Quality Indicator */
+  .quality-indicator {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .quality-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .quality-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .quality-score {
+    font-size: 1.125rem;
+    font-weight: 700;
+    transition: color 0.3s ease;
+  }
+
+  .quality-score[data-score]:is([data-score="0"], [data-score="10"], [data-score="20"], [data-score="30"], [data-score="40"]) {
+    color: #ef4444; /* Red */
+  }
+
+  .quality-score[data-score^="5"], .quality-score[data-score^="6"], .quality-score[data-score^="7"] {
+    color: #f59e0b; /* Yellow/Orange */
+  }
+
+  .quality-score[data-score^="8"], .quality-score[data-score^="9"], .quality-score[data-score="100"] {
+    color: #10b981; /* Green */
+  }
+
+  .quality-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-tertiary, #e5e7eb);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .quality-fill {
+    height: 100%;
+    transition: width 0.5s ease, background-color 0.3s ease;
+    border-radius: 999px;
+  }
+
+  .quality-fill[data-quality]:is([data-quality="0"], [data-quality="10"], [data-quality="20"], [data-quality="30"], [data-quality="40"]) {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+  }
+
+  .quality-fill[data-quality^="5"], .quality-fill[data-quality^="6"], .quality-fill[data-quality^="7"] {
+    background: linear-gradient(90deg, #f59e0b, #d97706);
+  }
+
+  .quality-fill[data-quality^="8"], .quality-fill[data-quality^="9"], .quality-fill[data-quality="100"] {
+    background: linear-gradient(90deg, #10b981, #059669);
+  }
+
+  .quality-suggestion {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* Preview Content */
+  .preview-content {
+    flex: 1;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: var(--bg-secondary, #f9fafb);
+    border-radius: 12px;
+    border: 1px solid var(--border-color, #e5e7eb);
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    gap: 1rem;
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color, #e5e7eb);
+    border-top-color: var(--color-primary, #3b82f6);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .preview-text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  .preview-text[data-empty="true"] {
+    color: var(--text-tertiary);
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  /* Markdown-like formatting */
+  .preview-text :global(strong),
+  .preview-text :global(.bold-text) {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .preview-text :global(em),
+  .preview-text :global(.italic-text) {
+    font-style: italic;
+    color: var(--text-secondary);
+    opacity: 0.7;
+  }
+
+  .preview-text :global(.highlighted) {
+    animation: highlight-flash 0.6s ease;
+    background: linear-gradient(120deg, rgba(59, 130, 246, 0.3) 0%, rgba(251, 191, 36, 0.3) 100%);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  @keyframes highlight-flash {
+    0%, 100% { background: transparent; }
+    50% { background: linear-gradient(120deg, rgba(59, 130, 246, 0.3) 0%, rgba(251, 191, 36, 0.3) 100%); }
+  }
+
+  /* Footer */
+  .preview-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+  }
+
+  .char-count {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+
+  .count-value {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Actions */
+  .preview-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  /* Dark mode support */
+  :global(.dark) .prompt-preview-container {
+    background: rgba(31, 41, 55, 0.7);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  :global(.dark) .preview-content {
+    background: rgba(17, 24, 39, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  :global(.dark) .quality-bar {
+    background: rgba(55, 65, 81, 0.8);
+  }
+
+  :global(.dark) .preview-footer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .prompt-preview-container {
+      padding: 1.25rem;
+    }
+
+    .preview-content {
+      min-height: 250px;
+      max-height: 400px;
+    }
+
+    .preview-text {
+      font-size: 0.875rem;
+    }
+  }
+</style>
+
+<script>
+  // Update quality suggestions based on score
+  function updateQualitySuggestions() {
+    document.querySelectorAll('.quality-suggestion').forEach(elem => {
+      const score = parseInt(elem.dataset.score || '0');
+      let suggestion = '';
+
+      if (score < 50) {
+        suggestion = '⚠️ Fill in more fields to improve prompt quality';
+      } else if (score >= 50 && score < 80) {
+        suggestion = '💡 Consider adding Key Concepts and Tone for better results';
+      } else if (score >= 80 && score < 95) {
+        suggestion = '✨ Great! Add Specific Requirements for perfect results';
+      } else if (score >= 95) {
+        suggestion = '🎉 Excellent prompt quality!';
+      }
+
+      elem.textContent = suggestion;
+    });
+  }
+
+  // Initialize
+  updateQualitySuggestions();
+
+  // Listen for quality updates from parent
+  window.addEventListener('prompt-quality-update', ((e: CustomEvent) => {
+    const { score } = e.detail;
+    document.querySelectorAll('[data-quality]').forEach(elem => {
+      if (elem instanceof HTMLElement) {
+        elem.dataset.quality = score.toString();
+        elem.style.width = `${score}%`;
+      }
+    });
+    document.querySelectorAll('.quality-score').forEach(elem => {
+      if (elem instanceof HTMLElement) {
+        elem.dataset.score = score.toString();
+        const valueElem = elem.querySelector('.score-value');
+        if (valueElem) valueElem.textContent = score.toString();
+      }
+    });
+    document.querySelectorAll('.quality-suggestion').forEach(elem => {
+      if (elem instanceof HTMLElement) {
+        elem.dataset.score = score.toString();
+      }
+    });
+    updateQualitySuggestions();
+  }) as EventListener);
+</script>

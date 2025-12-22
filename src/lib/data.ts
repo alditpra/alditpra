@@ -138,6 +138,22 @@ function transformLink(row: RawLinkRow, index: number): Link | null {
         autoLevel = 0;
     }
 
+    // DATA OVERRIDE: SANTET (Saran ANti TElat Tugas)
+    // Intercepts the old link from Google Sheets to update branding without editing the sheet
+    if (linkUrl === '/prompt-tugas-kuliah' || (name && name.includes('Prompt Generator'))) {
+        return {
+            id: id,
+            name: 'SANTET',
+            description: 'Saran ANti TElat Tugas: Prompt generator tugas kuliah yang efektif & terstruktur.',
+            icon: 'sparkles', // New magic icon
+            category: row.category?.trim().toLowerCase() || "kuliah",
+            link: '/santet',
+            level: autoLevel,
+            active: 1,
+            order: index,
+        };
+    }
+
     return {
         id,
         name,

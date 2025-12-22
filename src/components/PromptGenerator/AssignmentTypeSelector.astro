@@ -1,0 +1,163 @@
+---
+// Assignment Type Selector Component
+---
+
+<div class="grid grid-cols-1 gap-3">
+    <!-- Individual Assignment Card -->
+    <button
+      type="button"
+      data-assignment-type="individual"
+      class="assignment-type-card active group relative rounded-3xl p-6 transition-all duration-300
+             bg-white/70 dark:bg-zinc-900/70
+             border-2 border-candy-purple/40 dark:border-candy-purple/30
+             hover:border-candy-purple/60 dark:hover:border-candy-purple/50
+             hover:-translate-y-2 hover:scale-[1.02]
+             cursor-pointer"
+      style="box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);"
+    >
+      <!-- Subtle gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-purple/3 pointer-events-none rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      <div class="relative flex items-start gap-4">
+        <!-- Icon -->
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300
+                    bg-candy-purple/20 
+                    text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]
+                    group-hover:scale-125 group-hover:rotate-6"
+             style="box-shadow: 0 0 25px -5px var(--candy-purple), 0 8px 25px -10px var(--candy-purple);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        
+        <!-- Content -->
+        <div class="flex-1 text-left">
+          <h4 class="text-lg font-bold mb-1" style="color: var(--text-primary);">
+            Tugas Individu
+          </h4>
+          <p class="text-sm" style="color: var(--text-secondary);">
+            Essay, laporan, analisis mandiri
+          </p>
+        </div>
+        
+        <!-- Active Indicator -->
+        <div class="absolute top-5 right-5 w-6 h-6 rounded-full border-2 transition-all duration-200
+                    border-candy-purple bg-candy-purple
+                    group-[.active]:opacity-100 opacity-0"
+             style="box-shadow: 0 0 20px -4px var(--candy-purple);">
+          <svg class="w-full h-full text-white p-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+      </div>
+    </button>
+    
+    <!-- Group Assignment Card -->
+    <button
+      type="button"
+      data-assignment-type="group"
+      class="assignment-type-card group relative rounded-3xl p-6 transition-all duration-300
+             bg-white/70 dark:bg-zinc-900/70
+             border-2 border-zinc-300/40 dark:border-zinc-700/30
+             hover:border-candy-teal/60 dark:hover:border-candy-teal/50
+             hover:-translate-y-2 hover:scale-[1.02]
+             cursor-pointer"
+      style="box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);"
+    >
+      <!-- Subtle gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-br from-candy-teal/5 via-transparent to-candy-teal/3 pointer-events-none rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      
+      <div class="relative flex items-start gap-4">
+        <!-- Icon -->
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300
+                    bg-candy-teal/20 
+                    text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_40%)]
+                    group-hover:scale-125 group-hover:rotate-6"
+             style="box-shadow: 0 0 25px -5px var(--candy-teal), 0 8px 25px -10px var(--candy-teal);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        
+        <!-- Content -->
+        <div class="flex-1 text-left">
+          <h4 class="text-lg font-bold mb-1" style="color: var(--text-primary);">
+            Tugas Kelompok
+          </h4>
+          <p class="text-sm" style="color: var(--text-secondary);">
+            Proyek kelompok, presentasi tim
+          </p>
+        </div>
+        
+        <!-- Active Indicator -->
+        <div class="absolute top-5 right-5 w-6 h-6 rounded-full border-2 transition-all duration-200
+                    border-candy-teal bg-candy-teal
+                    group-[.active]:opacity-100 opacity-0"
+             style="box-shadow: 0 0 20px -4px var(--candy-teal);">
+          <svg class="w-full h-full text-white p-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<style>
+  .assignment-type-card.active {
+    border-color: var(--candy-purple) !important;
+    box-shadow: 0 0 60px -15px rgba(127, 115, 255, 0.2), 
+                0 25px 60px -20px rgba(127, 115, 255, 0.15), 
+                0 8px 32px -8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .assignment-type-card[data-assignment-type="group"].active {
+    border-color: var(--candy-teal) !important;
+    box-shadow: 0 0 60px -15px rgba(20, 208, 240, 0.2), 
+                0 25px 60px -20px rgba(20, 208, 240, 0.15), 
+                0 8px 32px -8px rgba(0, 0, 0, 0.1) !important;
+  }
+</style>
+
+<script>
+  function initAssignmentTypeSelector() {
+    const cards = document.querySelectorAll<HTMLButtonElement>('.assignment-type-card');
+    
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const type = card.dataset.assignmentType as 'individual' | 'group';
+        
+        // Update active states
+        cards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        
+        // Dispatch custom event
+        window.dispatchEvent(new CustomEvent('assignment-type-change', {
+          detail: { type }
+        }));
+      });
+    });
+    
+    // Listen for form reset event
+    window.addEventListener('form-reset', () => {
+      cards.forEach(c => c.classList.remove('active'));
+      const individualCard = Array.from(cards).find(c => c.dataset.assignmentType === 'individual');
+      individualCard?.classList.add('active');
+    });
+  }
+  
+  // Initialize on page load
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initAssignmentTypeSelector);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAssignmentTypeSelector);
+    } else {
+      initAssignmentTypeSelector();
+    }
+  }
+</script>

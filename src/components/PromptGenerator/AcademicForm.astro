@@ -1,0 +1,311 @@
+---
+// Academic Form Component - Dynamic form based on assignment type
+---
+
+<form id="prompt-form" class="space-y-6">
+  <!-- Assignment Type Dropdown -->
+  <div>
+    <label for="assignmentType" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Jenis Tugas <span class="text-red-500">*</span>
+    </label>
+    <select
+      id="assignmentType"
+      name="assignmentType"
+      required
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20"
+      style="color: var(--text-primary);"
+    >
+      <option value="Essay">Essay</option>
+      <option value="Report">Report</option>
+      <option value="Analysis">Analysis</option>
+      <option value="Presentation">Presentation</option>
+      <option value="Case Study">Case Study</option>
+      <option value="Review">Review</option>
+    </select>
+  </div>
+  
+  <!-- Subject/Course -->
+  <div>
+    <label for="subject" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Mata Kuliah <span class="text-red-500">*</span>
+    </label>
+    <input
+      type="text"
+      id="subject"
+      name="subject"
+      required
+      maxlength="100"
+      placeholder="e.g., Sistem Basis Data"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20
+             placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+      style="color: var(--text-primary);"
+    />
+  </div>
+  
+  <!-- Topic -->
+  <div>
+    <label for="topic" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Topik <span class="text-red-500">*</span>
+    </label>
+    <textarea
+      id="topic"
+      name="topic"
+      required
+      maxlength="500"
+      rows="3"
+      placeholder="e.g., Implementasi normalisasi database dalam e-commerce"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 resize-none
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20
+             placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+      style="color: var(--text-primary);"
+    ></textarea>
+  </div>
+  
+  <!-- Template Style Selector -->
+  <div>
+    <label class="block text-sm font-semibold mb-3" style="color: var(--text-primary);">
+      Template Style
+    </label>
+    <div class="flex gap-2 p-1.5 rounded-xl bg-zinc-100/70 dark:bg-zinc-800/70">
+      <button
+        type="button"
+        data-template-style="standard"
+        class="template-style-btn active flex-1 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200"
+      >
+        Standard
+      </button>
+      <button
+        type="button"
+        data-template-style="detailed"
+        class="template-style-btn flex-1 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200"
+      >
+        Detail
+      </button>
+      <button
+        type="button"
+        data-template-style="concise"
+        class="template-style-btn flex-1 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200"
+      >
+        Concise
+      </button>
+    </div>
+    <p class="text-xs mt-2" style="color: var(--text-secondary);">Standard: balanced, Detail: comprehensive, Concise: focused</p>
+  </div>
+  
+  <!-- Difficulty Level -->
+  <div>
+    <label for="difficultyLevel" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Tingkat Kesulitan
+    </label>
+    <select
+      id="difficultyLevel"
+      name="difficultyLevel"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20"
+      style="color: var(--text-primary);"
+    >
+      <option value="Very Easy">Very Easy (SMA)</option>
+      <option value="Easy">Easy (Mahasiswa Baru)</option>
+      <option value="Medium" selected>Medium (Mahasiswa Tingkat Akhir)</option>
+      <option value="Hard">Hard (Magister)</option>
+      <option value="Very Hard">Very Hard (Doktoral)</option>
+    </select>
+  </div>
+
+  <!-- Citation Style -->
+  <div>
+    <label for="citationStyle" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Gaya Sitasi
+    </label>
+    <select
+      id="citationStyle"
+      name="citationStyle"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20"
+      style="color: var(--text-primary);"
+    >
+      <option value="None">Tidak ada</option>
+      <option value="APA">APA</option>
+      <option value="MLA">MLA</option>
+      <option value="IEEE">IEEE</option>
+      <option value="Harvard">Harvard</option>
+      <option value="Chicago">Chicago</option>
+    </select>
+  </div>
+  
+
+  
+  <!-- Key Concepts -->
+  <div>
+    <label for="keyConcepts" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Konsep Kunci
+    </label>
+    <input
+      type="text"
+      id="keyConcepts"
+      name="keyConcepts"
+      maxlength="200"
+      placeholder="e.g., Normalisasi, CRUD, REST API (dipisah koma)"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20
+             placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+      style="color: var(--text-primary);"
+    />
+    <p class="text-xs mt-1" style="color: var(--text-secondary);">Pisahkan dengan koma</p>
+  </div>
+  
+  <!-- Specific Requirements -->
+  <div>
+    <label for="specificRequirements" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Requirements Khusus
+    </label>
+    <textarea
+      id="specificRequirements"
+      name="specificRequirements"
+      maxlength="300"
+      rows="2"
+      placeholder="e.g., Harus include case study dari perusahaan Indonesia"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 resize-none
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20
+             placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+      style="color: var(--text-primary);"
+    ></textarea>
+  </div>
+  
+  <!-- Group-specific fields (hidden by default) -->
+  <div id="group-fields" class="space-y-6 hidden">
+    <!-- Number of Members -->
+    <div>
+      <label for="memberCount" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+        Jumlah Anggota <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="number"
+        id="memberCount"
+        name="memberCount"
+        min="2"
+        max="5"
+        value="3"
+        class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200
+               bg-white/70 dark:bg-zinc-900/70
+               border-zinc-300/40 dark:border-zinc-700/40
+               focus:border-candy-blue/60 focus:outline-none focus:ring-2 focus:ring-candy-blue/20"
+        style="color: var(--text-primary);"
+      />
+      <p class="text-xs mt-1" style="color: var(--text-secondary);">2-5 orang</p>
+    </div>
+    
+    <!-- Team Challenges -->
+    <div>
+      <label class="block text-sm font-semibold mb-3" style="color: var(--text-primary);">
+        Tantangan Tim
+      </label>
+      <div class="space-y-2">
+        <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
+          <input type="checkbox" name="teamChallenges" value="Koordinasi jadwal" class="w-4 h-4 rounded border-2 border-zinc-300 dark:border-zinc-600 text-candy-blue focus:ring-2 focus:ring-candy-blue/20" />
+          <span style="color: var(--text-primary);">Koordinasi jadwal</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
+          <input type="checkbox" name="teamChallenges" value="Skill gap" class="w-4 h-4 rounded border-2 border-zinc-300 dark:border-zinc-600 text-candy-blue focus:ring-2 focus:ring-candy-blue/20" />
+          <span style="color: var(--text-primary);">Skill gap</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
+          <input type="checkbox" name="teamChallenges" value="Komunikasi" class="w-4 h-4 rounded border-2 border-zinc-300 dark:border-zinc-600 text-candy-blue focus:ring-2 focus:ring-candy-blue/20" />
+          <span style="color: var(--text-primary);">Komunikasi</span>
+        </label>
+        <label class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 transition-colors">
+          <input type="checkbox" name="teamChallenges" value="Pembagian tidak merata" class="w-4 h-4 rounded border-2 border-zinc-300 dark:border-zinc-600 text-candy-blue focus:ring-2 focus:ring-candy-blue/20" />
+          <span style="color: var(--text-primary);">Pembagian tugas tidak merata</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Additional Instructions -->
+  <div>
+    <label for="additionalInstructions" class="block text-sm font-semibold mb-2" style="color: var(--text-primary);">
+      Instruksi Tambahan
+    </label>
+    <textarea
+      id="additionalInstructions"
+      name="additionalInstructions"
+      maxlength="300"
+      rows="2"
+      placeholder="Informasi tambahan yang perlu diperhatikan"
+      class="w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 resize-none
+             bg-white/70 dark:bg-zinc-900/70
+             border-zinc-300/40 dark:border-zinc-700/40
+             focus:border-candy-purple/60 focus:outline-none focus:ring-2 focus:ring-candy-purple/20
+             placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+      style="color: var(--text-primary);"
+    ></textarea>
+  </div>
+  
+</form>
+
+<style>
+  .template-style-btn {
+    color: var(--text-secondary);
+    background: transparent;
+  }
+  
+  .template-style-btn.active {
+    color: var(--text-primary);
+    background: var(--candy-purple);
+    color: white;
+    box-shadow: 0 4px 12px rgba(127, 115, 255, 0.3);
+  }
+  
+  .template-style-btn:hover:not(.active) {
+    background: rgba(127, 115, 255, 0.1);
+  }
+</style>
+
+<script>
+  function initAcademicForm() {
+    // Template style toggle
+    const templateBtns = document.querySelectorAll<HTMLButtonElement>('.template-style-btn');
+    
+    templateBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const style = btn.dataset.templateStyle as 'standard' | 'detailed' | 'concise';
+        
+        // Update active states
+        templateBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Dispatch custom event
+        window.dispatchEvent(new CustomEvent('template-style-change', {
+          detail: { style }
+        }));
+      });
+    });
+  }
+  
+  // Initialize on page load
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initAcademicForm);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAcademicForm);
+    } else {
+      initAcademicForm();
+    }
+  }
+</script>
