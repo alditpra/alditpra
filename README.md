@@ -1,4 +1,4 @@
-# 🌐 alditpra - Personal Link Directory
+# 🌐 alditpra - My Personal Link Directory
 
 > A modern, high-performance personal link directory built with Astro and Tailwind CSS 4, powered by Google Sheets as a free CMS. **100% free solution, no paid services required.**
 
@@ -8,17 +8,19 @@
 ## ✨ Features
 
 - 🎨 **Modern Design** - Glassmorphism UI with candy color palette
+- 🌗 **Dark Mode** - Smooth theme toggle with system preference detection
 - 📊 **Google Sheets as CMS** - Manage content without traditional databases
 - 🔍 **Real-time Search** - Instant filtering with keyboard shortcuts (⌘K)
 - 📱 **Fully Responsive** - Mobile-first design that works perfectly on all devices
-- ⚡ **Lightning Fast** - Optimized SSR with Astro, 90+ Lighthouse score
+- ⚡ **Lightning Fast** - Optimized SSR with Astro, 97+ Lighthouse score
 - 🎯 **Dynamic Routing** - Level 0 (direct links) and Level 1 (detail pages)
+- 🧙 **SANTET Generator** - AI prompt generator for academic assignments ("Saran ANti TElat Tugas")
 - 🔒 **Secure** - URL sanitization and external link protection
 - 🌈 **Smooth Transitions** - View Transitions for SPA-like navigation
 - 📂 **Google Drive Integration** - Embedded folder view for file management
 - ♿ **Accessible** - Semantic HTML and ARIA labels
 - 🔄 **Auto Data Refresh** - ISR with 5-minute cache revalidation
-- 🎭 **Error Resilient** - Graceful error handling prevents crashes
+- 🎭 **Error Resilient** - Graceful error handling with fallback data
 
 ## 🛠️ Tech Stack
 
@@ -40,6 +42,8 @@ alditpra/
 │   │   │   ├── profile-card/  # Profile card with social links
 │   │   │   ├── category-section/ # Category filters
 │   │   │   └── LinkCard.astro # Link card component
+│   │   ├── generators/        # Tool generators
+│   │   │   └── santet/        # SANTET prompt generator
 │   │   ├── HomePage.astro     # Homepage component
 │   │   └── ui/                # Reusable UI components
 │   ├── layouts/
@@ -53,7 +57,9 @@ alditpra/
 │   │   └── constants.ts       # App configuration
 │   ├── pages/
 │   │   ├── index.astro        # Homepage route
-│   │   └── [id].astro         # Dynamic link detail pages
+│   │   ├── [id].astro         # Dynamic link detail pages
+│   │   ├── santet.astro       # SANTET prompt generator
+│   │   └── debug-data.astro   # Data debugging page
 │   ├── styles/
 │   │   └── global.css         # Global styles & CSS variables
 │   └── types/
@@ -87,18 +93,22 @@ alditpra/
 3. **Setup Google Sheets** (Optional - use your own data)
    
    a. Create a Google Spreadsheet with 3 sheets:
-   - `Links` - Main link data
+   - `Links` - Main link data (Home sheet)
    - `Level1` - Detail page content
    - `Categories` - Category definitions
    
    b. Publish spreadsheet to web:
    - File → Share → Publish to web
-   - Select "Entire Document" and "CSV"
-   - Copy the published URL
+   - Select each sheet individually and choose "CSV"
+   - Copy the published URLs
    
    c. Update `src/lib/constants.ts`:
    ```typescript
-   const SPREADSHEET_BASE_URL = "YOUR_PUBLISHED_SPREADSHEET_URL";
+   export const SHEET_URLS = {
+       links: "YOUR_LINKS_SHEET_URL",
+       level1: "YOUR_LEVEL1_SHEET_URL",
+       categories: "YOUR_CATEGORIES_SHEET_URL",
+   };
    ```
 
 4. **Run development server**
@@ -110,41 +120,47 @@ alditpra/
 
 ## 📊 Google Sheets Schema
 
-### Sheet: Links
+### Sheet: Home (Links)
 | Column | Type | Description |
 |--------|------|-------------|
-| id | string | Unique identifier (lowercase) |
-| name | string | Display name |
-| description | string | Short description |
+| id | string | Unique identifier (lowercase-with-dashes) |
 | icon | string | Lucide icon name |
-| category | string | Category ID |
-| link | string | URL (for level 0) or empty (for level 1) |
-| level | number | 0 = direct link, 1 = detail page |
-| active | number | 1 = active, 0 = hidden |
-| order | number | Display order |
+| name | string | Display name |
+| category | string | Category ID (matches Categories sheet) |
+| description | string | Short description |
+| link | string | URL or empty for detail page |
+
+**Notes:**
+- Links are auto-detected: Google Drive folders → level 1 (iframe), other URLs → level 0 (direct link), empty → level 1 (detail page)
+- Row order determines display order (no `order` column needed)
+- All rows are active by default (no `active` column needed)
 
 ### Sheet: Level1
 | Column | Type | Description |
 |--------|------|-------------|
-| id | string | Unique ID (priority over link_id) |
-| link_id | string | Parent link ID |
+| id | string | Parent link ID (maps to Home sheet id) |
+| link_id | string | Alternative to id (fallback) |
 | title | string | Item title |
-| description | string | Item description |
+| description | string | Item description (optional) |
 | link | string | Item URL |
 | type | string | materi, buku, video, tugas, etc. |
-| icon | string | Lucide icon name |
-| urutan | number | Display order |
-| active | number | 1 = active, 0 = hidden |
+| icon | string | Lucide icon name (optional) |
+
+**Notes:**
+- Row order determines display order (no `urutan` column needed)
+- All rows are active by default (no `active` column needed)
 
 ### Sheet: Categories
 | Column | Type | Description |
 |--------|------|-------------|
-| id | string | Category ID |
-| title | string | Category name |
-| description | string | Category description |
-| icon | string | Lucide icon name |
-| order | number | Display order |
-| active | number | 1 = active, 0 = hidden |
+| id | string | Category ID (lowercase-with-dashes) |
+| title | string | Category display name |
+| description | string | Category description (optional) |
+| icon | string | Lucide icon name (optional) |
+
+**Notes:**
+- Row order determines display order (no `order` column needed)
+- All rows are active by default (no `active` column needed)
 
 ## 🎨 Customization
 
@@ -226,7 +242,22 @@ npm run astro    # Run Astro CLI commands
 The site uses **Incremental Static Regeneration (ISR)** with 5-minute cache expiration:
 - Update Google Sheets → Changes appear within 5 minutes
 - No manual redeployment needed
+- Development mode skips cache for instant updates
 - Optimal balance between freshness and performance
+
+## 🧙 SANTET Generator
+
+**S**aran **AN**ti **T**Elat **T**ugas - AI prompt generator for academic assignments.
+
+Features:
+- Individual & Group assignment modes
+- Dynamic form fields based on assignment type
+- Real-time prompt preview
+- Copy to clipboard functionality
+- Discipline-specific hints (Bisnis, Teknik, Kesehatan, Sosial, Seni)
+- Hallucination warning for AI-generated content
+
+Access at: `/santet`
 
 ## 🤝 Contributing
 
