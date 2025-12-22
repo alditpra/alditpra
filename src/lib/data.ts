@@ -17,9 +17,7 @@ interface RawLinkRow {
     icon?: string;
     category?: string;
     link?: string; // Direct Link
-    level?: string; // 0 or 1
-    active?: string;
-    order?: string;
+    // level, order, active are auto-generated - not needed from CSV
 }
 
 interface RawLevelOneRow {
@@ -30,8 +28,7 @@ interface RawLevelOneRow {
     link?: string; // Generic link
     type?: string;
     icon?: string;
-    urutan?: string;
-    active?: string;
+    // urutan and active are auto-generated - not needed from CSV
 }
 
 interface RawCategoryRow {
@@ -39,8 +36,7 @@ interface RawCategoryRow {
     title?: string;
     description?: string;
     icon?: string;
-    order?: string;
-    active?: string;
+    // order and active are no longer needed - auto-generated from row position
 }
 
 async function fetchSheetData(url: string): Promise<string> {
@@ -167,7 +163,7 @@ function transformLink(row: RawLinkRow, index: number): Link | null {
     };
 }
 
-function transformLevelOneItem(row: RawLevelOneRow): LevelOneItem | null {
+function transformLevelOneItem(row: RawLevelOneRow, index: number): LevelOneItem | null {
     const link_id = row.id?.trim().toLowerCase() || row.link_id?.trim().toLowerCase();
     const title = row.title?.trim();
     const link = row.link?.trim() || "#";
@@ -187,12 +183,12 @@ function transformLevelOneItem(row: RawLevelOneRow): LevelOneItem | null {
         link,
         type: row.type?.trim().toLowerCase() || "materi",
         icon: validIcon,
-        urutan: parseInt(row.urutan || "0", 10) || 0,
-        active: parseInt(row.active || "0", 10) || 0,
+        urutan: index, // Auto-generate from row position (no column needed)
+        active: 1,     // All items are active by default (no column needed)
     };
 }
 
-function transformCategory(row: RawCategoryRow): Category | null {
+function transformCategory(row: RawCategoryRow, index: number): Category | null {
     const id = row.id?.trim().toLowerCase();
     const title = row.title?.trim();
 
@@ -209,8 +205,8 @@ function transformCategory(row: RawCategoryRow): Category | null {
         title,
         description: row.description?.trim(),
         icon: validIcon,
-        order: parseInt(row.order || "0", 10) || 0,
-        active: parseInt(row.active || "0", 10) || 0,
+        order: index, // Auto-generate from row position (no column needed)
+        active: 1,    // All categories are active by default (no column needed)
     };
 }
 
@@ -236,7 +232,7 @@ async function fetchAndParseLinks(): Promise<Link[]> {
         const links = parsed.data
             .map((row, index) => transformLink(row, index))
             .filter((l): l is Link => l !== null) // All items are active by default now
-            .sort((a, b) => a.order - b.order);
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
         if (links.length === 0) {
             console.warn('No valid links found, using fallback');
@@ -261,11 +257,11 @@ async function fetchAndParseLevelOneItems(): Promise<LevelOneItem[]> {
         });
 
         const items = parsed.data
-            .map(transformLevelOneItem)
-            .filter((item): item is LevelOneItem => item !== null && item.active === 1)
+            .map((row, index) => transformLevelOneItem(row, index))
+            .filter((item): item is LevelOneItem => item !== null)
             .sort((a, b) => {
-                if (a.urutan !== b.urutan) {
-                    return a.urutan - b.urutan;
+                if ((a.urutan ?? 0) !== (b.urutan ?? 0)) {
+                    return (a.urutan ?? 0) - (b.urutan ?? 0);
                 }
                 // Secondary sort by type (materi first, tugas last etc if needed, or just keep stable)
                 return 0;
@@ -298,9 +294,9 @@ async function fetchAndParseCategories(): Promise<Category[]> {
         }
 
         const categories = parsed.data
-            .map(transformCategory)
-            .filter((c): c is Category => c !== null && c.active === 1)
-            .sort((a, b) => a.order - b.order);
+            .map((row, index) => transformCategory(row, index))
+            .filter((c): c is Category => c !== null)
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
         if (categories.length === 0) {
             console.warn('No valid categories found, using fallback');
