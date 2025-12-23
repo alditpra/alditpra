@@ -8,6 +8,7 @@ const STORAGE_KEYS = {
     EXCLUDED: 'slot-excluded',
     FAIR_MODE: 'slot-fair-mode',
     LAST_UPLOAD: 'slot-last-upload',
+    HISTORY: 'slot-history',
 } as const;
 
 export interface StoredStudentData {
@@ -20,6 +21,11 @@ export interface StoredFairModeState {
     excludedStudents: string[];
     fairModeEnabled: boolean;
 }
+
+// Re-export HistoryEntry type to avoid circular dependency issues if possible, 
+// or define a compatible interface here if needed.
+// For now, we'll use 'any' in storage to avoid strict coupling, or import type.
+import type { HistoryEntry } from './slot-animator';
 
 /**
  * Save student list to localStorage
@@ -76,6 +82,36 @@ export function loadFairModeState(): StoredFairModeState | null {
         return JSON.parse(data) as StoredFairModeState;
     } catch (error) {
         console.error('Failed to load fair mode state:', error);
+        return null;
+    }
+}
+
+/**
+ * Save history to localStorage
+ */
+export function saveHistory(history: HistoryEntry[]): void {
+    try {
+        localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(history));
+    } catch (error) {
+        console.error('Failed to save history:', error);
+    }
+}
+
+/**
+ * Load history from localStorage
+ */
+export function loadHistory(): HistoryEntry[] | null {
+    try {
+        const data = localStorage.getItem(STORAGE_KEYS.HISTORY);
+        if (!data) return null;
+        // Parse dates back to Date objects
+        const history = JSON.parse(data) as HistoryEntry[];
+        return history.map(entry => ({
+            ...entry,
+            timestamp: new Date(entry.timestamp)
+        }));
+    } catch (error) {
+        console.error('Failed to load history:', error);
         return null;
     }
 }

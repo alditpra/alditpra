@@ -114,6 +114,11 @@
       
       // Update Start button state immediately
       updateUI();
+
+      // Notify ResultsDisplay to show restored history
+      window.dispatchEvent(new CustomEvent('history-updated', {
+        detail: { history: animator.getConfirmedHistory() }
+      }));
     }
 
     // Listen for students loaded event

@@ -2,7 +2,7 @@
  * SlotAnimator - Core logic for student selection with Fair Mode and history tracking
  */
 
-import { saveStudents, saveFairModeState, loadStudents, loadFairModeState } from './storage';
+import { saveStudents, saveFairModeState, loadStudents, loadFairModeState, saveHistory, loadHistory } from './storage';
 
 export interface HistoryEntry {
     name: string;
@@ -53,6 +53,12 @@ export class SlotAnimator {
             });
         }
 
+        // Restore history
+        const history = loadHistory();
+        if (history) {
+            animator.confirmedHistory = history;
+        }
+
         return animator;
     }
 
@@ -93,6 +99,7 @@ export class SlotAnimator {
             selectionNumber,
             status
         });
+        saveHistory(this.confirmedHistory); // Persist history
     }
 
     // Confirmation management
@@ -181,6 +188,8 @@ export class SlotAnimator {
     clearHistory(): void {
         this.confirmedHistory = [];
         this.excludedStudents.clear();
+        saveHistory(this.confirmedHistory);
+        this.saveState();
     }
 
     // Utility
