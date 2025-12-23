@@ -146,27 +146,31 @@ sepertinya bukan{/* Confirmation modal for selected student */}
       
       const skipBtnText = document.getElementById('skip-btn-text');
 
-      if (isFairMode) {
-        // Fair Mode: Skip = Exclude permanently
-        skipBtn.className = 'px-6 py-4 rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:scale-105 hover:shadow-xl flex items-center justify-center gap-2';
-        
-        // Remove inline styles if any
-        skipBtn.style.background = '';
-        skipBtn.onmouseenter = null;
-        skipBtn.onmouseleave = null;
+      // Base classes that are safe and won't be purged
+      const baseClasses = 'px-6 py-4 rounded-2xl font-semibold transition-all duration-300 text-white shadow-lg hover:scale-105 flex items-center justify-center gap-2';
+      
+      skipBtn.className = baseClasses;
 
+      if (isFairMode) {
+        // Fair Mode: Red Gradient (Exclude)
+        // Using inline styles to guarantee colors on Vercel (bypassing Tailwind purge)
+        skipBtn.style.background = 'linear-gradient(to right, #ef4444, #dc2626)'; // red-500 to red-600
+        
+        // Add red glow on hover via JS (since hover classes might be purged)
+        skipBtn.onmouseenter = () => { skipBtn.style.boxShadow = '0 0 20px rgba(239, 68, 68, 0.5)'; };
+        skipBtn.onmouseleave = () => { skipBtn.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)'; };
+        
         if (skipBtnText) {
           skipBtnText.textContent = 'Tandai Absen (Exclude)';
         }
       } else {
-        // Regular Mode: Skip = Can appear again
-        skipBtn.className = 'px-6 py-4 rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg hover:scale-105 hover:shadow-xl flex items-center justify-center gap-2';
+        // Regular Mode: Amber/Orange Gradient (Skip)
+        skipBtn.style.background = 'linear-gradient(to right, #f59e0b, #f97316)'; // amber-500 to orange-500
         
-        // Remove inline styles if any
-        skipBtn.style.background = '';
-        skipBtn.onmouseenter = null;
-        skipBtn.onmouseleave = null;
-
+        // Add orange glow on hover
+        skipBtn.onmouseenter = () => { skipBtn.style.boxShadow = '0 0 20px rgba(249, 115, 22, 0.5)'; };
+        skipBtn.onmouseleave = () => { skipBtn.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)'; };
+        
         if (skipBtnText) {
           skipBtnText.textContent = 'Lewati (Bisa Muncul Lagi)';
         }
