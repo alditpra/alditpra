@@ -98,15 +98,17 @@ sepertinya bukan{/* Confirmation modal for selected student */}
 
     // Listen for show confirmation event
     window.addEventListener('show-confirmation', ((e: CustomEvent) => {
-      const { selectedStudent } = e.detail;
+      const { selectedStudent, animator, isFairMode } = e.detail;
       currentStudent = selectedStudent;
+      currentAnimator = animator;
 
       // Get animator from window (set by control panel)
       const lotteryStartEvent = new CustomEvent('get-animator');
       window.dispatchEvent(lotteryStartEvent);
 
       showModal(selectedStudent);
-      updateSkipButton(); // Update button based on fair mode
+      // Pass boolean directly, bypassing animator method check if animator object is compromised
+      updateSkipButton(isFairMode); 
     }) as EventListener);
 
     // Store animator reference
@@ -133,10 +135,20 @@ sepertinya bukan{/* Confirmation modal for selected student */}
     // bg-red-500 text-white shadow-[0_0_25px_-5px_rgba(239,68,68,0.6)] hover:shadow-[0_0_35px_-5px_rgba(239,68,68,0.8)]
     // bg-candy-yellow text-zinc-900 shadow-[0_0_25px_-5px_var(--candy-yellow)] hover:shadow-[0_0_35px_-5px_var(--candy-yellow)]
 
-    function updateSkipButton() {
-      if (!currentAnimator || !skipBtn) return;
-
-      const isFairMode = currentAnimator.isFairModeActive();
+    function updateSkipButton(isFairModeOverride?: boolean) {
+      if (!skipBtn) return;
+      
+      // Use override if provided, otherwise fallback to check method (if animator is valid)
+      let isFairMode = false;
+      if (typeof isFairModeOverride === 'boolean') {
+        isFairMode = isFairModeOverride;
+      } else if (currentAnimator) {
+        isFairMode = currentAnimator.isFairModeActive();
+      } else {
+        // Fallback or default
+        return; 
+      }
+      
       const skipBtnText = document.getElementById('skip-btn-text');
 
       // Base classes that are safe and won't be purged

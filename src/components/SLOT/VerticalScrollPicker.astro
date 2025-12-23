@@ -245,10 +245,14 @@
     }
 
     function showConfirmationModal() {
+      // Get safe boolean state
+      const isFairMode = currentAnimator ? currentAnimator.isFairModeActive() : false;
+      
       window.dispatchEvent(new CustomEvent('show-confirmation', {
         detail: { 
           selectedStudent: selectedStudent,
-          animator: currentAnimator
+          animator: currentAnimator,
+          isFairMode: isFairMode
         }
       }));
     }
