@@ -1,0 +1,216 @@
+{/* Confirmation modal for selected student */}
+
+<div id="confirmation-modal" class="hidden fixed inset-0 z-[60] bg-black/40 dark:bg-black/60 flex items-center justify-center p-4">
+  <div class="w-full max-w-md transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
+    <div class="p-8 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border-2 border-white/60 dark:border-zinc-700/50 shadow-2xl backdrop-blur-xl relative">
+      {/* Close button */}
+      <button
+        type="button"
+        id="close-modal-btn"
+        class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 
+               hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors
+               flex items-center justify-center group"
+        aria-label="Close"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200">
+          <line x1="18" x2="6" y1="6" y2="18"/>
+          <line x1="6" x2="18" y1="6" y2="18"/>
+        </svg>
+      </button>
+      
+      {/* Selected student name */}
+      <div class="text-center mb-6">
+        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-candy-purple/20 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        
+        <h3 class="text-sm font-semibold text-zinc-600 dark:text-zinc-400 mb-2">
+          Mahasiswa Terpilih:
+        </h3>
+        <p id="selected-student-name" class="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100 mb-1">
+          <!-- Name will be inserted here -->
+        </p>
+        <p class="text-sm text-zinc-500 dark:text-zinc-500">
+          Apakah mahasiswa hadir?
+        </p>
+      </div>
+
+      {/* Action buttons */}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Confirm button */}
+        <button
+          type="button"
+          id="confirm-present-btn"
+          class="px-6 py-4 rounded-2xl font-semibold transition-all duration-300
+                 bg-candy-teal text-white shadow-[0_0_25px_-5px_var(--candy-teal)]
+                 hover:scale-105 hover:shadow-[0_0_35px_-5px_var(--candy-teal)]
+                 flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>Konfirmasi Hadir</span>
+        </button>
+
+        {/* Skip button - Dynamic based on Fair Mode */}
+        <button
+          type="button"
+          id="skip-absent-btn"
+          class="px-6 py-4 rounded-2xl font-semibold transition-all duration-300
+                 shadow-lg hover:scale-105 hover:shadow-xl
+                 flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+            <path d="M21 3v5h-5"/>
+          </svg>
+          <span id="skip-btn-text">Skip</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import type { SlotAnimator } from '../../lib/slot/slot-animator';
+
+  function initConfirmationModal() {
+    const modal = document.getElementById('confirmation-modal');
+    const modalContent = document.getElementById('modal-content');
+    const studentNameEl = document.getElementById('selected-student-name');
+    const confirmBtn = document.getElementById('confirm-present-btn');
+    const skipBtn = document.getElementById('skip-absent-btn');
+    const closeBtn = document.getElementById('close-modal-btn');
+
+    let currentAnimator: SlotAnimator | null = null;
+    let currentStudent: string | null = null;
+    
+    // Close button handler
+    closeBtn?.addEventListener('click', () => {
+      hideModal();
+      window.dispatchEvent(new CustomEvent('selection-complete'));
+    });
+
+    // Listen for show confirmation event
+    window.addEventListener('show-confirmation', ((e: CustomEvent) => {
+      const { selectedStudent } = e.detail;
+      currentStudent = selectedStudent;
+
+      // Get animator from window (set by control panel)
+      const lotteryStartEvent = new CustomEvent('get-animator');
+      window.dispatchEvent(lotteryStartEvent);
+
+      showModal(selectedStudent);
+      updateSkipButton(); // Update button based on fair mode
+    }) as EventListener);
+
+    // Store animator reference
+    window.addEventListener('lottery-start', ((e: CustomEvent) => {
+      currentAnimator = e.detail.animator;
+    }) as EventListener);
+
+    function showModal(studentName: string) {
+      if (studentNameEl) {
+        studentNameEl.textContent = studentName;
+      }
+
+      modal?.classList.remove('hidden');
+      
+      // Animate in
+      setTimeout(() => {
+        modalContent?.classList.remove('scale-95', 'opacity-0');
+        modalContent?.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function updateSkipButton() {
+      if (!currentAnimator || !skipBtn) return;
+
+      const isFairMode = currentAnimator.isFairModeActive();
+      const skipBtnText = document.getElementById('skip-btn-text');
+
+      if (isFairMode) {
+        // Fair Mode: Skip = Exclude permanently
+        skipBtn.className = 'px-6 py-4 rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg hover:scale-105 hover:shadow-xl flex items-center justify-center gap-2';
+        if (skipBtnText) {
+          skipBtnText.textContent = 'Tandai Absen (Exclude)';
+        }
+      } else {
+        // Regular Mode: Skip = Can appear again
+        skipBtn.className = 'px-6 py-4 rounded-2xl font-semibold transition-all duration-300 bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg hover:scale-105 hover:shadow-xl flex items-center justify-center gap-2';
+        if (skipBtnText) {
+          skipBtnText.textContent = 'Lewati (Bisa Muncul Lagi)';
+        }
+      }
+    }
+
+    function hideModal() {
+      modalContent?.classList.add('scale-95', 'opacity-0');
+      modalContent?.classList.remove('scale-100', 'opacity-100');
+      
+      setTimeout(() => {
+        modal?.classList.add('hidden');
+        // Dispatch event AFTER modal is hidden
+        window.dispatchEvent(new CustomEvent('confirmation-modal-closed'));
+      }, 300);
+    }
+
+    // Confirm button
+    confirmBtn?.addEventListener('click', () => {
+      if (currentAnimator) {
+        currentAnimator.confirmSelection();
+        
+        // Show celebration
+        // TODO: Add confetti effect
+        
+        // Update history display
+        window.dispatchEvent(new CustomEvent('history-updated', {
+          detail: { history: currentAnimator.getConfirmedHistory() }
+        }));
+      }
+
+      hideModal();
+      window.dispatchEvent(new CustomEvent('selection-complete'));
+    });
+
+    // Skip button
+    skipBtn?.addEventListener('click', async () => {
+      if (currentAnimator) {
+        currentAnimator.skipSelection();
+      }
+
+      hideModal();
+
+      // Wait a bit then trigger new selection automatically
+      await sleep(500);
+      
+      if (currentAnimator && !currentAnimator.isPoolExhausted()) {
+        window.dispatchEvent(new CustomEvent('lottery-start', {
+          detail: { animator: currentAnimator }
+        }));
+      } else {
+        window.dispatchEvent(new CustomEvent('selection-complete'));
+      }
+    });
+
+    function sleep(ms: number): Promise<void> {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+  }
+
+  // Auto-initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initConfirmationModal);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initConfirmationModal);
+    } else {
+      initConfirmationModal();
+    }
+  }
+</script>

@@ -1,0 +1,114 @@
+{/* Tab-style selector for choosing between Upload and Manual input modes */}
+
+<div class="mb-6">
+  <div class="flex gap-3">
+    <button
+      type="button"
+      id="upload-mode-btn"
+      class="flex-1 px-5 py-4 rounded-2xl font-semibold transition-all duration-300
+             bg-white/70 dark:bg-zinc-900/70 border border-white/40 dark:border-zinc-700/30
+             hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg
+             hover:border-white/60 dark:hover:border-white/15
+             mode-btn active"
+      data-mode="upload"
+    >
+      <div class="flex items-center justify-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-candy-teal/20 flex items-center justify-center flex-shrink-0"
+             style="box-shadow: 0 0 20px -5px var(--candy-teal);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-teal),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_40%)]">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <span class="text-zinc-800 dark:text-zinc-200">Upload File</span>
+      </div>
+    </button>
+
+    <button
+      type="button"
+      id="manual-mode-btn"
+      class="flex-1 px-5 py-4 rounded-2xl font-semibold transition-all duration-300
+             bg-white/70 dark:bg-zinc-900/70 border border-white/40 dark:border-zinc-700/30
+             hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg
+             hover:border-white/60 dark:hover:border-white/15
+             mode-btn"
+      data-mode="manual"
+    >
+      <div class="flex items-center justify-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-candy-yellow/20 flex items-center justify-center flex-shrink-0"
+             style="box-shadow: 0 0 20px -5px var(--candy-yellow);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-yellow),black_50%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_40%)]">
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+          </svg>
+        </div>
+        <span class="text-zinc-800 dark:text-zinc-200">Tulis Manual</span>
+      </div>
+    </button>
+  </div>
+</div>
+
+<script>
+  function initInputModeSelector() {
+    const uploadBtn = document.getElementById('upload-mode-btn');
+    const manualBtn = document.getElementById('manual-mode-btn');
+    const uploadArea = document.getElementById('upload-area');
+    const manualArea = document.getElementById('manual-area');
+
+    let currentMode: 'upload' | 'manual' = 'upload';
+
+    function switchMode(mode: 'upload' | 'manual') {
+      currentMode = mode;
+
+      // Update button states
+      if (mode === 'upload') {
+        uploadBtn?.classList.add('active', 'border-candy-teal/50', 'shadow-[0_0_25px_-5px_var(--candy-teal)]');
+        uploadBtn?.classList.remove('border-white/40', 'dark:border-zinc-700/30');
+        
+        manualBtn?.classList.remove('active', 'border-candy-yellow/50', 'shadow-[0_0_25px_-5px_var(--candy-yellow)]');
+        manualBtn?.classList.add('border-white/40', 'dark:border-zinc-700/30');
+        
+        uploadArea?.classList.remove('hidden');
+        manualArea?.classList.add('hidden');
+      } else {
+        manualBtn?.classList.add('active', 'border-candy-yellow/50', 'shadow-[0_0_25px_-5px_var(--candy-yellow)]');
+        manualBtn?.classList.remove('border-white/40', 'dark:border-zinc-700/30');
+        
+        uploadBtn?.classList.remove('active', 'border-candy-teal/50', 'shadow-[0_0_25px_-5px_var(--candy-teal)]');
+        uploadBtn?.classList.add('border-white/40', 'dark:border-zinc-700/30');
+        
+        manualArea?.classList.remove('hidden');
+        uploadArea?.classList.add('hidden');
+      }
+
+      // Dispatch event for other components
+      window.dispatchEvent(new CustomEvent('input-mode-change', { detail: { mode } }));
+    }
+
+    uploadBtn?.addEventListener('click', () => switchMode('upload'));
+    manualBtn?.addEventListener('click', () => switchMode('manual'));
+
+    // Initialize upload mode
+    switchMode('upload');
+  }
+
+  // Auto-initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initInputModeSelector);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initInputModeSelector);
+    } else {
+      initInputModeSelector();
+    }
+  }
+</script>
+
+<style>
+  .mode-btn {
+    position: relative;
+  }
+  
+  .mode-btn.active {
+    transform: scale(1.02);
+  }
+</style>

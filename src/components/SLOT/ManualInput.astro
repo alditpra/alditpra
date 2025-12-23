@@ -1,0 +1,176 @@
+{/* Manual text input for line-by-line student names */}
+
+<div id="manual-area" class="hidden">
+  <textarea
+    id="manual-input"
+    rows="10"
+    placeholder="Masukkan nama mahasiswa, satu nama per baris...&#10;&#10;Contoh:&#10;Ahmad Fauzi Al-Farisi&#10;Siti Nurhaliza Azzahra&#10;Budi Santoso Wijaya"
+    class="w-full px-4 py-3 rounded-2xl
+           bg-white/80 dark:bg-zinc-800/80
+           border border-white/60 dark:border-zinc-700/50
+           text-zinc-800 dark:text-zinc-200
+           placeholder:text-zinc-400 dark:placeholder:text-zinc-500
+           font-mono text-sm
+           focus:outline-none focus:ring-2 focus:ring-candy-purple/50
+           transition-all duration-200
+           resize-none"
+  ></textarea>
+
+  <div class="mt-4 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <span id="name-count" class="px-4 py-2 rounded-xl bg-gradient-to-r from-candy-purple/20 to-candy-pink/20 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+        0 nama
+      </span>
+      
+      <div id="validation-message" class="text-sm text-zinc-600 dark:text-zinc-400 hidden">
+        <!-- Validation messages will appear here -->
+      </div>
+    </div>
+
+    <button
+      type="button"
+      id="clear-manual-btn"
+      class="px-4 py-2 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400
+             text-sm font-semibold hover:scale-105 transition-transform duration-200"
+    >
+      ✕ Hapus Semua
+    </button>
+  </div>
+
+  {/* Preview list */}
+  <div id="preview-container" class="mt-6 hidden">
+    <h3 class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
+      Preview Nama Mahasiswa:
+    </h3>
+    <div id="preview-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto p-2 rounded-xl bg-zinc-50/80 dark:bg-zinc-900/60">
+      <!-- Preview cards will be inserted here -->
+    </div>
+  </div>
+</div>
+
+<script>
+  function initManualInput() {
+    const manualInput = document.getElementById('manual-input') as HTMLTextAreaElement;
+    const nameCount = document.getElementById('name-count');
+    const validationMessage = document.getElementById('validation-message');
+    const previewContainer = document.getElementById('preview-container');
+    const previewList = document.getElementById('preview-list');
+    const clearManualBtn = document.getElementById('clear-manual-btn');
+
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    let currentStudents: string[] = [];
+
+    function parseManualInput(text: string): string[] {
+      const lines = text.split('\n');
+      const names: string[] = [];
+      
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.length > 0) {
+          // Truncate very long names
+          const name = trimmed.length > 50 ? trimmed.substring(0, 50) + '...' : trimmed;
+          names.push(name);
+        }
+      }
+      
+      return names;
+    }
+
+    function updatePreview(names: string[]) {
+      // Update count
+      if (nameCount) {
+        nameCount.textContent = `${names.length} nama`;
+      }
+
+      // Show/hide preview
+      if (names.length > 0) {
+        previewContainer?.classList.remove('hidden');
+        
+        // Generate preview cards
+        if (previewList) {
+          previewList.innerHTML = names.map((name, index) => `
+            <div class="px-3 py-2 rounded-lg bg-white/95 dark:bg-zinc-800/95 border border-white/60 dark:border-zinc-700/50 text-sm">
+              <span class="font-medium text-zinc-800 dark:text-zinc-200">${index + 1}. ${escapeHtml(name)}</span>
+            </div>
+          `).join('');
+        }
+      } else {
+        previewContainer?.classList.add('hidden');
+      }
+    }
+
+    function validateAndProcess(text: string) {
+      const names = parseManualInput(text);
+      
+      // Remove duplicates
+      const uniqueNames = [...new Set(names)];
+      const duplicateCount = names.length - uniqueNames.length;
+      
+      // Validation
+      if (validationMessage) {
+        validationMessage.classList.add('hidden');
+        
+        if (uniqueNames.length < 2 && uniqueNames.length > 0) {
+          validationMessage.textContent = '⚠️ Minimal 2 nama mahasiswa diperlukan';
+          validationMessage.classList.remove('hidden');
+          validationMessage.className = validationMessage.className.replace(/text-\S+/, 'text-amber-600 dark:text-amber-400');
+        } else if (uniqueNames.length > 500) {
+          validationMessage.textContent = '⚠️ Maksimal 500 nama mahasiswa';
+          validationMessage.classList.remove('hidden');
+          validationMessage.className = validationMessage.className.replace(/text-\S+/, 'text-red-600 dark:text-red-400');
+        } else if (duplicateCount > 0) {
+          validationMessage.textContent = `ℹ️ Ditemukan ${duplicateCount} nama duplikat (akan dihapus otomatis)`;
+          validationMessage.classList.remove('hidden');
+          validationMessage.className = validationMessage.className.replace(/text-\S+/, 'text-blue-600 dark:text-blue-400');
+        }
+      }
+
+      currentStudents = uniqueNames;
+      updatePreview(uniqueNames);
+
+      // Dispatch event if valid
+      if (uniqueNames.length >= 2 && uniqueNames.length <= 500) {
+        window.dispatchEvent(new CustomEvent('students-loaded', { 
+          detail: { students: uniqueNames, source: 'manual' } 
+        }));
+      } else if (uniqueNames.length === 0) {
+        window.dispatchEvent(new CustomEvent('students-cleared'));
+      }
+    }
+
+    // Input handler with debounce
+    manualInput?.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        validateAndProcess(manualInput.value);
+      }, 500);
+    });
+
+    // Clear button
+    clearManualBtn?.addEventListener('click', () => {
+      if (manualInput) manualInput.value = '';
+      currentStudents = [];
+      updatePreview([]);
+      validationMessage?.classList.add('hidden');
+      window.dispatchEvent(new CustomEvent('students-cleared'));
+    });
+
+    // Utility function to escape HTML
+    function escapeHtml(text: string): string {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  }
+
+  // Auto-initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initManualInput);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initManualInput);
+    } else {
+      initManualInput();
+    }
+  }
+</script>

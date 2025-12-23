@@ -1,0 +1,402 @@
+{/* Fullscreen vertical scrolling animation for student selection */}
+
+<div id="animation-overlay" class="hidden fixed inset-0 z-50 bg-black/60 dark:bg-black/80">
+  <div class="min-h-screen flex items-center justify-center">
+    {/* Countdown (shown initially) */}
+    <div id="countdown-display" class="hidden text-center">
+      <div id="countdown-number" class="text-9xl font-black text-white mb-4 animate-pulse-scale">
+        3
+      </div>
+      <p class="text-2xl font-semibold text-white/80">Bersiap...</p>
+    </div>
+
+    {/* Scrolling container - ENHANCED */}
+    <div id="scroll-container" class="hidden relative w-full">
+      {/* Gradient fade masks with stronger effect */}
+      <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-zinc-900 dark:from-zinc-950 via-zinc-900/80 dark:via-zinc-950/80 to-transparent z-20 pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-zinc-900 dark:from-zinc-950 via-zinc-900/80 dark:via-zinc-950/80 to-transparent z-20 pointer-events-none"></div>
+
+      {/* Main container with enhanced styling */}
+      <div class="relative overflow-hidden border-4 border-candy-purple/40 shadow-2xl"
+           style="height: 95vh; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+        
+        {/* Dark mode background overlay */}
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-900 to-zinc-800 opacity-0 dark:opacity-100 transition-opacity duration-300"></div>
+      {/* Highlight bar - centered */}
+      <div class="absolute top-1/2 left-0 right-0 -translate-y-1/2 h-56 
+                   bg-white/20 dark:bg-zinc-800/20 border-y-4 border-candy-purple/50 
+                   pointer-events-none z-20"
+                   style="box-shadow: 
+                   0 0 80px 20px rgba(168, 85, 247, 0.4),
+                   inset 0 0 40px 5px rgba(168, 85, 247, 0.2);"></div>
+
+      {/* Names scroller */}
+      <div id="names-scroller" 
+           class="absolute inset-0 py-12 flex flex-col items-center"
+           style="transition: transform 0s linear;">
+        {/* Names will be dynamically inserted here */}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import type { SlotAnimator } from '../../lib/slot/slot-animator';
+  import confetti from 'canvas-confetti';
+
+  function initVerticalScrollPicker() {
+    const overlay = document.getElementById('animation-overlay');
+    const countdownDisplay = document.getElementById('countdown-display');
+    const countdownNumber = document.getElementById('countdown-number');
+    const scrollContainer = document.getElementById('scroll-container');
+    const namesScroller = document.getElementById('names-scroller');
+
+    let currentAnimator: SlotAnimator | null = null;
+    let selectedStudent: string | null = null;
+
+    // Listen for lottery start
+    window.addEventListener('lottery-start', (async (e: CustomEvent) => {
+      currentAnimator = e.detail.animator;
+      
+      if (!currentAnimator) return;
+
+      try {
+        // Select random student
+        selectedStudent = currentAnimator.selectRandom();
+        
+        // Show overlay
+        overlay?.classList.remove('hidden');
+        
+        // Start animation sequence
+        await runCountdown();
+        await runScrollAnimation();
+        await highlightSelected();
+        
+        // 🎊 CONFETTI CELEBRATION!
+        fireConfetti();
+        
+        // Wait a moment before showing modal (let the selection sink in)
+        await sleep(2000);
+        
+        // Show confirmation modal
+        showConfirmationModal();
+      } catch (error) {
+        console.error('Animation error:', error);
+        overlay?.classList.add('hidden');
+        window.dispatchEvent(new CustomEvent('selection-complete'));
+      }
+    }) as EventListener);
+
+    async function runCountdown(): Promise<void> {
+      if (!countdownDisplay || !countdownNumber) return;
+
+      countdownDisplay.classList.remove('hidden');
+      scrollContainer?.classList.add('hidden');
+
+      const numbers = ['3', '2', '1', 'GO!'];
+      for (const num of numbers) {
+        if (countdownNumber) {
+          countdownNumber.textContent = num;
+          countdownNumber.className = 'text-9xl font-black text-white mb-4 animate-pulse-scale'; // Re-added mb-4
+        }
+        await sleep(800);
+      }
+
+      countdownDisplay.classList.add('hidden');
+    }
+
+    async function runScrollAnimation(): Promise<void> {
+      if (!scrollContainer || !namesScroller || !currentAnimator || !selectedStudent) return;
+
+      scrollContainer.classList.remove('hidden');
+
+      // Get all available students
+      const allStudents = currentAnimator.getAvailableStudents();
+      
+      // Build simple repeated list (8 repetitions is enough)
+      const namesList: string[] = [];
+      for (let i = 0; i < 8; i++) {
+        namesList.push(...allStudents);
+      }
+
+      // Fixed item height for consistency
+      // 160px min-height + 64px padding (py-8 = 32px top + 32px bottom) = 224px total
+      const ITEM_HEIGHT = 224; // px - actual rendered height
+
+      // Render all names with PROPER styling and fixed height
+      namesScroller.innerHTML = namesList.map((name, idx) => `
+        <div class="scroll-item py-8 px-8 text-center transition-all duration-300" style="min-height: ${ITEM_HEIGHT}px; display: flex; align-items: center; justify-content: center;" data-name="${name}">
+          <span class="item-text text-4xl sm:text-5xl md:text-6xl font-bold text-zinc-500 dark:text-zinc-500 transition-all duration-300">
+            ${escapeHtml(name)}
+          </span>
+        </div>
+      `).join('');
+
+      // Find target index (middle occurrence of selected student)
+      let targetIndex = -1;
+      const middleStart = Math.floor(namesList.length / 3);
+      const middleEnd = Math.floor(namesList.length * 2 / 3);
+      
+      for (let i = middleStart; i < middleEnd; i++) {
+        if (namesList[i] === selectedStudent) {
+          targetIndex = i;
+          break;
+        }
+      }
+
+      if (targetIndex === -1) {
+        console.error('Could not find selected student');
+        return;
+      }
+
+      // Simple calculation: scroll so target item is at container center
+      const containerHeight = scrollContainer.offsetHeight;
+      
+      // Get ACTUAL height of first rendered item (more accurate than constant)
+      const firstItem = namesScroller.querySelector('.scroll-item') as HTMLElement;
+      const actualItemHeight = firstItem ? firstItem.offsetHeight : 224;
+      
+      // IMPORTANT: Scroller has py-12 (48px top padding), so first item starts at 48px, not 0
+      const scrollerPaddingTop = 48; // py-12 = 3rem = 48px
+      
+      const targetPosition = scrollerPaddingTop + (targetIndex * actualItemHeight) + (actualItemHeight / 2); // center of target item
+      
+      // Center calculation
+      const scrollDistance = targetPosition - (containerHeight / 2);
+
+      // Start from top
+      namesScroller.style.transform = 'translateY(0)';
+      await sleep(100);
+
+      // Scroll to target (10 seconds with VERY dramatic slow-down)
+      // Using custom cubic-bezier: moderate start, then extreme deceleration towards end
+      namesScroller.style.transition = 'transform 10s cubic-bezier(0.33, 0, 0.2, 1)';
+      namesScroller.style.transform = `translateY(-${scrollDistance}px)`;
+
+      await sleep(10000);
+    }
+
+    async function highlightSelected(): Promise<void> {
+      if (!namesScroller || !scrollContainer) return;
+
+      // Find which item is actually at center now
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const containerCenterY = containerRect.top + containerRect.height / 2;
+
+      const items = Array.from(namesScroller.querySelectorAll('.scroll-item'));
+      
+      // FIRST: Clear ALL highlights from all items
+      items.forEach(item => {
+        const span = item.querySelector('.item-text');
+        if (span) {
+          // Reset to default gray state
+          span.classList.remove('scale-150', 'font-black');
+          span.classList.add('text-zinc-500', 'dark:text-zinc-500');
+          
+          // Clear inline styles
+          (span as HTMLElement).style.background = '';
+          (span as HTMLElement).style.webkitBackgroundClip = '';
+          (span as HTMLElement).style.webkitTextFillColor = '';
+          (span as HTMLElement).style.backgroundClip = '';
+          (span as HTMLElement).style.filter = '';
+          (span as HTMLElement).style.animation = '';
+        }
+      });
+      
+      // THEN: Find and highlight ONLY the centered item
+      let closestItem: Element | null = null;
+      let minDistance = Infinity;
+
+      items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const itemCenterY = rect.top + rect.height / 2;
+        const distance = Math.abs(itemCenterY - containerCenterY);
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestItem = item;
+        }
+      });
+
+      // Update selectedStudent to match what's actually centered
+      if (closestItem) {
+        const actualName = (closestItem as HTMLElement).dataset.name;
+        if (actualName) {
+          selectedStudent = actualName;
+        }
+
+        // Highlight ONLY this one item
+        const span = closestItem.querySelector('.item-text');
+        if (span) {
+          span.classList.remove('text-zinc-500', 'dark:text-zinc-500');
+          span.classList.add('scale-150', 'font-black');
+          
+          // Gradient text
+          (span as HTMLElement).style.background = 'linear-gradient(135deg, rgb(127,115,255), rgb(255,131,195))';
+          (span as HTMLElement).style.webkitBackgroundClip = 'text';
+          (span as HTMLElement).style.webkitTextFillColor = 'transparent';
+          (span as HTMLElement).style.backgroundClip = 'text';
+          (span as HTMLElement).style.filter = 'drop-shadow(0 0 20px rgba(127,115,255,0.6))';
+          (span as HTMLElement).style.animation = 'breathe 2s ease-in-out infinite';
+        }
+      }
+
+      await sleep(500);
+    }
+
+    function showConfirmationModal() {
+      window.dispatchEvent(new CustomEvent('show-confirmation', {
+        detail: { 
+          selectedStudent: selectedStudent,
+          animator: currentAnimator
+        }
+      }));
+    }
+    
+    function fireConfetti() {
+      // Celebration confetti with candy colors!
+      const colors = ['#a855f7', '#ec4899', '#14b8a6', '#fbbf24', '#f97316'];
+      
+      // Burst from center
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: colors,
+        ticks: 200,
+        gravity: 1,
+        scalar: 1.2,
+      });
+      
+      // Side bursts for extra celebration
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.6 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 50,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.6 },
+          colors: colors
+        });
+      }, 200);
+    }
+
+    function resetAnimationState() {
+      countdownDisplay?.classList.add('hidden');
+      scrollContainer?.classList.add('hidden');
+      
+      if (namesScroller) {
+        namesScroller.innerHTML = '';
+        namesScroller.style.transform = '';
+        namesScroller.style.transition = '';
+      }
+      
+      selectedStudent = null;
+    }
+
+    // Reset when modal closes
+    window.addEventListener('confirmation-modal-closed', resetAnimationState);
+    
+    // Also reset on selection-complete
+    window.addEventListener('selection-complete', () => {
+      setTimeout(() => {
+        overlay?.classList.add('hidden');
+        resetAnimationState();
+      }, 300);
+    });
+
+    function sleep(ms: number): Promise<void> {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function escapeHtml(text: string): string {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  }
+
+  // Auto-initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initVerticalScrollPicker);
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVerticalScrollPicker);
+    } else {
+      initVerticalScrollPicker();
+    }
+  }
+</script>
+
+<style>
+  @keyframes pulse-scale {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes breathe {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-pulse-scale {
+    animation: pulse-scale 0.8s ease-in-out;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .name-item {
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInScale 0.3s ease-out;
+  }
+
+  .name-text {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Subtle scale effect when scrolling */
+  .name-item:hover .name-text {
+    transform: scale(1.05);
+  }
+</style>
