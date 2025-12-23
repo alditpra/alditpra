@@ -98,6 +98,24 @@
     let animator: SlotAnimator | null = null;
     let studentsLoaded = false;
 
+    // Try to restore from storage immediately to prevent race conditions
+    // (In case FileUploader dispatched 'students-loaded' before we started listening)
+    const savedAnimator = SlotAnimator.fromStorage({ fairMode: true });
+    if (savedAnimator) {
+      console.log('ControlPanel: Restored state from localStorage');
+      animator = savedAnimator;
+      studentsLoaded = true;
+      
+      // Sync Fair Mode toggle
+      if (fairModeToggle) {
+        fairModeToggle.checked = animator.isFairModeActive();
+        updateToggleUI(animator.isFairModeActive());
+      }
+      
+      // Update Start button state immediately
+      updateUI();
+    }
+
     // Listen for students loaded event
     window.addEventListener('students-loaded', ((e: CustomEvent) => {
       const { students } = e.detail;
