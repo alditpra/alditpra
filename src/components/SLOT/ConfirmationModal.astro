@@ -1,4 +1,4 @@
-{/* Confirmation modal for selected student */}
+sepertinya bukan{/* Confirmation modal for selected student */}
 
 <div id="confirmation-modal" class="hidden fixed inset-0 z-[60] bg-black/40 dark:bg-black/60 flex items-center justify-center p-4">
   <div class="w-full max-w-md transform transition-all duration-300 scale-95 opacity-0" id="modal-content">
@@ -127,6 +127,11 @@
         modalContent?.classList.add('scale-100', 'opacity-100');
       }, 10);
     }
+
+    // SAFELIST FOR TAILWIND (DO NOT REMOVE)
+    // These classes are used dynamically in the JS below and must be included in the build
+    // bg-red-500 text-white shadow-[0_0_25px_-5px_rgba(239,68,68,0.6)] hover:shadow-[0_0_35px_-5px_rgba(239,68,68,0.8)]
+    // bg-candy-yellow text-zinc-900 shadow-[0_0_25px_-5px_var(--candy-yellow)] hover:shadow-[0_0_35px_-5px_var(--candy-yellow)]
 
     function updateSkipButton() {
       if (!currentAnimator || !skipBtn) return;
