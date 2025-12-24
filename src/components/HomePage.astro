@@ -163,85 +163,101 @@ try {
 
 <script is:inline>
     // Search functionality - inline for build compatibility
+    // Optimized with requestAnimationFrame and DOM batching
     function initSearch() {
         const searchInput = document.getElementById('search-input');
         const linkSections = document.querySelectorAll('.link-section');
-        const linkCards = document.querySelectorAll('.link-card-item');
+        const linkCards = document.querySelectorAll('.link-card-item'); // These are the link containers
         const emptyState = document.getElementById('empty-state');
+        const searchWrapper = document.getElementById('search-wrapper');
 
         // Force visible initially to prevent layout glitch
+        // Batch 1: Write (Reset state)
         linkCards.forEach(card => card.classList.remove('hidden'));
 
         let searchQuery = '';
+        let pendingFrame = null;
 
-        function filterLinks() {
-            let hasVisibleLinks = false;
-            const query = searchQuery;
-
-            linkCards.forEach((card) => {
-                const name = (card.getAttribute('data-name') || '').toLowerCase();
-                const element = card;
-                const parentSection = element.closest('.link-section');
-
-                // Match Logic - Search only (no category filter)
-                const matchesSearch = name.includes(query);
-
-                if (matchesSearch) {
-                    element.classList.remove('hidden');
-                    hasVisibleLinks = true;
-                    if (parentSection) {
-                        parentSection.classList.remove('hidden');
-                    }
-                } else {
-                    element.classList.add('hidden');
-                }
-            });
-
-            // Check sections for emptiness - use classList instead of style.display
-            linkSections.forEach(section => {
-                const visibleCards = Array.from(section.querySelectorAll('.link-card-item:not(.hidden)'));
-
-                if (visibleCards.length === 0) {
-                    section.classList.add('hidden');
-                } else {
-                    section.classList.remove('hidden');
-                }
-            });
-
-            // Toggle Empty State - pure classList
-            if (!hasVisibleLinks && searchQuery) {
-                emptyState?.classList.remove('hidden');
-                emptyState?.classList.add('flex');
-            } else {
-                emptyState?.classList.add('hidden');
-                emptyState?.classList.remove('flex');
+        function performFilter() {
+            if (pendingFrame) {
+                cancelAnimationFrame(pendingFrame);
             }
+
+            pendingFrame = requestAnimationFrame(() => {
+                const query = searchQuery;
+                
+                // Phase 1: READ - Calculate visibility states
+                // We map all cards to their visibility status first
+                const cardStates = Array.from(linkCards).map(card => {
+                    const name = (card.getAttribute('data-name') || '').toLowerCase();
+                    const visible = name.includes(query);
+                    return { element: card, visible };
+                });
+
+                // Phase 2: WRITE - Apply visibility to Cards
+                let hasVisibleLinks = false;
+                const sectionMap = new Map(); // Track visible cards per section
+
+                cardStates.forEach(({ element, visible }) => {
+                    if (visible) {
+                        element.classList.remove('hidden');
+                        hasVisibleLinks = true;
+                        
+                        // Track section visibility
+                        const section = element.closest('.link-section');
+                        if (section) {
+                            const count = sectionMap.get(section) || 0;
+                            sectionMap.set(section, count + 1);
+                        }
+                    } else {
+                        element.classList.add('hidden');
+                    }
+                });
+
+                // Phase 3: WRITE - Update Sections
+                linkSections.forEach(section => {
+                    const visibleCount = sectionMap.get(section) || 0;
+                    if (visibleCount === 0) {
+                        section.classList.add('hidden');
+                    } else {
+                        section.classList.remove('hidden');
+                    }
+                });
+
+                // Phase 4: WRITE - Update Empty State
+                if (!hasVisibleLinks && query) {
+                    emptyState?.classList.remove('hidden');
+                    emptyState?.classList.add('flex');
+                } else {
+                    emptyState?.classList.add('hidden');
+                    emptyState?.classList.remove('flex');
+                }
+                
+                // Phase 5: Search Wrapper State
+                if (query.length > 0) {
+                    searchWrapper?.classList.add('has-text');
+                } else {
+                    searchWrapper?.classList.remove('has-text');
+                }
+
+                pendingFrame = null;
+            });
         }
 
-        // Search Input Listener - filter links and manage wrapper state
+        // Search Input Listener
         searchInput?.addEventListener('input', (e) => {
             const target = e.target;
             searchQuery = target.value.trim().toLowerCase();
-            filterLinks();
-
-            // Update wrapper state based on search query
-            const wrapper = document.getElementById('search-wrapper');
-            if (searchQuery.length > 0) {
-                wrapper?.classList.add('has-text');
-            } else {
-                wrapper?.classList.remove('has-text');
-            }
+            performFilter();
         });
 
-        // Note: Profile card animation is handled by CSS :focus-within
-        // Keep hidden state when there's text on blur
+        // Search Input Blur
         searchInput?.addEventListener('blur', () => {
-            const wrapper = document.getElementById('search-wrapper');
-            if (searchQuery.length > 0) {
-                wrapper?.classList.add('has-text');
-            } else {
-                wrapper?.classList.remove('has-text');
-            }
+             if (searchQuery.length > 0) {
+                 searchWrapper?.classList.add('has-text');
+             } else {
+                 searchWrapper?.classList.remove('has-text');
+             }
         });
 
         // Keyboard Shortcut (Cmd+K or Ctrl+K)
@@ -252,22 +268,18 @@ try {
             }
         });
 
-        // Initial filter run
-        filterLinks();
+        // Initial filter run (if browser restored input value)
+        if (searchInput && searchInput.value) {
+            searchQuery = searchInput.value.trim().toLowerCase();
+            performFilter();
+        }
     }
 
     // Auto-initialize
     if (typeof window !== 'undefined') {
-        // Client-side logic for search, category filtering, and animations
+        // Run on every page load (handles initial load and view transitions)
         document.addEventListener('astro:page-load', () => {
             initSearch();
         });
-
-        // Also run on initial load in case view transitions aren't used or first load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initSearch);
-        } else {
-            initSearch();
-        }
     }
 </script>

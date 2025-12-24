@@ -11,64 +11,68 @@ import { Icon } from "astro-icon/components";
         {/* Subtle gradient overlay */}
         <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl" />
 
-        <div class="relative flex flex-col sm:flex-row items-center sm:items-start gap-5 transition-all duration-500 ease-out" id="profile-info">
-            {/* Avatar - Simple and Clean */}
-            <div class="shrink-0 group p-6 -m-6">
-                <div class="relative">
-                    
-                    {/* Avatar Container - no shadow */}
-                    <div
-                        class="relative rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3"
-                    >
-                        <img
-                            srcset="/avatar-desktop.webp 208w, /avatar-mobile.webp 308w"
-                            sizes="(min-width: 640px) 104px, 154px"
-                            src="/avatar-desktop.webp"
-                            alt={SITE_CONFIG.name}
-                            width="208"
-                            height="208"
-                            class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white"
-                            loading="eager"
-                        />
-                        {/* Online Status Indicator */}
-                        <div class="absolute bottom-1 right-1 w-5 h-5 bg-candy-teal rounded-full border-3 border-white shadow-md">
-                            <div class="absolute inset-0 rounded-full bg-candy-teal animate-ping opacity-75"></div>
+        <div id="collapsible-wrapper">
+            <div id="collapsible-inner">
+                <div class="relative flex flex-col sm:flex-row items-center sm:items-start gap-5" id="profile-info">
+                    {/* Avatar - Simple and Clean */}
+                    <div class="shrink-0 group p-6 -m-6">
+                        <div class="relative">
+                            
+                            {/* Avatar Container - no shadow */}
+                            <div
+                                class="relative rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3"
+                            >
+                                <img
+                                    srcset="/avatar-desktop.webp 208w, /avatar-mobile.webp 308w"
+                                    sizes="(min-width: 640px) 104px, 154px"
+                                    src="/avatar-desktop.webp"
+                                    alt={SITE_CONFIG.name}
+                                    width="208"
+                                    height="208"
+                                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-white"
+                                    loading="eager"
+                                />
+                                {/* Online Status Indicator */}
+                                <div class="absolute bottom-1 right-1 w-5 h-5 bg-candy-teal rounded-full border-3 border-white shadow-md">
+                                    <div class="absolute inset-0 rounded-full bg-candy-teal animate-ping opacity-75"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+        
+                    {/* Info */}
+                    <div class="flex-1 text-center sm:text-left">
+                        {/* Name with static candy color */}
+                        <h1
+                            class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1"
+                            style="color: var(--candy-purple); filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
+                        >
+                            {SITE_CONFIG.name}
+                        </h1>
+        
+                        {/* Description - improved styling */}
+                        <p class="text-base sm:text-lg font-normal leading-relaxed mb-5" style="color: var(--text-secondary);">
+                            Built with Astro 5 and Tailwind CSS 4. Leveraging{' '}
+                            <a 
+                                href="https://docs.google.com/spreadsheets/d/1Tmj_ERd9KKvaKoGPEkczNb8iAJpTfkGHl7OUoahQlW0/edit?usp=drive_link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-1 text-candy-purple hover:text-candy-blue font-semibold transition-colors underline decoration-candy-purple/30 hover:decoration-candy-blue/50"
+                            >
+                                Google Sheets
+                                <Icon name="lucide:external-link" class="w-4 h-4" />
+                            </a>
+                            {' '}as a headless CMS for effortless content updates.
+                        </p>
+        
+                        <SocialLinks />
+                    </div>
                 </div>
-            </div>
-
-            {/* Info */}
-            <div class="flex-1 text-center sm:text-left">
-                {/* Name with static candy color */}
-                <h1
-                    class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1"
-                    style="color: var(--candy-purple); filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
-                >
-                    {SITE_CONFIG.name}
-                </h1>
-
-                {/* Description - improved styling */}
-                <p class="text-base sm:text-lg font-normal leading-relaxed mb-5" style="color: var(--text-secondary);">
-                    Modern link management system built with Astro 5 and Tailwind CSS 4. Leveraging{' '}
-                    <a 
-                        href="https://docs.google.com/spreadsheets/d/1Tmj_ERd9KKvaKoGPEkczNb8iAJpTfkGHl7OUoahQlW0/edit?usp=drive_link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-1 text-candy-purple hover:text-candy-blue font-semibold transition-colors underline decoration-candy-purple/30 hover:decoration-candy-blue/50"
-                    >
-                        Google Sheets
-                        <Icon name="lucide:external-link" class="w-4 h-4" />
-                    </a>
-                    {' '}as a headless CMS for effortless content updates.
-                </p>
-
-                <SocialLinks />
+        
+                {/* Divider */}
+                <div class="h-px my-6" id="profile-divider" style="background: linear-gradient(to right, transparent, var(--divider), transparent);" />
             </div>
         </div>
-
-        {/* Divider */}
-        <div class="h-px my-6 transition-all duration-500 ease-out" id="profile-divider" style="background: linear-gradient(to right, transparent, var(--divider), transparent);" />
 
         {/* Search Bar */}
         <div class="relative" id="search-wrapper">
@@ -78,36 +82,17 @@ import { Icon } from "astro-icon/components";
 </header>
 
 <style>
-    /* All animations removed for better performance */
-    
-    /* Profile card hide/show animation - CSS only using :focus-within */
-    #profile-info {
-        max-height: 500px;
+    /* Profile collapse animation using grid-template-rows for performance */
+    #collapsible-wrapper {
+        display: grid;
+        grid-template-rows: 1fr;
         opacity: 1;
-        margin-bottom: 0;
-        transform: translateY(0);
-        /* 
-           Trick to fix clipping: 
-           Set overflow: visible by default so ring isn't clipped.
-           Delay the overflow transition so it stays hidden *during* the expansion animation, 
-           then becomes visible.
-        */
-        overflow: visible;
         transition: 
-            max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-            margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-            transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-            overflow 0s linear 0.5s; /* Delay overflow change to visible */
+            grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
-    /* Divider transition styles */
-    #profile-divider {
-        transition: 
-            max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-            margin 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        max-height: 10px;
+
+    #collapsible-inner {
         overflow: hidden;
     }
     
@@ -118,58 +103,30 @@ import { Icon } from "astro-icon/components";
         padding-bottom: 0;
     }
     
-    
-    /* Hide profile when search is focused - DESKTOP ONLY */
+    /* DESKTOP ONLY: Collapse when search is focused or has text */
     @media (min-width: 640px) {
-        #profile-card:has(#search-input:focus) #profile-info,
-        #search-wrapper.has-text ~ #profile-info,
-        .has-text #profile-info {
-            max-height: 0;
+        /* Use :has() to detect if search input is focused OR if search wrapper has text */
+        #profile-card:has(#search-input:focus) #collapsible-wrapper,
+        #profile-card:has(.has-text) #collapsible-wrapper {
+            grid-template-rows: 0fr;
             opacity: 0;
-            margin-bottom: 0;
-            transform: translateY(-10px);
-            overflow: hidden; /* Must be hidden to animate height */
             pointer-events: none;
-            /* Immediate overflow hide when starting collapse */
-            transition: 
-                max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                overflow 0s linear 0s;
         }
         
-        /* Hide divider when search is focused - DESKTOP ONLY */
-        #profile-card:has(#search-input:focus) #profile-divider {
-            max-height: 0;
-            opacity: 0;
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        
-        /* Search wrapper - smaller balanced gaps - DESKTOP ONLY */
+        /* Adjust padding/spacing when collapsed */
         #profile-card:has(#search-input:focus) #search-wrapper,
-        #search-wrapper.has-text {
+        #profile-card:has(.has-text) #search-wrapper {
             padding-top: 0.25rem;
             padding-bottom: 0.25rem;
         }
     }
     
-    /* Mobile: Keep profile card visible when search is focused */
+    /* MOBILE: Force visible */
     @media (max-width: 639px) {
-        #profile-info {
-            /* Always visible on mobile */
-            max-height: none !important;
+        #collapsible-wrapper {
+            grid-template-rows: 1fr !important;
             opacity: 1 !important;
-            transform: translateY(0) !important;
-            overflow: visible !important;
             pointer-events: auto !important;
-        }
-        
-        #profile-divider {
-            /* Always visible on mobile */
-            max-height: 10px !important;
-            opacity: 1 !important;
         }
     }
 </style>
