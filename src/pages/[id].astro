@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import MeshGradient from "../components/ui/MeshGradient.astro";
 import SafeIcon from "../components/ui/SafeIcon.astro";
+import { SITE_CONFIG } from "../lib/constants";
 import { getAllLinks, getLinkById, getLevelOneItemsByLink, getCategories } from "../lib/data";
 import { getColorByIndex, candyColors } from "../lib/colors";
 import { getLinkColorIndex } from "../lib/category-utils";
@@ -250,11 +251,15 @@ try {
                         <div class="grid gap-4">
                             {items.map((item, index) => {
                                 const color = getColorByIndex(index);
+                                const isRelative = item.link?.startsWith('/') || item.link?.startsWith('#');
+                                const isInternalAbsolute = item.link?.startsWith(SITE_CONFIG.url);
+                                const shouldOpenInNewTab = !isRelative && !isInternalAbsolute;
+
                                 return (
                                     <a
                                         href={item.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
+                                        target={shouldOpenInNewTab ? "_blank" : undefined}
+                                        rel={shouldOpenInNewTab ? "noopener noreferrer" : undefined}
                                         class="group block bg-white/70 dark:bg-zinc-900/70 hover:bg-white/80 dark:hover:bg-zinc-900/80 border border-white/80 dark:border-zinc-700/50 hover:border-transparent rounded-2xl p-3 sm:p-4 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
                                     >
                                         <div class="flex items-center gap-3">

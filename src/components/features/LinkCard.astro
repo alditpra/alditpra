@@ -1,4 +1,5 @@
 ---
+import { SITE_CONFIG } from "../../lib/constants";
 import { cn } from "../../lib/utils";
 import { sanitizeUrl } from "../../lib/security";
 import { getColorByIndex } from "../../lib/colors";
@@ -23,9 +24,13 @@ const isDirectLink = link.level === 0 && link.link;
 const sanitizedLink = link.link ? sanitizeUrl(link.link) : '#';
 const href = isDirectLink && sanitizedLink !== '#' ? sanitizedLink : `/${link.id}`;
 
-// For direct external links (level 0), open in new tab
-// For internal pages (level 1) or relative links, stay in same tab
-const shouldOpenInNewTab = isDirectLink && sanitizedLink !== '#';
+// Check if link is internal (relative or matches site URL)
+const isRelative = sanitizedLink.startsWith('/') || sanitizedLink.startsWith('#');
+const isInternalAbsolute = sanitizedLink.startsWith(SITE_CONFIG.url);
+const isInternal = isRelative || isInternalAbsolute;
+
+// Only open external links in new tab
+const shouldOpenInNewTab = isDirectLink && sanitizedLink !== '#' && !isInternal;
 const externalLinkProps = shouldOpenInNewTab ? {
   target: '_blank',
   rel: 'noopener noreferrer',
