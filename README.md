@@ -8,101 +8,24 @@
 ## ✨ Features
 
 - 🎨 **Modern Design** - Glassmorphism UI with candy color palette
-- 🌗 **Dark Mode** - Smooth theme toggle with system preference detection
-- 📊 **Google Sheets as CMS** - Manage content without traditional databases
-- 🔍 **Real-time Search** - Instant filtering with keyboard shortcuts (⌘K)
-- 📱 **Fully Responsive** - Mobile-first design that works perfectly on all devices
-- ⚡ **Lightning Fast** - Optimized SSR with Astro
-- 🎯 **Dynamic Routing** - Level 0 (direct links) and Level 1 (detail pages)
-- 🧙 **SANTET Generator** - AI prompt generator for academic assignments ("Senjata ANti TElat Tugas")
-- 🔒 **Secure** - URL sanitization and external link protection
-- 🌈 **Smooth Transitions** - View Transitions for SPA-like navigation
-- 📂 **Google Drive Integration** - Embedded folder view for file management
-- ♿ **Accessible** - Semantic HTML and ARIA labels
-- 🔄 **Auto Data Refresh** - ISR with 5-minute cache revalidation
-- 🎭 **Error Resilient** - Graceful error handling with fallback data
+- 🌗 **Dark Mode** - Smooth theme toggle
+- 📊 **Google Sheets as CMS** - Manage content without databases
+- 🔍 **Real-time Search** - Instant filtering
+- 📱 **Fully Responsive** - Works perfectly on all devices
+- 🧙 **SANTET Generator** - AI prompt generator for academic assignments
+- 🎰 **SLOT** - Student randomizer for Q&A sessions
+- 🔄 **Auto Data Refresh** - Changes appear in minutes
+
+## 🔄 How It Works
+
+![Workflow Diagram](public/workflow.png)
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Astro](https://astro.build) 5.0
-- **CSS**: [Tailwind CSS](https://tailwindcss.com) 4.0 (beta.1)
-- **Icons**: [Lucide Icons](https://lucide.dev) via `astro-icon`
-- **Fonts**: Inter (from Google Fonts)
-- **Data Source**: Google Sheets (CSV export)
-- **Deployment**: [Vercel](https://vercel.com) with ISR
-- **TypeScript**: Full type safety
-- **Utilities**: `clsx`, `tailwind-merge` for class management
-- **Animation**: `framer-motion` for smooth transitions
-- **CSV Parser**: `papaparse` for Google Sheets data
-
-## 📁 Project Structure
-
-```
-alditpra/
-├── src/
-│   ├── components/
-│   │   ├── features/          # Feature-specific components
-│   │   │   ├── profile-card/  # Profile card with social links
-│   │   │   │   ├── ProfileCard.astro
-│   │   │   │   └── SocialLinks.astro
-│   │   │   ├── category-section/ # Category filters
-│   │   │   │   └── CategorySection.astro
-│   │   │   └── LinkCard.astro # Link card component
-│   │   ├── PromptGenerator/   # SANTET prompt UI components
-│   │   │   ├── LivePreview.astro
-│   │   │   └── PromptLayout.astro
-│   │   ├── layout/            # Layout components
-│   │   ├── shared/            # Shared components
-│   │   ├── HomePage.astro     # Homepage component
-│   │   └── ui/                # Reusable UI components
-│   │       ├── MeshGradient.astro
-│   │       ├── SafeIcon.astro
-│   │       ├── SearchBar.astro
-│   │       └── ThemeToggle.astro
-│   ├── generators/            # Tool generators (top-level)
-│   │   └── santet/            # SANTET prompt generator
-│   │       ├── AssignmentTypeSelector.astro
-│   │       ├── SantetForm.astro
-│   │       ├── generator.ts
-│   │       └── templates.ts
-│   ├── layouts/
-│   │   └── Layout.astro       # Base layout with View Transitions
-│   ├── lib/
-│   │   ├── category-utils.ts  # Category helpers
-│   │   ├── colors.ts          # Dynamic color system
-│   │   ├── constants.ts       # App configuration
-│   │   ├── data.ts            # Google Sheets data fetching with caching
-│   │   ├── drive-utils.ts     # Google Drive helpers
-│   │   ├── error-handler.ts   # Error handling & retry logic
-│   │   ├── security.ts        # URL sanitization
-│   │   └── utils.ts           # General utilities
-│   ├── mocks/
-│   │   └── piccolore.ts       # Mock for piccolore library
-│   ├── pages/
-│   │   ├── index.astro        # Homepage route
-│   │   ├── [id].astro         # Dynamic link detail pages
-│   │   ├── santet.astro       # SANTET prompt generator
-│   │   └── debug-data.astro   # Data debugging page
-│   ├── scripts/
-│   │   └── (internal scripts) # Build-time utilities
-│   ├── styles/
-│   │   └── global.css         # Global styles & CSS variables
-│   └── types/
-│       └── index.ts           # TypeScript definitions
-├── public/
-│   ├── avatar.webp            # Profile image (8KB, optimized)
-│   ├── avatar-desktop.webp    # Desktop variant
-│   ├── avatar-mobile.webp     # Mobile variant
-│   ├── og-image.png           # OpenGraph preview image
-│   ├── favicon.ico            # Browser favicon
-│   ├── favicon.svg            # SVG favicon
-│   ├── robots.txt             # SEO robots file
-│   └── *.svg                  # Icon assets
-├── scripts/
-│   └── optimize-images.mjs    # Image optimization script
-├── astro.config.mjs           # Astro + Vercel ISR config
-└── package.json
-```
+- **Framework**: [Astro](https://astro.build)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com)
+- **Data**: Google Sheets
+- **Deployment**: [Vercel](https://vercel.com)
 
 ## 🚀 Getting Started
 
@@ -152,49 +75,24 @@ alditpra/
    
    Open `http://localhost:4321`
 
-## 📊 Google Sheets Schema
+## 📊 Data Structure
 
-### Sheet: Home (Links)
-| Column | Type | Description |
-|--------|------|-------------|
-| id | string | Unique identifier (lowercase-with-dashes) |
-| icon | string | Lucide icon name |
-| name | string | Display name |
-| category | string | Category ID (matches Categories sheet) |
-| description | string | Short description |
-| link | string | URL or empty for detail page |
+Just 3 simple sheets to manage your content:
 
-**Notes:**
-- Links are auto-detected: Google Drive folders → level 1 (iframe), other URLs → level 0 (direct link), empty → level 1 (detail page)
-- Row order determines display order (no `order` column needed)
-- All rows are active by default (no `active` column needed)
+### 1. Links (Home)
+Main links displayed on the homepage.
+- **Columns**: `id`, `name`, `description`, `link`, `category`, `icon`
 
-### Sheet: Level1
-| Column | Type | Description |
-|--------|------|-------------|
-| id | string | Parent link ID (maps to Home sheet id) |
-| link_id | string | Alternative to id (fallback) |
-| title | string | Item title |
-| description | string | Item description (optional) |
-| link | string | Item URL |
-| type | string | materi, buku, video, tugas, etc. |
-| icon | string | Lucide icon name (optional) |
+### 2. Level1 (Details)
+Content for detail pages (when a link doesn't go to an external site).
+- **Columns**: `link_id`, `title`, `description`, `link`, `type`, `icon`
+- *Note: `link_id` must match the `id` from the Links sheet.*
 
-**Notes:**
-- Row order determines display order (no `urutan` column needed)
-- All rows are active by default (no `active` column needed)
+### 3. Categories
+Define the sections on your homepage.
+- **Columns**: `id`, `title`, `description`, `icon`
 
-### Sheet: Categories
-| Column | Type | Description |
-|--------|------|-------------|
-| id | string | Category ID (lowercase-with-dashes) |
-| title | string | Category display name |
-| description | string | Category description (optional) |
-| icon | string | Lucide icon name (optional) |
-
-**Notes:**
-- Row order determines display order (no `order` column needed)
-- All rows are active by default (no `active` column needed)
+*No technical columns like `order` or `active` needed—everything is automatic!*
 
 ## 🎨 Customization
 
@@ -247,19 +145,7 @@ npm run build
 ### Environment Variables
 No environment variables required! All configuration is in `constants.ts`.
 
-## 🔧 Available Scripts
-
-```bash
-npm run dev             # Start development server
-npm run start           # Alias for dev
-npm run build           # Build for production  
-npm run build:prod      # Build with image optimization
-npm run preview         # Preview production build
-npm run astro           # Run Astro CLI commands
-npm run optimize:images # Optimize images in public/
-```
-
-## 🔄 Auto Data Updates
+##  Auto Data Updates
 
 The site uses **Incremental Static Regeneration (ISR)** with 5-minute cache expiration:
 - Update Google Sheets → Changes appear within 5 minutes
@@ -279,6 +165,18 @@ Features:
 - Hallucination warning for AI-generated content
 
 Access at: `/santet`
+
+## 🎰 SLOT Randomizer
+
+**S**aatnya **LO**tre **T**anya - A fun tool for Q&A sessions.
+
+Features:
+- 🎲 **Random Picker** - Fairly select students for questions
+- 📂 **Input Modes** - Manual entry or CSV upload
+- ⚡ **Interactive UI** - Wheel animation and sound effects
+- 📝 **History** - Track who has been called
+
+Access at: `/slot`
 
 ## 🤝 Contributing
 
