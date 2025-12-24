@@ -206,7 +206,6 @@ This project is open source and available under the [MIT License](LICENSE).
 - [Lucide](https://lucide.dev) - Beautiful, consistent icon set
 - [Vercel](https://vercel.com) - Free hosting with ISR support
 - [Google Sheets](https://sheets.google.com) - Free CMS solution
-- [@fontsource](https://fontsource.org) - Self-hosted fonts made easy
 
 ---npm
 
