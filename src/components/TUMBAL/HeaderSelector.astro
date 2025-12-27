@@ -27,7 +27,7 @@
             </button>
           ))}
         </div>
-        <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-2">
+        <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-2">
           Jumlah baris yang diabaikan (metadata/judul)
         </p>
       </div>
@@ -49,97 +49,97 @@
             </button>
           ))}
         </div>
-        <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-2">
+        <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-2">
           Berapa baris yang merupakan header?
         </p>
       </div>
     </div>
 
     {/* Data Range Configuration */}
-    <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 mb-6">
-      <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3 flex items-center gap-2">
+    <div class="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/70 border-2 border-zinc-200 dark:border-zinc-700 mb-6">
+      <p class="text-sm font-bold text-zinc-800 dark:text-zinc-200 mb-3 flex items-center gap-2">
         <span>📊</span> Range Data (Opsional)
       </p>
       <div class="grid md:grid-cols-4 gap-4">
         <div>
-          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Baris Mulai</label>
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Baris Mulai</label>
           <input
             type="number"
             id="tumbal-data-start"
             min="0"
             placeholder="Auto"
-            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+            class="w-full px-3 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm focus:ring-2 focus:ring-candy-purple/50 placeholder-zinc-400 dark:placeholder-zinc-500"
           />
         </div>
         <div>
-          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Baris Akhir</label>
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Baris Akhir</label>
           <input
             type="number"
             id="tumbal-data-end"
             min="0"
             placeholder="Auto"
-            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+            class="w-full px-3 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm focus:ring-2 focus:ring-candy-purple/50 placeholder-zinc-400 dark:placeholder-zinc-500"
           />
         </div>
         <div>
-          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Kolom Mulai</label>
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Kolom Mulai</label>
           <input
             type="number"
             id="tumbal-col-start"
             min="0"
             placeholder="Auto"
-            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+            class="w-full px-3 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm focus:ring-2 focus:ring-candy-purple/50 placeholder-zinc-400 dark:placeholder-zinc-500"
           />
         </div>
         <div>
-          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Kolom Akhir</label>
+          <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Kolom Akhir</label>
           <input
             type="number"
             id="tumbal-col-end"
             min="0"
             placeholder="Auto"
-            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+            class="w-full px-3 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm focus:ring-2 focus:ring-candy-purple/50 placeholder-zinc-400 dark:placeholder-zinc-500"
           />
         </div>
       </div>
       
       {/* Exclude Columns */}
       <div class="mt-3">
-        <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Skip Kolom (pisah koma)</label>
+        <label class="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Skip Kolom (pisah koma)</label>
         <input
           type="text"
           id="tumbal-exclude-cols"
           placeholder="contoh: B"
-          class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50 uppercase"
+          class="w-full px-3 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm focus:ring-2 focus:ring-candy-purple/50 uppercase placeholder-zinc-400 dark:placeholder-zinc-500"
         />
-        <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-1">Kolom yang di-skip (A, B, C, ... atau A,C,E)</p>
+        <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-1">Kolom yang di-skip (A, B, C, ... atau A,C,E)</p>
       </div>
       
-      <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-2">
+      <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-2">
         Kosongkan untuk auto.
       </p>
     </div>
 
     {/* Section Detection */}
-    <div id="tumbal-sections-container" class="hidden p-4 rounded-xl bg-candy-pink/10 dark:bg-candy-pink/20 border border-candy-pink/30 mb-6">
-      <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3 flex items-center gap-2">
+    <div id="tumbal-sections-container" class="hidden p-4 rounded-xl bg-candy-pink/15 dark:bg-candy-pink/25 border-2 border-candy-pink/40 mb-6">
+      <p class="text-sm font-bold text-zinc-800 dark:text-zinc-200 mb-3 flex items-center gap-2">
         <span>📑</span> Sections Terdeteksi
       </p>
       <div id="tumbal-sections-list" class="flex flex-wrap gap-2">
         {/* Sections will be rendered here */}
       </div>
-      <p class="text-xs text-zinc-600 dark:text-zinc-400 mt-2">
+      <p class="text-xs font-medium text-zinc-600 dark:text-zinc-400 mt-2">
         Klik section untuk memilih range data otomatis.
       </p>
     </div>
 
     {/* Preview flattened headers */}
-    <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
-      <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3 flex items-center gap-2">
+    <div class="p-4 rounded-xl bg-zinc-100 dark:bg-zinc-800/70 border-2 border-zinc-200 dark:border-zinc-700">
+      <p class="text-sm font-bold text-zinc-800 dark:text-zinc-200 mb-3 flex items-center gap-2">
         <span>✨</span> Preview Header Hasil
       </p>
       <div id="tumbal-header-preview" class="flex flex-wrap gap-2">
-        <span class="text-sm text-zinc-600 dark:text-zinc-400 italic">Upload file terlebih dahulu...</span>
+        <span class="text-sm text-zinc-700 dark:text-zinc-300 italic">Upload file terlebih dahulu...</span>
       </div>
     </div>
   </div>
@@ -226,17 +226,17 @@
       const headers = flattenHeaders(currentData.rawData, currentData.mergedCells, currentConfig);
 
       if (headers.length === 0) {
-        headerPreview.innerHTML = '<span class="text-sm text-zinc-600 dark:text-zinc-400 italic">Tidak ada header (cek konfigurasi)</span>';
+        headerPreview.innerHTML = '<span class="text-sm text-zinc-700 dark:text-zinc-300 italic font-medium">Tidak ada header (cek konfigurasi)</span>';
         return;
       }
 
       const previewHtml = headers.slice(0, 8).map(h => 
-        `<span class="px-3 py-1.5 rounded-lg bg-candy-purple/20 dark:bg-candy-purple/30 text-sm font-medium text-zinc-900 dark:text-zinc-100 border border-candy-purple/30 max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(h)}</span>`
+        `<span class="px-3 py-1.5 rounded-lg bg-candy-purple/25 dark:bg-candy-purple/35 text-sm font-semibold text-zinc-900 dark:text-zinc-100 border-2 border-candy-purple/40 max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(h)}</span>`
       ).join('');
 
       const moreCount = headers.length - 8;
       const moreHtml = moreCount > 0 
-        ? `<span class="px-3 py-1.5 text-sm text-zinc-600 dark:text-zinc-400">+${moreCount} lainnya</span>` 
+        ? `<span class="px-3 py-1.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">+${moreCount} lainnya</span>` 
         : '';
 
       headerPreview.innerHTML = previewHtml + moreHtml;
@@ -384,7 +384,7 @@
       currentData = null;
       detectedSections = [];
       if (headerPreview) {
-        headerPreview.innerHTML = '<span class="text-sm text-zinc-500 italic">Upload file terlebih dahulu...</span>';
+        headerPreview.innerHTML = '<span class=\"text-sm text-zinc-700 dark:text-zinc-300 italic\">Upload file terlebih dahulu...</span>';
       }
     });
 

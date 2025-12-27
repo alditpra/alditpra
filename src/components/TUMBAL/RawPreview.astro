@@ -13,19 +13,19 @@
         <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-100 flex items-center gap-2">
           <span>📋</span> Tabel Asli (Sebelum Ditumbalkan)
         </h3>
-        <p id="tumbal-raw-info" class="text-sm text-zinc-600 dark:text-zinc-400 mt-1"></p>
+        <p id="tumbal-raw-info" class="text-sm text-zinc-700 dark:text-zinc-300 mt-1"></p>
       </div>
       <div class="flex items-center gap-2 text-xs">
-        <span class="px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-700">Skip</span>
-        <span class="px-2 py-1 rounded bg-candy-purple/20 text-candy-purple">Header</span>
-        <span class="px-2 py-1 rounded bg-candy-teal/20 text-candy-teal">Data</span>
+        <span class="px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-200 font-medium">Skip</span>
+        <span class="px-2 py-1 rounded bg-candy-purple/30 text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_30%)] font-medium">Header</span>
+        <span class="px-2 py-1 rounded bg-candy-teal/30 text-[color:color-mix(in_srgb,var(--candy-teal),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_30%)] font-medium">Data</span>
       </div>
     </div>
 
     {/* Table container */}
-    <div class="relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+    <div class="relative overflow-hidden rounded-xl border-2 border-zinc-300 dark:border-zinc-600 shadow-sm">
       <div id="tumbal-raw-table-wrapper" class="max-h-[400px] overflow-auto">
-        <table class="w-full text-xs border-collapse">
+        <table class="w-full text-sm border-collapse">
           <tbody id="tumbal-raw-tbody" class="bg-white/50 dark:bg-zinc-900/50">
             {/* All rows will be rendered here */}
           </tbody>
@@ -34,7 +34,7 @@
     </div>
 
     {/* Row limit notice */}
-    <p id="tumbal-raw-limit-notice" class="text-xs text-zinc-500 dark:text-zinc-500 mt-3 text-center hidden">
+    <p id="tumbal-raw-limit-notice" class="text-sm text-zinc-600 dark:text-zinc-400 mt-3 text-center hidden font-medium">
       Menampilkan 30 baris pertama dari total <span id="tumbal-raw-total-rows">0</span> baris
     </p>
   </div>
@@ -89,27 +89,27 @@
         let rowLabel = '';
         
         if (rowIdx < skipRows) {
-          rowClass = 'bg-zinc-100 dark:bg-zinc-800/50 opacity-60';
+          rowClass = 'bg-zinc-200 dark:bg-zinc-700/60 text-zinc-500 dark:text-zinc-400';
           rowLabel = 'skip';
         } else if (rowIdx < headerEnd) {
-          rowClass = 'bg-candy-purple/10 dark:bg-candy-purple/20';
+          rowClass = 'bg-candy-purple/20 dark:bg-candy-purple/30 font-medium text-zinc-800 dark:text-zinc-200';
           rowLabel = 'header';
         } else {
-          rowClass = 'hover:bg-candy-teal/5';
+          rowClass = 'hover:bg-candy-teal/10 text-zinc-800 dark:text-zinc-200';
           rowLabel = 'data';
         }
 
         // Row number cell
-        const rowNumCell = `<td class="px-2 py-1.5 text-center font-mono text-zinc-400 border-r border-zinc-200 dark:border-zinc-700 sticky left-0 bg-zinc-50 dark:bg-zinc-900 w-12">${rowIdx + 1}</td>`;
+        const rowNumCell = `<td class="px-3 py-2 text-center font-mono text-sm font-medium text-zinc-600 dark:text-zinc-300 border-r-2 border-zinc-300 dark:border-zinc-600 sticky left-0 bg-zinc-100 dark:bg-zinc-800 w-14">${rowIdx + 1}</td>`;
 
         // Data cells
         const cells = Array.from({ length: maxCols }, (_, i) => {
           const value = row[i] ?? '';
           const displayValue = value.length > 30 ? value.substring(0, 30) + '...' : value;
-          return `<td class="px-2 py-1.5 border-r border-zinc-100 dark:border-zinc-800 whitespace-nowrap max-w-[150px] truncate" title="${escapeHtml(value)}">${escapeHtml(displayValue) || '<span class="text-zinc-400">—</span>'}</td>`;
+          return `<td class="px-3 py-2 border-r border-zinc-200 dark:border-zinc-700 whitespace-nowrap max-w-[180px] truncate" title="${escapeHtml(value)}">${escapeHtml(displayValue) || '<span class="text-zinc-400 dark:text-zinc-500">—</span>'}</td>`;
         }).join('');
 
-        return `<tr class="${rowClass} border-b border-zinc-100 dark:border-zinc-800">${rowNumCell}${cells}</tr>`;
+        return `<tr class="${rowClass} border-b border-zinc-200 dark:border-zinc-700">${rowNumCell}${cells}</tr>`;
       }).join('');
 
       tbody.innerHTML = html;

@@ -10,13 +10,13 @@
     {/* Stats */}
     <div class="flex items-center justify-between mb-4">
       <div>
-        <p id="tumbal-converted-info" class="text-sm text-zinc-600 dark:text-zinc-400"></p>
+        <p id="tumbal-converted-info" class="text-sm font-medium text-zinc-700 dark:text-zinc-300"></p>
       </div>
 
       {/* Pagination controls */}
       <div class="flex items-center gap-2">
-        <span class="text-sm text-zinc-600 dark:text-zinc-400">Tampilkan:</span>
-        <select id="tumbal-page-size" class="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-candy-purple/50 focus:border-candy-purple">
+        <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Tampilkan:</span>
+        <select id="tumbal-page-size" class="px-3 py-1.5 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm font-medium focus:ring-2 focus:ring-candy-purple/50 focus:border-candy-purple">
           <option value="10">10</option>
           <option value="25">25</option>
           <option value="50">50</option>
@@ -26,10 +26,10 @@
     </div>
 
     {/* Table container */}
-    <div class="relative overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+    <div class="relative overflow-hidden rounded-xl border-2 border-zinc-300 dark:border-zinc-600 shadow-sm">
       <div id="tumbal-converted-table-wrapper" class="max-h-[500px] overflow-auto">
         <table class="w-full text-sm border-collapse">
-          <thead id="tumbal-converted-thead" class="sticky top-0 z-10">
+          <thead id="tumbal-converted-thead" class="sticky top-0 z-10 bg-zinc-50 dark:bg-zinc-800">
             {/* Header row will be inserted here */}
           </thead>
           <tbody id="tumbal-converted-tbody" class="bg-white/50 dark:bg-zinc-900/50">
@@ -41,12 +41,12 @@
 
     {/* Pagination */}
     <div id="tumbal-pagination" class="flex items-center justify-between mt-4 hidden">
-      <p id="tumbal-page-info" class="text-sm text-zinc-600 dark:text-zinc-400"></p>
+      <p id="tumbal-page-info" class="text-sm font-medium text-zinc-700 dark:text-zinc-300"></p>
       <div class="flex gap-2">
-        <button type="button" id="tumbal-prev-btn" class="px-4 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+        <button type="button" id="tumbal-prev-btn" class="px-4 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
           ← Prev
         </button>
-        <button type="button" id="tumbal-next-btn" class="px-4 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+        <button type="button" id="tumbal-next-btn" class="px-4 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
           Next →
         </button>
       </div>
@@ -100,7 +100,7 @@
       // Render header
       const headerHtml = headers.map(h => {
         const displayH = h.length > 40 ? h.substring(0, 40) + '...' : h;
-        return `<th class="px-3 py-3 text-left font-semibold text-zinc-700 dark:text-zinc-300 border-b border-r border-zinc-200 dark:border-zinc-700 bg-gradient-to-b from-candy-teal/10 to-candy-purple/10 dark:from-candy-teal/20 dark:to-candy-purple/20 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(displayH)}</th>`;
+        return `<th class="px-4 py-3 text-left font-bold text-zinc-800 dark:text-zinc-100 border-b-2 border-r border-zinc-300 dark:border-zinc-600 bg-gradient-to-b from-candy-teal/20 to-candy-purple/20 dark:from-candy-teal/30 dark:to-candy-purple/30 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(displayH)}</th>`;
       }).join('');
       thead.innerHTML = `<tr>${headerHtml}</tr>`;
 
@@ -114,9 +114,9 @@
       const bodyHtml = pageData.map((row) => {
         const cells = row.map(cell => {
           const displayCell = cell.length > 50 ? cell.substring(0, 50) + '...' : cell;
-          return `<td class="px-3 py-2 text-zinc-800 dark:text-zinc-100 border-b border-r border-zinc-100 dark:border-zinc-800 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(cell)}">${escapeHtml(displayCell) || '<span class="text-zinc-400">—</span>'}</td>`;
+          return `<td class="px-4 py-2.5 text-zinc-800 dark:text-zinc-200 border-b border-r border-zinc-200 dark:border-zinc-700 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(cell)}">${escapeHtml(displayCell) || '<span class="text-zinc-400 dark:text-zinc-500">—</span>'}</td>`;
         }).join('');
-        return `<tr class="hover:bg-candy-teal/5 dark:hover:bg-candy-teal/10 transition-colors">${cells}</tr>`;
+        return `<tr class="hover:bg-candy-teal/10 dark:hover:bg-candy-teal/20 transition-colors">${cells}</tr>`;
       }).join('');
       tbody.innerHTML = bodyHtml;
 
