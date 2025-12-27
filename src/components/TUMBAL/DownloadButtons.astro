@@ -1,0 +1,200 @@
+---
+/**
+ * TUMBAL - DownloadButtons Component
+ * Download converted data as CSV or Excel
+ */
+---
+
+<div id="tumbal-download-buttons" class="hidden">
+  <div class="p-6 rounded-3xl bg-gradient-to-br from-candy-purple/10 via-candy-pink/10 to-candy-teal/10 dark:from-candy-purple/20 dark:via-candy-pink/20 dark:to-candy-teal/20 border border-white/60 dark:border-zinc-700/50 shadow-lg">
+    {/* Header */}
+    <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-100 flex items-center gap-2 mb-4">
+      <span>🎁</span> Panen Insight
+    </h3>
+
+    {/* Filename input */}
+    <div class="mb-6">
+      <label class="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+        Nama File
+      </label>
+      <div class="flex items-center gap-2">
+        <input
+          type="text"
+          id="tumbal-filename"
+          placeholder="hasil-tumbal"
+          class="flex-1 px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 placeholder-zinc-400 focus:ring-2 focus:ring-candy-purple/50 focus:border-candy-purple transition-all"
+        />
+      </div>
+    </div>
+
+    {/* Download buttons */}
+    <div class="grid sm:grid-cols-2 gap-4">
+      {/* CSV Button */}
+      <button
+        type="button"
+        id="tumbal-download-csv"
+        disabled
+        class="group relative px-6 py-4 rounded-2xl font-bold text-white
+               bg-gradient-to-r from-candy-teal to-emerald-500
+               hover:scale-[1.02] hover:shadow-lg hover:shadow-candy-teal/30
+               disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+               transition-all duration-300 flex items-center justify-center gap-3"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:animate-bounce">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" x2="12" y1="15" y2="3"/>
+        </svg>
+        <span>Download CSV</span>
+      </button>
+
+      {/* Excel Button */}
+      <button
+        type="button"
+        id="tumbal-download-excel"
+        disabled
+        class="group relative px-6 py-4 rounded-2xl font-bold text-white
+               bg-gradient-to-r from-candy-purple to-indigo-500
+               hover:scale-[1.02] hover:shadow-lg hover:shadow-candy-purple/30
+               disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
+               transition-all duration-300 flex items-center justify-center gap-3"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:animate-bounce">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" x2="12" y1="15" y2="3"/>
+        </svg>
+        <span>Download Excel</span>
+      </button>
+    </div>
+
+    {/* Stats */}
+    <div id="tumbal-download-stats" class="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-400 hidden">
+      <span id="tumbal-stats-text"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { exportToCSV, exportToExcel, type ConvertedTable } from '../../lib/tumbal/converter';
+
+  let isInitialized = false;
+  let convertedData: ConvertedTable | null = null;
+
+  function initDownloadButtons() {
+    if (isInitialized) return;
+    isInitialized = true;
+
+    const container = document.getElementById('tumbal-download-buttons');
+    const filenameInput = document.getElementById('tumbal-filename') as HTMLInputElement;
+    const csvBtn = document.getElementById('tumbal-download-csv') as HTMLButtonElement;
+    const excelBtn = document.getElementById('tumbal-download-excel') as HTMLButtonElement;
+    const statsContainer = document.getElementById('tumbal-download-stats');
+    const statsText = document.getElementById('tumbal-stats-text');
+
+    function getFilename(): string {
+      return filenameInput?.value.trim() || 'hasil-tumbal';
+    }
+
+    function updateStats() {
+      if (!convertedData || !statsContainer || !statsText) return;
+
+      const { headers, data } = convertedData;
+      const cellCount = headers.length * data.length;
+      
+      statsText.textContent = `${data.length} baris × ${headers.length} kolom = ${cellCount.toLocaleString()} sel data`;
+      statsContainer.classList.remove('hidden');
+    }
+
+    function enableButtons() {
+      if (csvBtn) csvBtn.disabled = false;
+      if (excelBtn) excelBtn.disabled = false;
+    }
+
+    function disableButtons() {
+      if (csvBtn) csvBtn.disabled = true;
+      if (excelBtn) excelBtn.disabled = true;
+    }
+
+    // Download handlers
+    csvBtn?.addEventListener('click', () => {
+      if (!convertedData) return;
+      
+      const filename = getFilename();
+      exportToCSV(convertedData, filename);
+      
+      // Visual feedback
+      const originalText = csvBtn.innerHTML;
+      csvBtn.innerHTML = '<span class="animate-pulse">✓ Downloaded!</span>';
+      setTimeout(() => {
+        csvBtn.innerHTML = originalText;
+      }, 2000);
+    });
+
+    excelBtn?.addEventListener('click', () => {
+      if (!convertedData) return;
+      
+      const filename = getFilename();
+      exportToExcel(convertedData, filename);
+      
+      // Visual feedback
+      const originalText = excelBtn.innerHTML;
+      excelBtn.innerHTML = '<span class="animate-pulse">✓ Downloaded!</span>';
+      setTimeout(() => {
+        excelBtn.innerHTML = originalText;
+      }, 2000);
+    });
+
+    // Listen for converted data
+    window.addEventListener('tumbal-data-converted', ((e: CustomEvent<ConvertedTable>) => {
+      convertedData = e.detail;
+      container?.classList.remove('hidden');
+      enableButtons();
+      updateStats();
+    }) as EventListener);
+
+    // Listen for file upload (set default filename)
+    window.addEventListener('tumbal-file-uploaded', ((e: CustomEvent<{ fileName: string }>) => {
+      const originalName = e.detail.fileName;
+      const baseName = originalName.replace(/\.[^.]+$/, '');
+      if (filenameInput) {
+        filenameInput.value = `${baseName}-cleaned`;
+      }
+    }) as EventListener);
+
+    // Listen for clear
+    window.addEventListener('tumbal-file-cleared', () => {
+      convertedData = null;
+      container?.classList.add('hidden');
+      disableButtons();
+      if (statsContainer) statsContainer.classList.add('hidden');
+    });
+
+    window.addEventListener('tumbal-reset', () => {
+      convertedData = null;
+      container?.classList.add('hidden');
+      disableButtons();
+    });
+  }
+
+  // Initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initDownloadButtons);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDownloadButtons);
+    } else {
+      initDownloadButtons();
+    }
+  }
+</script>
+
+<style>
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  
+  .group:hover .group-hover\:animate-bounce {
+    animation: bounce 0.5s ease-in-out;
+  }
+</style>

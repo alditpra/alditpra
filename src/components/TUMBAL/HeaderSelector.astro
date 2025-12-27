@@ -1,0 +1,405 @@
+---
+/**
+ * TUMBAL - HeaderSelector Component (Enhanced)
+ * Advanced configuration for header rows, skip rows, and data range
+ */
+---
+
+<div id="tumbal-header-selector">
+  <div class="p-5 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg">
+
+    {/* Row Configuration */}
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      {/* Skip Rows */}
+      <div class="p-4 rounded-xl bg-candy-yellow/5 dark:bg-candy-yellow/10 border border-candy-yellow/20">
+        <label class="block text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3">
+          🔽 Skip Baris Awal
+        </label>
+        <div class="grid grid-cols-6 gap-2">
+          {[0, 1, 2, 3, 4, 5].map(num => (
+            <button
+              type="button"
+              data-skip-count={num}
+              class={`tumbal-skip-btn aspect-square rounded-xl font-bold text-lg transition-all duration-200
+                     border-2 ${num === 0 ? 'border-candy-yellow bg-candy-yellow text-white shadow-lg scale-105' : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-candy-yellow/50 hover:bg-candy-yellow/10'}`}
+            >
+              {num}
+            </button>
+          ))}
+        </div>
+        <p class="text-xs text-zinc-500 mt-2">
+          Jumlah baris yang diabaikan (metadata/judul)
+        </p>
+      </div>
+
+      {/* Header Rows */}
+      <div class="p-4 rounded-xl bg-candy-yellow/5 dark:bg-candy-yellow/10 border border-candy-yellow/20">
+        <label class="block text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3">
+          📊 Jumlah Baris Header
+        </label>
+        <div class="grid grid-cols-5 gap-2">
+          {[1, 2, 3, 4, 5].map(num => (
+            <button
+              type="button"
+              data-header-count={num}
+              class={`tumbal-header-btn aspect-square rounded-xl font-bold text-lg transition-all duration-200
+                     border-2 ${num === 2 ? 'border-candy-yellow bg-candy-yellow text-white shadow-lg scale-105' : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-candy-yellow/50 hover:bg-candy-yellow/10'}`}
+            >
+              {num}
+            </button>
+          ))}
+        </div>
+        <p class="text-xs text-zinc-500 mt-2">
+          Berapa baris yang merupakan header?
+        </p>
+      </div>
+    </div>
+
+    {/* Data Range Configuration */}
+    <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 mb-6">
+      <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3 flex items-center gap-2">
+        <span>📊</span> Range Data (Opsional)
+      </p>
+      <div class="grid md:grid-cols-4 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Baris Mulai</label>
+          <input
+            type="number"
+            id="tumbal-data-start"
+            min="0"
+            placeholder="Auto"
+            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Baris Akhir</label>
+          <input
+            type="number"
+            id="tumbal-data-end"
+            min="0"
+            placeholder="Auto"
+            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Kolom Mulai</label>
+          <input
+            type="number"
+            id="tumbal-col-start"
+            min="0"
+            placeholder="Auto"
+            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Kolom Akhir</label>
+          <input
+            type="number"
+            id="tumbal-col-end"
+            min="0"
+            placeholder="Auto"
+            class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50"
+          />
+        </div>
+      </div>
+      
+      {/* Exclude Columns */}
+      <div class="mt-3">
+        <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Skip Kolom (pisah koma)</label>
+        <input
+          type="text"
+          id="tumbal-exclude-cols"
+          placeholder="contoh: B"
+          class="w-full px-3 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm focus:ring-2 focus:ring-candy-purple/50 uppercase"
+        />
+        <p class="text-xs text-zinc-500 mt-1">Kolom yang di-skip (A, B, C, ... atau A,C,E)</p>
+      </div>
+      
+      <p class="text-xs text-zinc-500 mt-2">
+        Kosongkan untuk auto.
+      </p>
+    </div>
+
+    {/* Section Detection */}
+    <div id="tumbal-sections-container" class="hidden p-4 rounded-xl bg-candy-pink/10 dark:bg-candy-pink/20 border border-candy-pink/30 mb-6">
+      <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3 flex items-center gap-2">
+        <span>📑</span> Sections Terdeteksi
+      </p>
+      <div id="tumbal-sections-list" class="flex flex-wrap gap-2">
+        {/* Sections will be rendered here */}
+      </div>
+      <p class="text-xs text-zinc-500 mt-2">
+        Klik section untuk memilih range data otomatis.
+      </p>
+    </div>
+
+    {/* Preview flattened headers */}
+    <div class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700">
+      <p class="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3 flex items-center gap-2">
+        <span>✨</span> Preview Header Hasil
+      </p>
+      <div id="tumbal-header-preview" class="flex flex-wrap gap-2">
+        <span class="text-sm text-zinc-500 italic">Upload file terlebih dahulu...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { flattenHeaders, detectSections, type ParsedTable, type TumbalConfig, type DetectedSection } from '../../lib/tumbal/converter';
+
+  let isInitialized = false;
+  let currentData: ParsedTable | null = null;
+  let detectedSections: DetectedSection[] = [];
+  let currentConfig: TumbalConfig = {
+    headerRows: 2,
+    separator: ' - ',
+    skipRows: 0,
+    dataStartRow: 0,
+    dataEndRow: null,
+    startColumn: 0,
+    endColumn: null,
+    excludeColumns: [],
+  };
+
+  function initHeaderSelector() {
+    if (isInitialized) return;
+    isInitialized = true;
+
+    const container = document.getElementById('tumbal-header-selector');
+    const headerPreview = document.getElementById('tumbal-header-preview');
+    const headerBtns = document.querySelectorAll('.tumbal-header-btn');
+    const skipBtns = document.querySelectorAll('.tumbal-skip-btn');
+    
+    // Input elements
+    const dataStartInput = document.getElementById('tumbal-data-start') as HTMLInputElement;
+    const dataEndInput = document.getElementById('tumbal-data-end') as HTMLInputElement;
+    const colStartInput = document.getElementById('tumbal-col-start') as HTMLInputElement;
+    const colEndInput = document.getElementById('tumbal-col-end') as HTMLInputElement;
+    const excludeColsInput = document.getElementById('tumbal-exclude-cols') as HTMLInputElement;
+    
+    // Sections
+    const sectionsContainer = document.getElementById('tumbal-sections-container');
+    const sectionsList = document.getElementById('tumbal-sections-list');
+
+    function updateButtonStates() {
+      headerBtns.forEach(btn => {
+        const count = parseInt((btn as HTMLElement).dataset.headerCount || '2');
+        const isActive = count === currentConfig.headerRows;
+        // Active: solid teal bg
+        btn.classList.toggle('border-candy-yellow', isActive);
+        btn.classList.toggle('bg-candy-yellow', isActive);
+        btn.classList.toggle('text-white', isActive);
+        btn.classList.toggle('shadow-lg', isActive);
+        btn.classList.toggle('scale-105', isActive);
+        // Inactive: light bg
+        btn.classList.toggle('border-zinc-300', !isActive);
+        btn.classList.toggle('dark:border-zinc-600', !isActive);
+        btn.classList.toggle('bg-white', !isActive);
+        btn.classList.toggle('dark:bg-zinc-800', !isActive);
+        btn.classList.toggle('text-zinc-700', !isActive);
+        btn.classList.toggle('dark:text-zinc-300', !isActive);
+      });
+      
+      skipBtns.forEach(btn => {
+        const count = parseInt((btn as HTMLElement).dataset.skipCount || '0');
+        const isActive = count === currentConfig.skipRows;
+        // Active: solid teal bg
+        btn.classList.toggle('border-candy-yellow', isActive);
+        btn.classList.toggle('bg-candy-yellow', isActive);
+        btn.classList.toggle('text-white', isActive);
+        btn.classList.toggle('shadow-lg', isActive);
+        btn.classList.toggle('scale-105', isActive);
+        // Inactive: light bg
+        btn.classList.toggle('border-zinc-300', !isActive);
+        btn.classList.toggle('dark:border-zinc-600', !isActive);
+        btn.classList.toggle('bg-white', !isActive);
+        btn.classList.toggle('dark:bg-zinc-800', !isActive);
+        btn.classList.toggle('text-zinc-700', !isActive);
+        btn.classList.toggle('dark:text-zinc-300', !isActive);
+      });
+    }
+
+    function updatePreview() {
+      if (!headerPreview || !currentData) return;
+
+      const headers = flattenHeaders(currentData.rawData, currentData.mergedCells, currentConfig);
+
+      if (headers.length === 0) {
+        headerPreview.innerHTML = '<span class="text-sm text-zinc-500 italic">Tidak ada header (cek konfigurasi)</span>';
+        return;
+      }
+
+      const previewHtml = headers.slice(0, 8).map(h => 
+        `<span class="px-3 py-1.5 rounded-lg bg-candy-purple/10 dark:bg-candy-purple/20 text-sm font-medium text-zinc-800 dark:text-zinc-200 border border-candy-purple/20 max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(h)}</span>`
+      ).join('');
+
+      const moreCount = headers.length - 8;
+      const moreHtml = moreCount > 0 
+        ? `<span class="px-3 py-1.5 text-sm text-zinc-500">+${moreCount} lainnya</span>` 
+        : '';
+
+      headerPreview.innerHTML = previewHtml + moreHtml;
+    }
+
+    function renderSections() {
+      if (!sectionsList || !sectionsContainer) return;
+
+      if (detectedSections.length <= 1) {
+        sectionsContainer.classList.add('hidden');
+        return;
+      }
+
+      sectionsContainer.classList.remove('hidden');
+      sectionsList.innerHTML = detectedSections.map((section, idx) => 
+        `<button type="button" data-section-idx="${idx}" class="tumbal-section-btn px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border-2 border-zinc-200 dark:border-zinc-700 hover:border-candy-pink hover:bg-candy-pink/10">
+          ${escapeHtml(section.name)} (${section.startRow + 1}-${section.endRow + 1})
+        </button>`
+      ).join('');
+
+      // Add click handlers
+      sectionsList.querySelectorAll('.tumbal-section-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt((btn as HTMLElement).dataset.sectionIdx || '0');
+          const section = detectedSections[idx];
+          if (section && currentData) {
+            // Update inputs
+            if (dataStartInput) dataStartInput.value = String(section.startRow);
+            if (dataEndInput) dataEndInput.value = String(section.endRow + 1);
+            
+            // Update config
+            currentConfig.dataStartRow = section.startRow;
+            currentConfig.dataEndRow = section.endRow + 1;
+            
+            // Highlight selected
+            sectionsList?.querySelectorAll('.tumbal-section-btn').forEach(b => {
+              b.classList.remove('border-candy-pink', 'bg-candy-pink/20');
+              b.classList.add('border-zinc-200', 'dark:border-zinc-700');
+            });
+            btn.classList.remove('border-zinc-200', 'dark:border-zinc-700');
+            btn.classList.add('border-candy-pink', 'bg-candy-pink/20');
+            
+            updatePreview();
+            dispatchConfigChange();
+          }
+        });
+      });
+    }
+
+    function escapeHtml(text: string): string {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Convert column letter to index (A=0, B=1, AA=26, etc.)
+    function colLetterToIndex(letter: string): number {
+      letter = letter.toUpperCase();
+      let index = 0;
+      for (let i = 0; i < letter.length; i++) {
+        index = index * 26 + (letter.charCodeAt(i) - 64);
+      }
+      return index - 1; // 0-indexed
+    }
+
+    function readInputs() {
+      // skipRows is now handled by button click handlers
+      currentConfig.dataStartRow = parseInt(dataStartInput?.value || '0') || 0;
+      currentConfig.dataEndRow = dataEndInput?.value ? parseInt(dataEndInput.value) : null;
+      currentConfig.startColumn = parseInt(colStartInput?.value || '0') || 0;
+      currentConfig.endColumn = colEndInput?.value ? parseInt(colEndInput.value) : null;
+      
+      // Parse excludeColumns (comma-separated letters like A,B,C)
+      const excludeStr = excludeColsInput?.value?.trim().toUpperCase() || '';
+      if (excludeStr) {
+        currentConfig.excludeColumns = excludeStr
+          .split(',')
+          .map(s => s.trim())
+          .filter(s => /^[A-Z]+$/.test(s))
+          .map(s => colLetterToIndex(s));
+      } else {
+        currentConfig.excludeColumns = [];
+      }
+    }
+
+    function dispatchConfigChange() {
+      window.dispatchEvent(new CustomEvent('tumbal-config-changed', {
+        detail: currentConfig
+      }));
+      window.dispatchEvent(new CustomEvent('tumbal-header-config-changed', {
+        detail: { headerRows: currentConfig.headerRows }
+      }));
+    }
+
+    // Debounce for inputs
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    function handleInputChange() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        readInputs();
+        updatePreview();
+        dispatchConfigChange();
+      }, 300);
+    }
+
+    // Header count buttons
+    headerBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentConfig.headerRows = parseInt((btn as HTMLElement).dataset.headerCount || '2');
+        updateButtonStates();
+        updatePreview();
+        dispatchConfigChange();
+      });
+    });
+
+    // Skip rows buttons
+    skipBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentConfig.skipRows = parseInt((btn as HTMLElement).dataset.skipCount || '0');
+        updateButtonStates();
+        updatePreview();
+        dispatchConfigChange();
+      });
+    });
+
+    // Input listeners
+    [dataStartInput, dataEndInput, colStartInput, colEndInput, excludeColsInput].forEach(input => {
+      input?.addEventListener('input', handleInputChange);
+    });
+
+    // Listen for file upload
+    window.addEventListener('tumbal-file-uploaded', ((e: CustomEvent<ParsedTable>) => {
+      currentData = e.detail;
+      
+      // Detect sections
+      detectedSections = detectSections(currentData.rawData);
+      renderSections();
+      
+      updatePreview();
+      dispatchConfigChange();
+    }) as EventListener);
+
+    // Listen for clear
+    window.addEventListener('tumbal-file-cleared', () => {
+      currentData = null;
+      detectedSections = [];
+      if (headerPreview) {
+        headerPreview.innerHTML = '<span class="text-sm text-zinc-500 italic">Upload file terlebih dahulu...</span>';
+      }
+    });
+
+    window.addEventListener('tumbal-reset', () => {
+      currentData = null;
+    });
+  }
+
+  // Initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initHeaderSelector);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeaderSelector);
+    } else {
+      initHeaderSelector();
+    }
+  }
+</script>

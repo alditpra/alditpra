@@ -1,0 +1,266 @@
+---
+/**
+ * TUMBAL - FileUploader Component
+ * Drag & drop file upload for Excel/CSV files
+ */
+---
+
+<div id="tumbal-upload-area">
+  <div
+    id="tumbal-drop-zone"
+    class="relative border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-2xl p-8 text-center
+           transition-all duration-300 cursor-pointer
+           hover:border-candy-pink hover:bg-candy-pink/5"
+  >
+    <input
+      type="file"
+      id="tumbal-file-input"
+      accept=".xlsx,.xls,.csv"
+      class="hidden"
+    />
+
+    {/* Upload icon */}
+    <div id="tumbal-upload-icon" class="mb-4">
+      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-candy-pink/20 to-candy-purple/20 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-pink">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" x2="12" y1="3" y2="15"/>
+        </svg>
+      </div>
+    </div>
+
+    {/* Upload prompt */}
+    <div id="tumbal-upload-prompt">
+      <p class="text-xl font-bold text-zinc-800 dark:text-zinc-200 mb-2">
+        🔥 Tumbalkan Tabelmu di Sini
+      </p>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+        Drop file rekomend xlsx
+      </p>
+      <p class="text-xs text-zinc-500 dark:text-zinc-500">
+        Format: .xlsx, .xls, .csv • Maksimal 10MB
+      </p>
+    </div>
+
+    {/* Loading state */}
+    <div id="tumbal-upload-loading" class="hidden">
+      <div class="inline-block w-12 h-12 border-4 border-candy-pink/30 border-t-candy-pink rounded-full animate-spin mb-4"></div>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">
+        Memproses file...
+      </p>
+    </div>
+
+    {/* Success state */}
+    <div id="tumbal-upload-success" class="hidden">
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <div class="w-14 h-14 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600 dark:text-green-400">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+      </div>
+      <p id="tumbal-file-name" class="font-bold text-zinc-800 dark:text-zinc-200 mb-1"></p>
+      <p id="tumbal-file-stats" class="text-sm text-zinc-600 dark:text-zinc-400 mb-4"></p>
+      
+      <button
+        type="button"
+        id="tumbal-clear-btn"
+        class="px-5 py-2.5 rounded-xl bg-candy-pink/20 border border-candy-pink/30
+               text-[color:color-mix(in_srgb,var(--candy-pink),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-pink),white_40%)]
+               text-sm font-semibold hover:scale-105 transition-transform duration-200
+               flex items-center gap-2 mx-auto"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18"/>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+        </svg>
+        Hapus & Upload Ulang
+      </button>
+    </div>
+
+    {/* Error state */}
+    <div id="tumbal-upload-error" class="hidden">
+      <div class="w-14 h-14 mx-auto rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600 dark:text-red-400">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="15" x2="9" y1="9" y2="15"/>
+          <line x1="9" x2="15" y1="9" y2="15"/>
+        </svg>
+      </div>
+      <p id="tumbal-error-message" class="font-semibold text-red-600 dark:text-red-400 mb-4"></p>
+      <button
+        type="button"
+        id="tumbal-retry-btn"
+        class="px-5 py-2.5 rounded-xl bg-zinc-200 dark:bg-zinc-700
+               text-sm font-semibold hover:scale-105 transition-transform duration-200"
+      >
+        Coba Lagi
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { parseFile, type ParsedTable } from '../../lib/tumbal/converter';
+
+  let isInitialized = false;
+
+  function initTumbalUploader() {
+    if (isInitialized) return;
+    isInitialized = true;
+
+    const dropZone = document.getElementById('tumbal-drop-zone');
+    const fileInput = document.getElementById('tumbal-file-input') as HTMLInputElement;
+    const uploadPrompt = document.getElementById('tumbal-upload-prompt');
+    const uploadLoading = document.getElementById('tumbal-upload-loading');
+    const uploadSuccess = document.getElementById('tumbal-upload-success');
+    const uploadError = document.getElementById('tumbal-upload-error');
+    const fileName = document.getElementById('tumbal-file-name');
+    const fileStats = document.getElementById('tumbal-file-stats');
+    const errorMessage = document.getElementById('tumbal-error-message');
+    const clearBtn = document.getElementById('tumbal-clear-btn');
+    const retryBtn = document.getElementById('tumbal-retry-btn');
+
+    // State management functions
+    function showState(state: 'prompt' | 'loading' | 'success' | 'error') {
+      uploadPrompt?.classList.toggle('hidden', state !== 'prompt');
+      uploadLoading?.classList.toggle('hidden', state !== 'loading');
+      uploadSuccess?.classList.toggle('hidden', state !== 'success');
+      uploadError?.classList.toggle('hidden', state !== 'error');
+    }
+
+    function showSuccess(name: string, rows: number, cols: number) {
+      if (fileName) fileName.textContent = name;
+      if (fileStats) fileStats.textContent = `${rows} baris × ${cols} kolom`;
+      showState('success');
+    }
+
+    function showError(message: string) {
+      if (errorMessage) errorMessage.textContent = message;
+      showState('error');
+    }
+
+    function reset() {
+      if (fileInput) fileInput.value = '';
+      showState('prompt');
+      window.dispatchEvent(new CustomEvent('tumbal-file-cleared'));
+    }
+
+    // File validation
+    function validateFile(file: File): string | null {
+      const validExtensions = ['.xlsx', '.xls', '.csv'];
+      const ext = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+      
+      if (!validExtensions.includes(ext)) {
+        return 'Format file tidak didukung. Gunakan .xlsx, .xls, atau .csv';
+      }
+      
+      if (file.size > 10 * 1024 * 1024) {
+        return 'File terlalu besar. Maksimal 10MB.';
+      }
+      
+      return null;
+    }
+
+    // Handle file
+    async function handleFile(file: File) {
+      const error = validateFile(file);
+      if (error) {
+        showError(error);
+        return;
+      }
+
+      showState('loading');
+
+      try {
+        const parsed = await parseFile(file);
+        
+        if (parsed.rawData.length < 2) {
+          showError('File tidak memiliki cukup data. Minimal 2 baris.');
+          return;
+        }
+
+        const rows = parsed.rawData.length;
+        const cols = Math.max(...parsed.rawData.map(r => r.length));
+        
+        showSuccess(file.name, rows, cols);
+        
+        // Dispatch event with parsed data
+        window.dispatchEvent(new CustomEvent('tumbal-file-uploaded', {
+          detail: parsed
+        }));
+      } catch (err) {
+        console.error('Parse error:', err);
+        showError('Gagal membaca file. Pastikan format benar.');
+      }
+    }
+
+    // Event listeners
+    dropZone?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('button')) return;
+      fileInput?.click();
+    });
+
+    dropZone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-candy-pink', 'bg-candy-pink/10', 'scale-[1.02]');
+    });
+
+    dropZone?.addEventListener('dragleave', () => {
+      dropZone.classList.remove('border-candy-pink', 'bg-candy-pink/10', 'scale-[1.02]');
+    });
+
+    dropZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-candy-pink', 'bg-candy-pink/10', 'scale-[1.02]');
+      
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        handleFile(files[0]);
+      }
+    });
+
+    fileInput?.addEventListener('change', (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files.length > 0) {
+        handleFile(files[0]);
+      }
+    });
+
+    clearBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      reset();
+    });
+
+    retryBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      reset();
+    });
+
+    // Listen for external reset
+    window.addEventListener('tumbal-reset', reset);
+  }
+
+  // Initialize
+  if (typeof window !== 'undefined') {
+    document.addEventListener('astro:page-load', initTumbalUploader);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTumbalUploader);
+    } else {
+      initTumbalUploader();
+    }
+  }
+</script>
+
+<style>
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
