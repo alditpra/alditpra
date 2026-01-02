@@ -174,10 +174,10 @@ import { Icon } from "astro-icon/components";
                 // Done typing phrase
                 isDeleting = true;
 
-                // If last phrase, wait 5 seconds (5000ms) before deleting/looping
+                // If last phrase, wait 10 seconds (10000ms) before deleting/looping
                 // Otherwise wait normal pauseEnd (2000ms)
                 if (phraseIndex === phrases.length - 1) {
-                    typeSpeed = 5000;
+                    typeSpeed = 10000;
                 } else {
                     typeSpeed = pauseEnd;
                 }

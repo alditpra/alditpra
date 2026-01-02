@@ -20,11 +20,11 @@ export const SITE_CONFIG = {
     tagline: "Personal Link Directory",
     // Typewriter effect phrases
     profilePhrases: [
-        "Lecturer & Tech Enthusiast",
-        "Sebuah Link Directory",
-        "Niatnya Untuk Sharing Materi",
-        "Tapi Malah Jadi Begini..",
-        "Semoga Bermanfaat!!"
+        "Sebuah link directory",
+        "Niatnya untuk sharing materi",
+        "Tapi malah jadi begini..",
+        "...",
+        "Semoga bermanfaat!!"
     ],
     author: "Aldit Pratyasto",
     url: "https://alditpra.vercel.app", // Update with your actual domain
