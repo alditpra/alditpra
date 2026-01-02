@@ -2,11 +2,9 @@
 
 ---
 
-{
-    /* Light mode: soft overlay gradient. Dark mode: hidden to avoid conflicts with body background */
-}
+{/* Light mode: soft overlay gradient. Dark mode: fade out smoothly */}
 <div
-    class="fixed top-0 left-0 right-0 h-[500px] pointer-events-none z-0 dark:hidden"
+    class="fixed top-0 left-0 right-0 h-[500px] pointer-events-none z-0 opacity-100 dark:opacity-0 transition-opacity duration-300"
 >
     <div
         class="absolute inset-0 bg-gradient-to-b from-indigo-50/50 via-white/50 to-white/0 backdrop-blur-3xl"
