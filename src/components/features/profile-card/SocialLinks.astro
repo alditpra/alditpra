@@ -2,60 +2,77 @@
 import { Icon } from "astro-icon/components";
 import { candyColors } from "../../../lib/colors";
 
+interface Props {
+  variant?: "default" | "compact";
+}
+
+const { variant = "default" } = Astro.props;
+const isCompact = variant === "compact";
+
 // Social links configuration - using sequential candy colors
 const socialLinks = [
   {
     name: "GitHub",
     href: "https://github.com/alditpra",
     icon: "github",
-    color: candyColors[0] // purple
+    color: candyColors[0], // purple
   },
   {
     name: "Email",
     href: "mailto:alditpra@gmail.com",
     icon: "mail",
-    color: candyColors[2]
+    color: candyColors[2],
   },
   {
     name: "Facebook",
     href: "https://facebook.com/aldit",
     icon: "facebook",
-    color: candyColors[1]
+    color: candyColors[1],
   },
   {
     name: "WhatsApp",
     href: "https://wa.me/628158141112",
     icon: "message-circle",
-    color: candyColors[4] // teal
-  }
+    color: candyColors[4], // teal
+  },
 ];
 ---
 
-<div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-    {socialLinks.map((link) => (
-        <a 
-            href={link.href} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class={`
+<div
+  class={`flex ${isCompact ? "justify-center gap-2" : "flex-wrap items-center justify-center sm:justify-start gap-2"}`}
+>
+  {
+    socialLinks.map((link) => (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class={`
                 group inline-flex items-center justify-center gap-2 
-                flex-1 min-w-[120px]
-                px-4 py-2 rounded-full
-                ${link.color.bg} hover:${link.color.bg.replace('/20', '/30')}
+                ${isCompact ? "w-9 h-9 rounded-lg" : "flex-1 min-w-[120px] px-4 py-2 rounded-full"}
+                ${link.color.bg} hover:${link.color.bg.replace("/20", "/30")}
                 transition-all duration-300 ease-out
                 hover:scale-105
             `}
-            title={link.name}
+        title={link.name}
+      >
+        {/* Icon */}
+        <span
+          class={`${link.color.text} transition-transform duration-300 group-hover:scale-110`}
         >
-            {/* Icon */}
-            <span class={`${link.color.text} transition-transform duration-300 group-hover:scale-110`}>
-                <Icon name={`lucide:${link.icon}`} class="w-4 h-4" />
-            </span>
-            
-            {/* Label */}
-            <span class={`text-sm font-medium ${link.color.text}`}>
-                {link.name}
-            </span>
-        </a>
-    ))}
+          <Icon
+            name={`lucide:${link.icon}`}
+            class={isCompact ? "w-4 h-4" : "w-4 h-4"}
+          />
+        </span>
+
+        {/* Label (only for default variant) */}
+        {!isCompact && (
+          <span class={`text-sm font-medium ${link.color.text}`}>
+            {link.name}
+          </span>
+        )}
+      </a>
+    ))
+  }
 </div>

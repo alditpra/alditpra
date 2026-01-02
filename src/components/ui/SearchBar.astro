@@ -1,32 +1,56 @@
 ---
+interface Props {
+    id?: string;
+}
+
+const { id = "search-input" } = Astro.props;
 ---
 
 <div class="relative w-full group">
-    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search text-zinc-600 dark:text-zinc-200 group-focus-within:text-candy-purple dark:group-focus-within:text-candy-purple transition-colors"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <div
+        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-search text-zinc-600 dark:text-zinc-200 group-focus-within:text-candy-purple dark:group-focus-within:text-candy-purple transition-colors"
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"
+            ></path></svg
+        >
     </div>
     <input
         type="text"
-        id="search-input"
-        class="block w-full pl-10 pr-4 py-3 
-               bg-white/50 dark:bg-zinc-900/50 
+        id={id}
+        class="block w-full pl-10 pr-4 py-3
+               bg-white/50 dark:bg-zinc-900/50
                backdrop-blur-md
-               rounded-xl 
+               rounded-xl
                border border-candy-purple/15 dark:border-candy-purple/20
-               text-zinc-900 dark:text-zinc-100 
-               placeholder:text-zinc-500 dark:placeholder:text-zinc-400 
-               focus:outline-none focus:ring-0 
+               text-zinc-900 dark:text-zinc-100
+               placeholder:text-zinc-500 dark:placeholder:text-zinc-400
+               focus:outline-none focus:ring-0
                focus:border-candy-purple/35 dark:focus:border-candy-purple/40
-               shadow-[0_0_20px_-8px_rgba(127,115,255,0.3)] 
-               focus:shadow-[0_0_30px_-3px_rgba(127,115,255,0.5),0_4px_20px_rgba(0,0,0,0.1)] 
-               hover:bg-white/70 dark:hover:bg-zinc-900/70 
+               shadow-[0_0_20px_-8px_rgba(127,115,255,0.3)]
+               focus:shadow-[0_0_30px_-3px_rgba(127,115,255,0.5),0_4px_20px_rgba(0,0,0,0.1)]
+               hover:bg-white/70 dark:hover:bg-zinc-900/70
                hover:border-candy-purple/25 dark:hover:border-candy-purple/30
                transition-all duration-300"
         placeholder="Cari link, tools, atau resource..."
         autocomplete="off"
     />
-    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-        <kbd class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium text-zinc-400 bg-zinc-100 rounded border border-zinc-200">
+    <div
+        class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none"
+    >
+        <kbd
+            class="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium text-zinc-400 bg-zinc-100 rounded border border-zinc-200"
+        >
             <span class="text-xs">⌘</span>K
         </kbd>
     </div>

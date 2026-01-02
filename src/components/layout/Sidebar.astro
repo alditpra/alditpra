@@ -1,0 +1,117 @@
+---
+import { getAllLinks, getCategories } from "../../lib/data";
+import { groupByCategory } from "../../lib/category-utils";
+import { SITE_CONFIG } from "../../lib/constants";
+import ProfileCard from "../features/profile-card/ProfileCard.astro";
+import CategoryNav from "./CategoryNav.astro";
+import { Icon } from "astro-icon/components";
+
+let categories = [];
+let linkCounts = new Map();
+
+try {
+    const links = await getAllLinks();
+    categories = await getCategories();
+    const groupedLinks = groupByCategory(links, categories);
+
+    categories.forEach((cat) => {
+        const count = groupedLinks.get(cat.id)?.length || 0;
+        linkCounts.set(cat.id, count);
+    });
+} catch (error) {
+    // Silently fail - categories will be empty array
+}
+---
+
+<aside
+    class="sidebar hidden lg:flex flex-col w-80 flex-shrink-0 sticky top-0 self-start max-h-screen overflow-y-auto
+           backdrop-blur-xl
+           border-r border-white/40 dark:border-zinc-700/30"
+    aria-label="Sidebar Navigation"
+>
+    <div class="flex flex-col min-h-full p-6">
+        {/* Profile Card - Sidebar Variant */}
+        <ProfileCard variant="sidebar" />
+
+        {/* Divider */}
+        <div class="divider"></div>
+
+        {/* Category Navigation */}
+        <div class="mb-6">
+            <h2
+                class="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3 px-3"
+            >
+                Kategori
+            </h2>
+            <CategoryNav categories={categories} linkCounts={linkCounts} />
+        </div>
+
+        {/* Website Description - Footer (pushed to bottom) */}
+        <div
+            class="mt-auto pt-6 border-t border-white/20 dark:border-zinc-700/20"
+        >
+            <p
+                class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed px-3"
+            >
+                An open-source project built with Astro 5 and Tailwind CSS 4.
+                Leveraging{" "}
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1Tmj_ERd9KKvaKoGPEkczNb8iAJpTfkGHl7OUoahQlW0/edit?usp=drive_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1 text-candy-purple hover:text-candy-blue font-semibold transition-colors underline decoration-candy-purple/30 hover:decoration-candy-blue/50"
+                >
+                    Google Sheets
+                    <Icon name="lucide:external-link" class="w-3 h-3" />
+                </a>{" "}
+                as a headless CMS for effortless content updates.
+            </p>
+        </div>
+    </div>
+</aside>
+
+<style>
+    .sidebar {
+        /* Custom scrollbar styling */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(127, 115, 255, 0.3) transparent;
+    }
+
+    .sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: rgba(127, 115, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(127, 115, 255, 0.5);
+    }
+
+    /* Gradient divider */
+    .divider {
+        height: 1px;
+        margin: 1.5rem 0;
+        background: linear-gradient(
+            to right,
+            transparent,
+            rgba(127, 115, 255, 0.2),
+            transparent
+        );
+    }
+
+    :global(.dark) .divider {
+        background: linear-gradient(
+            to right,
+            transparent,
+            rgba(127, 115, 255, 0.3),
+            transparent
+        );
+    }
+</style>

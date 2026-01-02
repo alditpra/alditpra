@@ -1,0 +1,162 @@
+---
+import type { Category } from "../../types";
+import { candyColors } from "../../lib/colors";
+import SafeIcon from "../ui/SafeIcon.astro";
+
+interface Props {
+    categories: Category[];
+    linkCounts: Map<string, number>;
+}
+
+const { categories, linkCounts } = Astro.props;
+---
+
+<nav class="category-nav space-y-1.5" aria-label="Category Navigation">
+    {
+        categories.map((category, idx) => {
+            const count = linkCounts.get(category.id) || 0;
+            if (count === 0) return null;
+
+            const color = candyColors[idx % candyColors.length];
+
+            return (
+                <a
+                    href={`#category-${category.id}`}
+                    data-category-id={category.id}
+                    class="category-nav-item group flex items-center gap-3 px-3 py-2.5 rounded-xl
+                           bg-white/40 dark:bg-zinc-900/40
+                           border border-transparent
+                           hover:bg-white/60 dark:hover:bg-zinc-900/60
+                           hover:border-white/40 dark:hover:border-zinc-700/40
+                           transition-all duration-200
+                           cursor-pointer"
+                >
+                    {/* Icon with color */}
+                    <div
+                        class={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${color.bg} ${color.text} transition-transform duration-200 group-hover:scale-110`}
+                    >
+                        <SafeIcon
+                            name={category.icon}
+                            fallbackText={category.title}
+                            class="w-4 h-4"
+                            fallbackClass="text-xs font-bold"
+                        />
+                    </div>
+
+                    {/* Title */}
+                    <span class="flex-1 text-lg font-bold text-zinc-800 dark:text-zinc-200 truncate">
+                        {category.title}
+                    </span>
+
+                    {/* Count badge */}
+                    <span
+                        class={`px-2 py-0.5 text-xs font-bold rounded-full flex-shrink-0 ${color.bg} ${color.text}`}
+                    >
+                        {count}
+                    </span>
+                </a>
+            );
+        })
+    }
+</nav>
+
+<script>
+    function initCategoryNav() {
+        const navItems = document.querySelectorAll(".category-nav-item");
+
+        // Select category headers, not sections
+        const categoryHeaders = document.querySelectorAll(".category-header");
+
+        if (navItems.length === 0 || categoryHeaders.length === 0) return;
+
+        // Smooth scroll handler
+        navItems.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                e.preventDefault();
+                const categoryId = item.getAttribute("data-category-id");
+                const section = document.querySelector(
+                    `[data-category="${categoryId}"]`,
+                );
+
+                if (section) {
+                    section.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
+                }
+            });
+        });
+
+        // Intersection observer for category headers only
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px 0px -90% 0px", // Only top 10% of viewport
+            threshold: 0,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            // Find all visible headers
+            const visibleHeaders = entries
+                .filter((entry) => entry.isIntersecting)
+                .map((entry) => entry.target);
+
+            if (visibleHeaders.length > 0) {
+                // Get the topmost visible header
+                const topmostHeader = visibleHeaders.reduce(
+                    (topmost, current) => {
+                        const topmostRect = topmost.getBoundingClientRect();
+                        const currentRect = current.getBoundingClientRect();
+                        return currentRect.top < topmostRect.top
+                            ? current
+                            : topmost;
+                    },
+                );
+
+                const categoryId = topmostHeader
+                    .closest("[data-category]")
+                    ?.getAttribute("data-category");
+
+                if (categoryId) {
+                    // Remove active from all
+                    navItems.forEach((nav) => {
+                        nav.classList.remove("active");
+                    });
+
+                    // Add active to matching
+                    const activeNav = document.querySelector(
+                        `.category-nav-item[data-category-id="${categoryId}"]`,
+                    );
+                    if (activeNav) {
+                        activeNav.classList.add("active");
+                    }
+                }
+            }
+        }, observerOptions);
+
+        categoryHeaders.forEach((header) => observer.observe(header));
+    }
+
+    // Initialize
+    if (typeof window !== "undefined") {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initCategoryNav);
+        } else {
+            initCategoryNav();
+        }
+    }
+</script>
+
+<style>
+    .category-nav-item.active {
+        background-color: rgb(255 255 255 / 0.95);
+        border-color: rgb(127 115 255 / 0.4);
+        box-shadow:
+            0 4px 12px -2px rgb(127 115 255 / 0.15),
+            0 2px 6px -1px rgb(0 0 0 / 0.1);
+    }
+
+    :global(.dark) .category-nav-item.active {
+        background-color: rgb(39 39 42 / 0.9);
+        border-color: rgb(82 82 91 / 0.5);
+    }
+</style>
