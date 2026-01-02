@@ -1,21 +1,22 @@
 ---
 /**
  * TUMBAL - Tabel Urut Mudah Buat Analisa Lanjutan
- * 
- * Filosofi: Mengorbankan tabel lama yang jelek 
+ *
+ * Filosofi: Mengorbankan tabel lama yang jelek
  * demi mendapatkan kekayaan data (insight) yang melimpah.
  */
-import Layout from '../layouts/Layout.astro';
-import MeshGradient from '../components/ui/MeshGradient.astro';
-import { Icon } from 'astro-icon/components';
-import FileUploader from '../components/TUMBAL/FileUploader.astro';
-import RawPreview from '../components/TUMBAL/RawPreview.astro';
-import HeaderSelector from '../components/TUMBAL/HeaderSelector.astro';
-import ConvertedPreview from '../components/TUMBAL/ConvertedPreview.astro';
-import DownloadButtons from '../components/TUMBAL/DownloadButtons.astro';
+import Layout from "../layouts/Layout.astro";
+import MeshGradient from "../components/ui/MeshGradient.astro";
+import { Icon } from "astro-icon/components";
+import FileUploader from "../components/TUMBAL/FileUploader.astro";
+import RawPreview from "../components/TUMBAL/RawPreview.astro";
+import HeaderSelector from "../components/TUMBAL/HeaderSelector.astro";
+import ConvertedPreview from "../components/TUMBAL/ConvertedPreview.astro";
+import DownloadButtons from "../components/TUMBAL/DownloadButtons.astro";
 
-const title = 'TUMBAL - Tabel Urut Mudah Buat Analisa Lanjutan';
-const description = 'Konversi tabel dengan nested headers dan merged cells menjadi format rapi untuk analisa lanjutan.';
+const title = "TUMBAL - Tabel Urut Mudah Buat Analisa Lanjutan";
+const description =
+  "Konversi tabel dengan nested headers dan merged cells menjadi format rapi untuk analisa lanjutan.";
 ---
 
 <Layout title={title} description={description}>
@@ -25,39 +26,71 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
 
     <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-7xl">
       {/* Back Navigation */}
-      <a 
-        href="/" 
+      <a
+        href="/"
         class="inline-flex items-center gap-2 px-5 py-3 mb-6 rounded-3xl transition-all duration-300
                bg-candy-yellow/20 border border-candy-yellow/30
                hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg group"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)] transition-transform group-hover:-translate-x-1">
-          <path d="m12 19-7-7 7-7"/>
-          <path d="M19 12H5"/>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)] transition-transform group-hover:-translate-x-1"
+        >
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
         </svg>
-        <span class="font-semibold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]">Kembali</span>
+        <span
+          class="font-semibold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+          >Kembali</span
+        >
       </a>
 
       {/* Header */}
-      <div class="relative bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-6 sm:p-8 mb-8 border border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden transition-all duration-300">
+      <div
+        class="relative bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-6 sm:p-8 mb-8 border border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden transition-all duration-300"
+      >
         {/* Gradient overlay - Teal theme for data/spreadsheet */}
-        <div class="absolute inset-0 bg-gradient-to-br from-candy-yellow/10 via-transparent to-candy-blue/10 pointer-events-none rounded-3xl"></div>
-        
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-candy-yellow/10 via-transparent to-candy-blue/10 pointer-events-none rounded-3xl"
+        >
+        </div>
+
         <div class="relative flex items-start gap-5 sm:gap-6">
           {/* Icon - skull icon from spreadsheet data */}
-          <div class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-candy-yellow/20 flex items-center justify-center shadow-lg" style="box-shadow: 0 0 25px -5px var(--candy-yellow), 0 8px 25px -10px var(--candy-yellow);">
-            <Icon name="lucide:skull" class="w-8 h-8 sm:w-10 sm:h-10 text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]" />
+          <div
+            class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-candy-yellow/20 flex items-center justify-center shadow-lg"
+            style="box-shadow: 0 0 25px -5px var(--candy-yellow), 0 8px 25px -10px var(--candy-yellow);"
+          >
+            <Icon
+              name="lucide:skull"
+              class="w-8 h-8 sm:w-10 sm:h-10 text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+            />
           </div>
-          
+
           <div class="flex-1 min-w-0">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-[color:color-mix(in_srgb,var(--candy-yellow),black_20%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)] mb-2">
+            <h1
+              class="text-2xl sm:text-3xl font-extrabold text-[color:color-mix(in_srgb,var(--candy-yellow),black_20%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)] mb-2"
+            >
               TUMBAL
             </h1>
-            <p class="text-lg font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+            <p
+              class="text-lg font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+            >
               Tabel Urut Mudah Buat Analisa Lanjutan
             </p>
-            <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm sm:text-base italic">
-              "Mengorbankan tabel lama yang jelek demi mendapatkan kekayaan data yang melimpah. Contohnya tabel BPS."
+            <p
+              class="text-zinc-600 dark:text-zinc-400 leading-relaxed text-sm sm:text-base italic"
+            >
+              "Mengorbankan tabel lama yang jelek demi mendapatkan kekayaan data
+              yang melimpah. Contohnya tabel BPS."
             </p>
           </div>
         </div>
@@ -66,8 +99,14 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
       {/* Step 1: Upload */}
       <div class="mb-8">
         <div class="flex items-center gap-3 mb-4">
-          <div class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]">1</div>
-          <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">Upload Tabel Korban</h2>
+          <div
+            class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+          >
+            1
+          </div>
+          <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">
+            Upload Tabel Korban
+          </h2>
         </div>
         <FileUploader />
       </div>
@@ -75,8 +114,14 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
       {/* Step 2: Raw Preview */}
       <div class="mb-8">
         <div id="step-2-header" class="flex items-center gap-3 mb-4 hidden">
-          <div class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]">2</div>
-          <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">Preview Tabel Asli</h2>
+          <div
+            class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+          >
+            2
+          </div>
+          <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">
+            Preview Tabel Asli
+          </h2>
         </div>
         <RawPreview />
       </div>
@@ -87,8 +132,14 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
           {/* Left: Configuration - scrollable */}
           <div>
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]">3</div>
-              <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">Konfigurasi Ritual</h2>
+              <div
+                class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+              >
+                3
+              </div>
+              <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">
+                Konfigurasi Ritual
+              </h2>
             </div>
             <HeaderSelector />
           </div>
@@ -96,8 +147,14 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
           {/* Right: Preview - sticky column */}
           <div class="lg:sticky lg:top-8 lg:self-start h-fit">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]">4</div>
-              <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">Hasil Konversi</h2>
+              <div
+                class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+              >
+                4
+              </div>
+              <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">
+                Hasil Konversi
+              </h2>
             </div>
             <ConvertedPreview />
           </div>
@@ -107,8 +164,14 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
       {/* Step 5: Download */}
       <div class="mb-8">
         <div id="step-5-header" class="flex items-center gap-3 mb-4 hidden">
-          <div class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]">5</div>
-          <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">Download</h2>
+          <div
+            class="w-8 h-8 rounded-full bg-candy-yellow/20 flex items-center justify-center font-bold text-[color:color-mix(in_srgb,var(--candy-yellow),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_30%)]"
+          >
+            5
+          </div>
+          <h2 class="text-lg font-bold text-zinc-800 dark:text-zinc-100">
+            Download
+          </h2>
         </div>
         <DownloadButtons />
       </div>
@@ -118,30 +181,31 @@ const description = 'Konversi tabel dengan nested headers dan merged cells menja
 
 <script>
   function initTumbalPage() {
-    const step2Header = document.getElementById('step-2-header');
-    const configPreviewSection = document.getElementById('config-preview-section');
-    const step5Header = document.getElementById('step-5-header');
+    const step2Header = document.getElementById("step-2-header");
+    const configPreviewSection = document.getElementById(
+      "config-preview-section",
+    );
+    const step5Header = document.getElementById("step-5-header");
 
     // Show step headers when file is uploaded
-    window.addEventListener('tumbal-file-uploaded', () => {
-      step2Header?.classList.remove('hidden');
-      configPreviewSection?.classList.remove('hidden');
-      step5Header?.classList.remove('hidden');
+    window.addEventListener("tumbal-file-uploaded", () => {
+      step2Header?.classList.remove("hidden");
+      configPreviewSection?.classList.remove("hidden");
+      step5Header?.classList.remove("hidden");
     });
 
     // Hide step headers when file is cleared
-    window.addEventListener('tumbal-file-cleared', () => {
-      step2Header?.classList.add('hidden');
-      configPreviewSection?.classList.add('hidden');
-      step5Header?.classList.add('hidden');
+    window.addEventListener("tumbal-file-cleared", () => {
+      step2Header?.classList.add("hidden");
+      configPreviewSection?.classList.add("hidden");
+      step5Header?.classList.add("hidden");
     });
   }
 
   // Initialize
-  if (typeof window !== 'undefined') {
-    document.addEventListener('astro:page-load', initTumbalPage);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTumbalPage);
+  if (typeof window !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initTumbalPage);
     } else {
       initTumbalPage();
     }

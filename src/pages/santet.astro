@@ -2,57 +2,101 @@
 /**
  * SANTET - Saran ANti TElat Tugas
  * Prompt Generator untuk Tugas Kuliah
- * 
+ *
  * Uses modular architecture:
  * - PromptLayout: Shared layout component
  * - SantetForm: Topic-specific form
  * - LivePreview: Shared preview component
  */
-import PromptLayout from '../components/PromptGenerator/PromptLayout.astro';
-import LivePreview from '../components/PromptGenerator/LivePreview.astro';
-import SantetForm from '../generators/santet/SantetForm.astro';
-import AssignmentTypeSelector from '../generators/santet/AssignmentTypeSelector.astro';
+import PromptLayout from "../components/PromptGenerator/PromptLayout.astro";
+import LivePreview from "../components/PromptGenerator/LivePreview.astro";
+import SantetForm from "../generators/santet/SantetForm.astro";
+import AssignmentTypeSelector from "../generators/santet/AssignmentTypeSelector.astro";
 
-const title = 'SANTET - Senjata ANti TElat Tugas';
-const subtitle = 'Senjata ANti TElat Tugas';
-const description = 'Generator prompt AI untuk membantu mahasiswa brainstorming dan menyelesaikan tugas tepat waktu.';
+const title = "SANTET - Senjata ANti TElat Tugas";
+const subtitle = "Senjata ANti TElat Tugas";
+const description =
+  "Generator prompt AI untuk membantu mahasiswa brainstorming dan menyelesaikan tugas tepat waktu.";
 ---
 
-<PromptLayout 
-  title={title} 
-  subtitle={subtitle} 
+<PromptLayout
+  title={title}
+  subtitle={subtitle}
   description={description}
   formTitle="Detail Tugas"
 >
   <!-- Back Navigation -->
-  <a slot="back-nav" 
-     href="/" 
-     class="inline-flex items-center gap-2 px-5 py-3 mb-6 rounded-3xl transition-all duration-300
+  <a
+    slot="back-nav"
+    href="/"
+    class="inline-flex items-center gap-2 px-5 py-3 mb-6 rounded-3xl transition-all duration-300
             bg-white/80 dark:bg-zinc-800/80 border border-white/60 dark:border-zinc-700/50
             hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg group"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-purple transition-transform group-hover:-translate-x-1">
-      <path d="m12 19-7-7 7-7"/>
-      <path d="M19 12H5"/>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="text-candy-purple transition-transform group-hover:-translate-x-1"
+    >
+      <path d="m12 19-7-7 7-7"></path>
+      <path d="M19 12H5"></path>
     </svg>
     <span class="font-semibold text-candy-purple">Kembali</span>
   </a>
 
   <!-- Header Icon Slot -->
-  <svg slot="header-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-purple">
-    <circle cx="12" cy="12" r="10"/>
-    <polyline points="12 6 12 12 16 14"/>
+  <svg
+    slot="header-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="text-candy-purple"
+  >
+    <circle cx="12" cy="12" r="10"></circle>
+    <polyline points="12 6 12 12 16 14"></polyline>
   </svg>
 
   <!-- Warning Card (below description) -->
-  <div slot="header-extra" class="mt-4 p-3 rounded-xl bg-amber-50/80 dark:bg-amber-900/20 border border-amber-200/50 dark:border-amber-700/30">
+  <div
+    slot="header-extra"
+    class="mt-4 p-3 rounded-xl bg-amber-50/80 dark:bg-amber-900/20 border border-amber-200/50 dark:border-amber-700/30"
+  >
     <div class="flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600 dark:text-amber-400 flex-shrink-0">
-        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
-        <path d="M12 9v4"/>
-        <path d="M12 17h.01"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-amber-600 dark:text-amber-400 flex-shrink-0"
+      >
+        <path
+          d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
+        ></path>
+        <path d="M12 9v4"></path>
+        <path d="M12 17h.01"></path>
       </svg>
-      <p class="text-xs text-amber-700 dark:text-amber-400/90">AI bisa keliru (halusinasi). Verifikasi semua fakta, referensi, dan data. Gunakan hasil untuk belajar, bukan copy-paste.</p>
+      <p class="text-xs text-amber-700 dark:text-amber-400/90">
+        AI bisa keliru (halusinasi). Verifikasi semua fakta, referensi, dan
+        data. Gunakan hasil untuk belajar, bukan copy-paste.
+      </p>
     </div>
   </div>
 
@@ -78,51 +122,57 @@ const description = 'Generator prompt AI untuk membantu mahasiswa brainstorming 
 </PromptLayout>
 
 <script>
-  import { PromptGenerator, debounce } from '../generators/santet/generator';
-  
+  import { PromptGenerator, debounce } from "../generators/santet/generator";
+
   function initPromptGenerator() {
     // Initialize generator
     const generator = new PromptGenerator();
-    let currentAssignmentType: 'individual' | 'group' = 'individual';
-    let currentTemplateStyle: 'standard' | 'detailed' | 'concise' = 'standard';
-    let previousPrompt = '';
+    let currentAssignmentType: "individual" | "group" = "individual";
+    let currentTemplateStyle: "standard" | "detailed" | "concise" = "standard";
+    let previousPrompt = "";
 
     // Get DOM elements
-    const form = document.querySelector<HTMLFormElement>('#prompt-form');
-    const previewEl = document.querySelector('#prompt-preview');
-    const copyBtn = document.querySelector<HTMLButtonElement>('#copy-btn');
-    const charCount = document.querySelector('#char-count');
-    const qualityScore = document.querySelector('#quality-score');
-    const qualityBar = document.querySelector<HTMLElement>('#quality-bar');
-    const qualitySuggestion = document.querySelector('#quality-suggestion');
-    const groupFields = document.querySelector('#group-fields');
-    const copyToast = document.querySelector('#copy-toast');
+    const form = document.querySelector<HTMLFormElement>("#prompt-form");
+    const previewEl = document.querySelector("#prompt-preview");
+    const copyBtn = document.querySelector<HTMLButtonElement>("#copy-btn");
+    const charCount = document.querySelector("#char-count");
+    const qualityScore = document.querySelector("#quality-score");
+    const qualityBar = document.querySelector<HTMLElement>("#quality-bar");
+    const qualitySuggestion = document.querySelector("#quality-suggestion");
+    const groupFields = document.querySelector("#group-fields");
+    const copyToast = document.querySelector("#copy-toast");
 
     // Update prompt and quality with change highlighting
     const updatePrompt = debounce(() => {
       if (!form) return;
 
       const formData = new FormData(form);
-      
+
       // Get team challenges
       const teamChallenges: string[] = [];
-      form.querySelectorAll<HTMLInputElement>('input[name="teamChallenges"]:checked')
-        .forEach(cb => teamChallenges.push(cb.value));
+      form
+        .querySelectorAll<HTMLInputElement>(
+          'input[name="teamChallenges"]:checked',
+        )
+        .forEach((cb) => teamChallenges.push(cb.value));
 
       // Update generator data
       generator.updateMultipleFields({
-        assignmentType: formData.get('assignmentType') as string || 'Essay',
-        subject: formData.get('subject') as string || '',
-        topic: formData.get('topic') as string || '',
+        assignmentType: (formData.get("assignmentType") as string) || "Essay",
+        subject: (formData.get("subject") as string) || "",
+        topic: (formData.get("topic") as string) || "",
         templateStyle: currentTemplateStyle,
-        difficultyLevel: formData.get('difficultyLevel') as string || 'Medium',
-        citationStyle: formData.get('citationStyle') as string || 'None',
-        keyConcepts: formData.get('keyConcepts') as string || '',
-        specificRequirements: formData.get('specificRequirements') as string || '',
-        isGroup: currentAssignmentType === 'group',
-        memberCount: parseInt(formData.get('memberCount') as string) || 0,
+        difficultyLevel:
+          (formData.get("difficultyLevel") as string) || "Medium",
+        citationStyle: (formData.get("citationStyle") as string) || "None",
+        keyConcepts: (formData.get("keyConcepts") as string) || "",
+        specificRequirements:
+          (formData.get("specificRequirements") as string) || "",
+        isGroup: currentAssignmentType === "group",
+        memberCount: parseInt(formData.get("memberCount") as string) || 0,
         teamChallenges: teamChallenges,
-        additionalInstructions: formData.get('additionalInstructions') as string || ''
+        additionalInstructions:
+          (formData.get("additionalInstructions") as string) || "",
       });
 
       // Generate prompt
@@ -134,67 +184,77 @@ const description = 'Generator prompt AI untuk membantu mahasiswa brainstorming 
       if (previewEl) {
         if (prompt && prompt.length > 10) {
           // Format prompt with markdown
-          const formatText = (text: string) => text
-            .replace(/\*\*([^*]+):\*\*/g, '<strong>$1:</strong>')
-            .replace(/\*\[([^\]]+)\]\*/g, '<em>[$1]</em>');
-          
+          const formatText = (text: string) =>
+            text
+              .replace(/\*\*([^*]+):\*\*/g, "<strong>$1:</strong>")
+              .replace(/\*\[([^\]]+)\]\*/g, "<em>[$1]</em>");
+
           // Find changed words between old and new text
-          const findChangedWords = (oldText: string, newText: string): Set<string> => {
-            const oldWords = new Set(oldText.split(/\s+/).filter(w => w.length > 2));
-            const newWords = newText.split(/\s+/).filter(w => w.length > 2);
+          const findChangedWords = (
+            oldText: string,
+            newText: string,
+          ): Set<string> => {
+            const oldWords = new Set(
+              oldText.split(/\s+/).filter((w) => w.length > 2),
+            );
+            const newWords = newText.split(/\s+/).filter((w) => w.length > 2);
             const changed = new Set<string>();
-            
-            newWords.forEach(word => {
+
+            newWords.forEach((word) => {
               if (!oldWords.has(word) && word.length > 2) {
                 changed.add(word);
               }
             });
             return changed;
           };
-          
+
           // Detect if content changed (compare with previous)
-          const hasChanged = previousPrompt.length > 0 && previousPrompt !== prompt;
-          
+          const hasChanged =
+            previousPrompt.length > 0 && previousPrompt !== prompt;
+
           if (hasChanged) {
             // Find words that are new/changed
             const changedWords = findChangedWords(previousPrompt, prompt);
-            
+
             // Format and highlight changed words
             let formattedPrompt = formatText(prompt);
-            
+
             // Only highlight if there are specific changed words (not too many)
             if (changedWords.size > 0 && changedWords.size <= 15) {
-              changedWords.forEach(word => {
+              changedWords.forEach((word) => {
                 // Escape special regex chars and create pattern
-                const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                const regex = new RegExp(`(${escaped})`, 'g');
-                formattedPrompt = formattedPrompt.replace(regex, '<span class="highlight-change">$1</span>');
+                const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+                const regex = new RegExp(`(${escaped})`, "g");
+                formattedPrompt = formattedPrompt.replace(
+                  regex,
+                  '<span class="highlight-change">$1</span>',
+                );
               });
             }
-            
-            previewEl.innerHTML = formattedPrompt.replace(/\n/g, '<br>');
-            
+
+            previewEl.innerHTML = formattedPrompt.replace(/\n/g, "<br>");
+
             // Remove highlight class after animation completes
             setTimeout(() => {
-              previewEl.querySelectorAll('.highlight-change').forEach(el => {
-                el.classList.remove('highlight-change');
+              previewEl.querySelectorAll(".highlight-change").forEach((el) => {
+                el.classList.remove("highlight-change");
               });
             }, 1600);
-            
           } else {
             // First render or no change - just format without highlight
-            const formattedPrompt = formatText(prompt).replace(/\n/g, '<br>');
+            const formattedPrompt = formatText(prompt).replace(/\n/g, "<br>");
             previewEl.innerHTML = formattedPrompt;
           }
-          
+
           // Store for next comparison
           previousPrompt = prompt;
-          
+
           // Enable copy button
           if (copyBtn) copyBtn.disabled = false;
         } else {
-          previewEl.innerHTML = '<span style="color: var(--text-secondary);" class="italic">Isi form di samping untuk membuat prompt...</span>';
-          previousPrompt = '';
+          previewEl.innerHTML =
+            '<span style="color: var(--text-secondary);" class="italic">Isi form di samping untuk membuat prompt...</span>';
+          previousPrompt = "";
           if (copyBtn) copyBtn.disabled = true;
         }
       }
@@ -208,27 +268,30 @@ const description = 'Generator prompt AI untuk membantu mahasiswa brainstorming 
       if (qualityScore) {
         qualityScore.textContent = `${quality}%`;
         qualityScore.dataset.score = quality.toString();
-        
+
         // Update color based on score
         if (quality < 50) {
-          qualityScore.style.color = '#ef4444';
+          qualityScore.style.color = "#ef4444";
         } else if (quality < 80) {
-          qualityScore.style.color = '#f59e0b';
+          qualityScore.style.color = "#f59e0b";
         } else {
-          qualityScore.style.color = '#10b981';
+          qualityScore.style.color = "#10b981";
         }
       }
 
       // Update quality bar
       if (qualityBar) {
         qualityBar.style.width = `${quality}%`;
-        
+
         if (quality < 50) {
-          qualityBar.style.background = 'linear-gradient(90deg, #ef4444, #dc2626)';
+          qualityBar.style.background =
+            "linear-gradient(90deg, #ef4444, #dc2626)";
         } else if (quality < 80) {
-          qualityBar.style.background = 'linear-gradient(90deg, #f59e0b, #d97706)';
+          qualityBar.style.background =
+            "linear-gradient(90deg, #f59e0b, #d97706)";
         } else {
-          qualityBar.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+          qualityBar.style.background =
+            "linear-gradient(90deg, #10b981, #059669)";
         }
       }
 
@@ -239,110 +302,110 @@ const description = 'Generator prompt AI untuk membantu mahasiswa brainstorming 
     }, 500);
 
     // Listen for assignment type changes
-    window.addEventListener('assignment-type-change', ((e: CustomEvent) => {
+    window.addEventListener("assignment-type-change", ((e: CustomEvent) => {
       currentAssignmentType = e.detail.type;
-      
+
       // Show/hide group fields
       if (groupFields) {
-        if (currentAssignmentType === 'group') {
-          groupFields.classList.remove('hidden');
+        if (currentAssignmentType === "group") {
+          groupFields.classList.remove("hidden");
         } else {
-          groupFields.classList.add('hidden');
+          groupFields.classList.add("hidden");
         }
       }
-      
+
       updatePrompt();
     }) as EventListener);
 
     // Listen for template style changes
-    window.addEventListener('template-style-change', ((e: CustomEvent) => {
+    window.addEventListener("template-style-change", ((e: CustomEvent) => {
       currentTemplateStyle = e.detail.style;
       updatePrompt();
     }) as EventListener);
 
     // Listen for form reset
-    window.addEventListener('form-reset', () => {
-      currentAssignmentType = 'individual';
-      currentTemplateStyle = 'standard';
-      previousPrompt = '';
+    window.addEventListener("form-reset", () => {
+      currentAssignmentType = "individual";
+      currentTemplateStyle = "standard";
+      previousPrompt = "";
       generator.reset();
       updatePrompt();
     });
 
     // Listen for form changes
-    form?.addEventListener('input', updatePrompt);
-    form?.addEventListener('change', updatePrompt);
+    form?.addEventListener("input", updatePrompt);
+    form?.addEventListener("change", updatePrompt);
 
     // Copy to clipboard
-    copyBtn?.addEventListener('click', async () => {
+    copyBtn?.addEventListener("click", async () => {
       const prompt = generator.generatePrompt();
-      
+
       try {
         await navigator.clipboard.writeText(prompt);
-        
+
         // Show toast
         if (copyToast) {
-          copyToast.classList.add('show');
+          copyToast.classList.add("show");
           setTimeout(() => {
-            copyToast.classList.remove('show');
+            copyToast.classList.remove("show");
           }, 2500);
         }
-        
+
         // Update button text
-        const copyText = copyBtn.querySelector('#copy-text');
+        const copyText = copyBtn.querySelector("#copy-text");
         const originalText = copyText?.textContent;
         if (copyText) {
-          copyText.textContent = '✓ Disalin!';
+          copyText.textContent = "✓ Disalin!";
           setTimeout(() => {
-            copyText.textContent = originalText || 'Salin Prompt';
+            copyText.textContent = originalText || "Salin Prompt";
           }, 2000);
         }
       } catch (err) {
-        console.error('Failed to copy:', err);
+        console.error("Failed to copy:", err);
       }
     });
 
     // Reset button
-    const resetBtn = document.querySelector<HTMLButtonElement>('#reset-btn');
-    const resetToast = document.querySelector('#reset-toast');
-    
-    resetBtn?.addEventListener('click', () => {
-      if (confirm('Reset field form? Jenis tugas tetap dipertahankan.')) {
+    const resetBtn = document.querySelector<HTMLButtonElement>("#reset-btn");
+    const resetToast = document.querySelector("#reset-toast");
+
+    resetBtn?.addEventListener("click", () => {
+      if (confirm("Reset field form? Jenis tugas tetap dipertahankan.")) {
         // Reset form (but keep assignment type through generator)
         form?.reset();
-        
+
         // Keep current assignment type, only reset other state
-        currentTemplateStyle = 'standard';
-        previousPrompt = '';
-        
+        currentTemplateStyle = "standard";
+        previousPrompt = "";
+
         // Partial reset generator - keep assignmentType
         const keepAssignmentType = generator.getFormData().assignmentType;
         generator.reset();
         if (keepAssignmentType) {
-          generator.updateField('assignmentType', keepAssignmentType);
+          generator.updateField("assignmentType", keepAssignmentType);
         }
-        
+
         // Reset template style buttons visually
-        document.querySelectorAll('.template-style-btn').forEach(btn => {
-          btn.classList.remove('active');
-          if ((btn as HTMLButtonElement).dataset.templateStyle === 'standard') {
-            btn.classList.add('active');
+        document.querySelectorAll(".template-style-btn").forEach((btn) => {
+          btn.classList.remove("active");
+          if ((btn as HTMLButtonElement).dataset.templateStyle === "standard") {
+            btn.classList.add("active");
           }
         });
-        
+
         // Hide group fields (if currently individual)
         if (!generator.getFormData().isGroup && groupFields) {
-          groupFields.classList.add('hidden');
+          groupFields.classList.add("hidden");
         }
-        
+
         // Update prompt (assignment type selector NOT reset)
         updatePrompt();
-        
+
         // Show success toast
         if (resetToast) {
-          resetToast.classList.add('show');
+          resetToast.classList.add("show");
           setTimeout(() => {
-            resetToast.classList.remove('show');
+            resetToast.classList.remove("show");
           }, 2500);
         }
       }
@@ -351,13 +414,11 @@ const description = 'Generator prompt AI untuk membantu mahasiswa brainstorming 
     // Initial update
     updatePrompt();
   }
-  
+
   // Initialize on page load
-  if (typeof window !== 'undefined') {
-    document.addEventListener('astro:page-load', initPromptGenerator);
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initPromptGenerator);
+  if (typeof window !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initPromptGenerator);
     } else {
       initPromptGenerator();
     }
