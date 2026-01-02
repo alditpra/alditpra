@@ -70,7 +70,7 @@ body {
       #fafafa 100%);
   color: var(--foreground);
   min-height: 100vh;
-  transition: background 0.3s ease, color 0.3s ease;
+  /* transition: background 0.3s ease, color 0.3s ease; - Removed for instant switch */
 }
 
 /* Explicit light mode body - Manual toggle */
@@ -113,14 +113,10 @@ html.dark body {
    OPTIMIZED THEME TRANSITION
    ======================================== */
 
-/* Only transition theme-related properties where needed */
-* {
-  transition: background-color 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 300ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    color 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
+/* Theme transition only on body - much lighter than applying to all elements */
+/* Individual components can add their own transitions as needed */
 
-/* Exclude animations and custom transitions */
+/* Exclude animations from any inherited transitions */
 .no-transition,
 .animate-spin,
 .animate-ping,
