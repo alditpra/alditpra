@@ -11,6 +11,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
     output: 'server',
     prefetch: false, // Disable prefetch to avoid performance issues with many links
+    build: {
+        inlineStylesheets: 'always', // Inline all CSS to eliminate render-blocking external stylesheets
+    },
     adapter: vercel({
         isr: {
             // Revalidate cache every 5 minutes (300 seconds) for fresh data
