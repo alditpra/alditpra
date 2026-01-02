@@ -15,9 +15,17 @@ export const FETCH_TIMEOUT = 10000;
 
 // Site metadata
 export const SITE_CONFIG = {
-    name: "alditpra",
+    name: "Aldit Pratyasto",
     description: "Open Source Project menggunakan Astro 5 dan Tailwind CSS 4, dengan Google Sheets sebagai database-nya. Solusi gratisan.",
-    tagline: "Organized, Accessible, Always Updated",
+    tagline: "Personal Link Directory",
+    // Typewriter effect phrases
+    profilePhrases: [
+        "Lecturer & Tech Enthusiast",
+        "Sebuah Link Directory",
+        "Niatnya Untuk Sharing Materi",
+        "Tapi Malah Jadi Begini..",
+        "Semoga Bermanfaat!!"
+    ],
     author: "Aldit Pratyasto",
     url: "https://alditpra.vercel.app", // Update with your actual domain
     ogImage: "/og-image.png", // OG preview image
