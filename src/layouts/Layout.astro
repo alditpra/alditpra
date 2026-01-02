@@ -1,7 +1,7 @@
 ---
 import "../styles/global.css";
 import { SITE_CONFIG } from "../lib/constants";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 import ThemeToggle from "../components/ui/ThemeToggle.astro";
 
@@ -272,7 +272,7 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } =
     </script>
 
     <!-- Smooth page transitions -->
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body class="font-sans antialiased">
     <!-- Floating Theme Toggle - Persistent across all pages -->
