@@ -1,15 +1,10 @@
 ---
-import type { MarkdownInstance } from 'astro';
-import { SITE_CONFIG } from "../lib/constants";
 import { getAllLinks, getCategories } from "../lib/data";
 import { groupByCategory } from "../lib/category-utils";
-import MeshGradient from "./ui/MeshGradient.astro";
-import ProfileCard from "./features/profile-card/ProfileCard.astro";
 import LinkCard from "./features/LinkCard.astro";
 import SafeIcon from "./ui/SafeIcon.astro";
 import { Icon } from "astro-icon/components";
 import { candyColors } from "../lib/colors";
-
 
 let links = [];
 let categories = [];
@@ -21,7 +16,7 @@ try {
     categories = await getCategories();
     groupedLinks = groupByCategory(links, categories);
 } catch (error) {
-    console.error('[HomePage] Error fetching data:', error);
+    console.error("[HomePage] Error fetching data:", error);
     hasError = true;
     // Will render error UI below
 }
@@ -30,152 +25,186 @@ try {
 // Actually we render all of them and toggle visibility.
 ---
 
-<main class="min-h-screen relative overflow-hidden">
-    {/* Background */}
-    <MeshGradient />
-
-    <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
-        {/* Error State */}
-        {hasError && (
-            <div class="max-w-2xl mx-auto text-center py-20">
-                <div class="bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-8 sm:p-12 border border-white/60 dark:border-zinc-700/50 shadow-xl transition-all duration-300">
-                    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center">
-                        <Icon name="lucide:alert-triangle" class="w-10 h-10 text-red-600" />
-                    </div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100 mb-3">
-                        Gagal Memuat Data
-                    </h2>
-                    <p class="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
-                        Terjadi kesalahan saat mengambil data dari Google Sheets. 
-                        Silakan refresh halaman atau coba lagi nanti.
-                    </p>
-                    <button 
-                        onclick="window.location.reload()" 
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-candy-purple to-candy-pink text-white font-semibold rounded-2xl hover:scale-105 transition-transform duration-300 shadow-lg"
-                    >
-                        <Icon name="lucide:refresh-cw" class="w-5 h-5" />
-                        Refresh Halaman
-                    </button>
+{/* Error State */}
+{
+    hasError && (
+        <div class="max-w-2xl mx-auto text-center py-20">
+            <div class="bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-8 sm:p-12 border border-white/60 dark:border-zinc-700/50 shadow-xl transition-all duration-300">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-red-100 flex items-center justify-center">
+                    <Icon
+                        name="lucide:alert-triangle"
+                        class="w-10 h-10 text-red-600"
+                    />
                 </div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-zinc-800 dark:text-zinc-100 mb-3">
+                    Gagal Memuat Data
+                </h2>
+                <p class="text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed">
+                    Terjadi kesalahan saat mengambil data dari Google Sheets.
+                    Silakan refresh halaman atau coba lagi nanti.
+                </p>
+                <button
+                    onclick="window.location.reload()"
+                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-candy-purple to-candy-pink text-white font-semibold rounded-2xl hover:scale-105 transition-transform duration-300 shadow-lg"
+                >
+                    <Icon name="lucide:refresh-cw" class="w-5 h-5" />
+                    Refresh Halaman
+                </button>
             </div>
-        )}
-        
-        {/* Normal Content - only show if no error */}
-        {!hasError && (
-            <>
-
-        {/* Profile & Search */}
-        <div class="max-w-4xl mx-auto mb-12">
-            <ProfileCard />
         </div>
+    )
+}
 
+{/* Normal Content - only show if no error */}
+{
+    !hasError && (
+        <>
+            <div class="max-w-4xl mx-auto pb-20" id="links-container">
+                {(() => {
+                    let globalIndex = 0;
+                    return categories.map((category, categoryIdx) => {
+                        const categoryLinks =
+                            groupedLinks.get(category.id) || [];
+                        if (categoryLinks.length === 0) return null;
 
-        <div class="max-w-4xl mx-auto pb-20" id="links-container">
-            {(() => {
-                let globalIndex = 0;
-                return categories.map((category, categoryIdx) => {
-                    const categoryLinks = groupedLinks.get(category.id) || [];
-                    if (categoryLinks.length === 0) return null;
+                        // Get header color and consume one index
+                        const headerColorIndex = globalIndex++;
+                        const headerColor =
+                            candyColors[headerColorIndex % candyColors.length];
 
-                    // Get header color and consume one index
-                    const headerColorIndex = globalIndex++;
-                    const headerColor = candyColors[headerColorIndex % candyColors.length];
-
-                    return (
-                        <section class="mb-16 link-section" data-category={category.id}>
-                            {/* Enhanced Section Header - Table of Contents Style */}
-                            <div class="mb-8">
-                                {/* Full-width Glass Container - with flex-wrap for small screens */}
-                                <div class="flex flex-wrap items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3.5
+                        return (
+                            <section
+                                class="mb-16 link-section"
+                                data-category={category.id}
+                            >
+                                {/* Enhanced Section Header - Table of Contents Style */}
+                                <div class="mb-8">
+                                    {/* Full-width Glass Container - with flex-wrap for small screens */}
+                                    <div
+                                        class="flex flex-wrap items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3.5
                                             bg-white/70 dark:bg-zinc-900/70
                                             border border-white/40 dark:border-zinc-700/30
                                             rounded-2xl
                                             shadow-lg shadow-black/5
                                             hover:shadow-xl hover:border-white/60 dark:hover:border-white/15
                                             transition-all duration-300
-                                            group">
-                                    
-                                    <div 
-                                        class={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${headerColor.bg} ${headerColor.text}`}
-                                        style={`box-shadow: 0 0 25px -5px ${headerColor.glow}, 0 8px 25px -10px ${headerColor.glow};`}
+                                            group"
                                     >
-                                        <SafeIcon 
-                                            name={category.icon}
-                                            fallbackText={category.title}
-                                            class="w-5 h-5"
-                                            fallbackClass="text-lg font-bold"
-                                        />
-                                    </div>
-                                    
-                                    {/* Vertical Separator - hidden on very small screens */}
-                                    <div class="hidden xs:block w-px h-8 bg-gradient-to-b from-transparent via-zinc-300/50 dark:via-zinc-600/50 to-transparent flex-shrink-0"></div>
-                                    
-                                    {/* Title - can wrap on small screens */}
-                                    <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-zinc-800 dark:text-zinc-200 transition-colors">
-                                        {category.title}
-                                    </h2>
-                                    
-                                    {/* Long Arrow - grows to fill space, hidden on very small if title wraps */}
-                                    <div class="hidden sm:flex flex-1 min-w-[2rem] items-center mx-3 relative">
-                                        {/* Line with arrow - single seamless element */}
-                                        <div class="flex-1 flex items-center">
-                                            <div class="flex-1 h-[2px] bg-gradient-to-r from-zinc-300/70 via-zinc-300/50 to-zinc-300/70 dark:from-zinc-600/60 dark:via-zinc-600/40 dark:to-zinc-600/60 rounded-l-full"></div>
+                                        <div
+                                            class={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${headerColor.bg} ${headerColor.text}`}
+                                            style={`box-shadow: 0 0 25px -5px ${headerColor.glow}, 0 8px 25px -10px ${headerColor.glow};`}
+                                        >
+                                            <SafeIcon
+                                                name={category.icon}
+                                                fallbackText={category.title}
+                                                class="w-5 h-5"
+                                                fallbackClass="text-lg font-bold"
+                                            />
                                         </div>
-                                        {/* Arrow positioned to align perfectly with line */}
-                                        <div class="flex items-center h-full">
-                                            <span class="text-zinc-400/80 dark:text-zinc-500/70 text-sm leading-none block" style="margin-top: -1px;">►</span>
+
+                                        {/* Vertical Separator - hidden on very small screens */}
+                                        <div class="hidden xs:block w-px h-8 bg-gradient-to-b from-transparent via-zinc-300/50 dark:via-zinc-600/50 to-transparent flex-shrink-0" />
+
+                                        {/* Title - can wrap on small screens */}
+                                        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-zinc-800 dark:text-zinc-200 transition-colors">
+                                            {category.title}
+                                        </h2>
+
+                                        {/* Long Arrow - grows to fill space, hidden on very small if title wraps */}
+                                        <div class="hidden sm:flex flex-1 min-w-[2rem] items-center mx-3 relative">
+                                            {/* Line with arrow - single seamless element */}
+                                            <div class="flex-1 flex items-center">
+                                                <div class="flex-1 h-[2px] bg-gradient-to-r from-zinc-300/70 via-zinc-300/50 to-zinc-300/70 dark:from-zinc-600/60 dark:via-zinc-600/40 dark:to-zinc-600/60 rounded-l-full" />
+                                            </div>
+                                            {/* Arrow positioned to align perfectly with line */}
+                                            <div class="flex items-center h-full">
+                                                <span
+                                                    class="text-zinc-400/80 dark:text-zinc-500/70 text-sm leading-none block"
+                                                    style="margin-top: -1px;"
+                                                >
+                                                    ►
+                                                </span>
+                                            </div>
                                         </div>
+
+                                        {/* Badge Count - will wrap to new line on tiny screens if needed */}
+                                        <span
+                                            class={`text-sm sm:text-base font-bold px-3 sm:px-4 py-1.5 rounded-full flex-shrink-0 ${headerColor.bg} ${headerColor.text} transition-all ml-auto sm:ml-0`}
+                                        >
+                                            {categoryLinks.length}
+                                        </span>
                                     </div>
-                                    
-                                    {/* Badge Count - will wrap to new line on tiny screens if needed */}
-                                    <span class={`text-sm sm:text-base font-bold px-3 sm:px-4 py-1.5 rounded-full flex-shrink-0 ${headerColor.bg} ${headerColor.text} transition-all ml-auto sm:ml-0`}>
-                                        {categoryLinks.length}
-                                    </span>
                                 </div>
-                            </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
-                                {categoryLinks.map((link) => {
-                                    const currentIndex = globalIndex++;
-                                    return <LinkCard link={link} index={currentIndex} />;
-                                })}
-                            </div>
-                        </section>
-                    );
-                });
-            })()}
-        </div>
-
-
-
-        {/* Empty State */}
-        <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center">
-            <div class="bg-zinc-100 p-4 rounded-full mb-4">
-               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search-x text-zinc-400"><path d="m13.5 8.5-5 5"/><path d="m8.5 8.5 5 5"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-7">
+                                    {categoryLinks.map((link) => {
+                                        const currentIndex = globalIndex++;
+                                        return (
+                                            <LinkCard
+                                                link={link}
+                                                index={currentIndex}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </section>
+                        );
+                    });
+                })()}
             </div>
-            <h3 class="text-lg font-medium text-zinc-900 dark:text-zinc-100">Tidak ada hasil ditemukan</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 mt-1">Coba kata kunci lain atau ubah kategori.</p>
-        </div>
-            </>
-        )}
-    </div>
-</main>
+
+            {/* Empty State */}
+            <div
+                id="empty-state"
+                class="hidden flex-col items-center justify-center py-20 text-center"
+            >
+                <div class="bg-zinc-100 p-4 rounded-full mb-4">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-search-x text-zinc-400"
+                    >
+                        <>
+                            <path d="m13.5 8.5-5 5" />
+                            <path d="m8.5 8.5 5 5" />
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-zinc-900 dark:text-zinc-100">
+                    Tidak ada hasil ditemukan
+                </h3>
+                <p class="text-zinc-500 dark:text-zinc-400 mt-1">
+                    Coba kata kunci lain atau ubah kategori.
+                </p>
+            </div>
+        </>
+    )
+}
 
 <script is:inline>
     // Search functionality - inline for build compatibility
     // Optimized with requestAnimationFrame and DOM batching
     function initSearch() {
-        const searchInput = document.getElementById('search-input');
-        const linkSections = document.querySelectorAll('.link-section');
-        const linkCards = document.querySelectorAll('.link-card-item'); // These are the link containers
-        const emptyState = document.getElementById('empty-state');
-        const searchWrapper = document.getElementById('search-wrapper');
+        const searchInput = document.getElementById("search-input");
+        const linkSections = document.querySelectorAll(".link-section");
+        const linkCards = document.querySelectorAll(".link-card-item"); // These are the link containers
+        const emptyState = document.getElementById("empty-state");
+        const searchWrapper = document.getElementById("search-wrapper");
 
         // Force visible initially to prevent layout glitch
         // Batch 1: Write (Reset state)
-        linkCards.forEach(card => card.classList.remove('hidden'));
+        linkCards.forEach((card) => card.classList.remove("hidden"));
 
-        let searchQuery = '';
+        let searchQuery = "";
         let pendingFrame = null;
 
         function performFilter() {
@@ -185,11 +214,13 @@ try {
 
             pendingFrame = requestAnimationFrame(() => {
                 const query = searchQuery;
-                
+
                 // Phase 1: READ - Calculate visibility states
                 // We map all cards to their visibility status first
-                const cardStates = Array.from(linkCards).map(card => {
-                    const name = (card.getAttribute('data-name') || '').toLowerCase();
+                const cardStates = Array.from(linkCards).map((card) => {
+                    const name = (
+                        card.getAttribute("data-name") || ""
+                    ).toLowerCase();
                     const visible = name.includes(query);
                     return { element: card, visible };
                 });
@@ -200,44 +231,44 @@ try {
 
                 cardStates.forEach(({ element, visible }) => {
                     if (visible) {
-                        element.classList.remove('hidden');
+                        element.classList.remove("hidden");
                         hasVisibleLinks = true;
-                        
+
                         // Track section visibility
-                        const section = element.closest('.link-section');
+                        const section = element.closest(".link-section");
                         if (section) {
                             const count = sectionMap.get(section) || 0;
                             sectionMap.set(section, count + 1);
                         }
                     } else {
-                        element.classList.add('hidden');
+                        element.classList.add("hidden");
                     }
                 });
 
                 // Phase 3: WRITE - Update Sections
-                linkSections.forEach(section => {
+                linkSections.forEach((section) => {
                     const visibleCount = sectionMap.get(section) || 0;
                     if (visibleCount === 0) {
-                        section.classList.add('hidden');
+                        section.classList.add("hidden");
                     } else {
-                        section.classList.remove('hidden');
+                        section.classList.remove("hidden");
                     }
                 });
 
                 // Phase 4: WRITE - Update Empty State
                 if (!hasVisibleLinks && query) {
-                    emptyState?.classList.remove('hidden');
-                    emptyState?.classList.add('flex');
+                    emptyState?.classList.remove("hidden");
+                    emptyState?.classList.add("flex");
                 } else {
-                    emptyState?.classList.add('hidden');
-                    emptyState?.classList.remove('flex');
+                    emptyState?.classList.add("hidden");
+                    emptyState?.classList.remove("flex");
                 }
-                
+
                 // Phase 5: Search Wrapper State
                 if (query.length > 0) {
-                    searchWrapper?.classList.add('has-text');
+                    searchWrapper?.classList.add("has-text");
                 } else {
-                    searchWrapper?.classList.remove('has-text');
+                    searchWrapper?.classList.remove("has-text");
                 }
 
                 pendingFrame = null;
@@ -245,24 +276,24 @@ try {
         }
 
         // Search Input Listener
-        searchInput?.addEventListener('input', (e) => {
+        searchInput?.addEventListener("input", (e) => {
             const target = e.target;
             searchQuery = target.value.trim().toLowerCase();
             performFilter();
         });
 
         // Search Input Blur
-        searchInput?.addEventListener('blur', () => {
-             if (searchQuery.length > 0) {
-                 searchWrapper?.classList.add('has-text');
-             } else {
-                 searchWrapper?.classList.remove('has-text');
-             }
+        searchInput?.addEventListener("blur", () => {
+            if (searchQuery.length > 0) {
+                searchWrapper?.classList.add("has-text");
+            } else {
+                searchWrapper?.classList.remove("has-text");
+            }
         });
 
         // Keyboard Shortcut (Cmd+K or Ctrl+K)
-        document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        document.addEventListener("keydown", (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === "k") {
                 e.preventDefault();
                 searchInput?.focus();
             }
@@ -276,10 +307,12 @@ try {
     }
 
     // Auto-initialize
-    if (typeof window !== 'undefined') {
-        // Run on every page load (handles initial load and view transitions)
-        document.addEventListener('astro:page-load', () => {
+    if (typeof window !== "undefined") {
+        // Run when DOM is ready
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initSearch);
+        } else {
             initSearch();
-        });
+        }
     }
 </script>

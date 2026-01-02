@@ -1,8 +1,23 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import HomePage from '../components/HomePage.astro';
+import Layout from "../layouts/Layout.astro";
+import ProfileCard from "../components/features/profile-card/ProfileCard.astro";
+import MeshGradient from "../components/ui/MeshGradient.astro";
+import HomePage from "../components/HomePage.astro";
 ---
 
 <Layout>
-  <HomePage />
+  {/* ProfileCard renders immediately - no data dependency */}
+  <main class="min-h-screen relative overflow-hidden">
+    {/* Background */}
+    <MeshGradient />
+
+    <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-4xl">
+      <div class="max-w-4xl mx-auto mb-12">
+        <ProfileCard />
+      </div>
+
+      {/* Links section - fetches data from Google Sheets */}
+      <HomePage />
+    </div>
+  </main>
 </Layout>

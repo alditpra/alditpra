@@ -248,9 +248,6 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } =
       // Apply on initial load
       applyTheme();
 
-      // Re-apply on navigation (View Transitions)
-      document.addEventListener("astro:after-swap", applyTheme);
-
       // Global toggle function
       window.toggleTheme = () => {
         const element = document.documentElement;
