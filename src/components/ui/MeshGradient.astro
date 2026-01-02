@@ -1,9 +1,27 @@
 ---
+
 ---
 
-<div class="fixed top-0 left-0 right-0 h-[500px] pointer-events-none z-0">
-    <div class="absolute inset-0 bg-gradient-to-b from-indigo-50/50 via-white/50 to-white/0 backdrop-blur-3xl" />
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#7f73ff]/20 rounded-full blur-3xl mix-blend-multiply" />
-    <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#14d0f0]/20 rounded-full blur-3xl mix-blend-multiply" />
-    <div class="absolute -top-32 left-1/2 w-96 h-96 bg-[#35e2c3]/20 rounded-full blur-3xl mix-blend-multiply" />
+{
+    /* Light mode: soft overlay gradient. Dark mode: hidden to avoid conflicts with body background */
+}
+<div
+    class="fixed top-0 left-0 right-0 h-[500px] pointer-events-none z-0 dark:hidden"
+>
+    <div
+        class="absolute inset-0 bg-gradient-to-b from-indigo-50/50 via-white/50 to-white/0 backdrop-blur-3xl"
+    >
+    </div>
+    <div
+        class="absolute top-0 left-1/4 w-96 h-96 bg-[#7f73ff]/20 rounded-full blur-3xl mix-blend-multiply"
+    >
+    </div>
+    <div
+        class="absolute top-0 right-1/4 w-96 h-96 bg-[#14d0f0]/20 rounded-full blur-3xl mix-blend-multiply"
+    >
+    </div>
+    <div
+        class="absolute -top-32 left-1/2 w-96 h-96 bg-[#35e2c3]/20 rounded-full blur-3xl mix-blend-multiply"
+    >
+    </div>
 </div>

@@ -81,6 +81,7 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } =
 
     <!-- Critical CSS: Inlined for faster initial paint -->
     <style>
+      /* Critical CSS: Variables only for instant initial paint */
       :root {
         --background: #fafafa;
         --foreground: #18181b;
@@ -118,83 +119,11 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } =
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
           Cantarell, "Helvetica Neue", Arial, sans-serif;
-        background: linear-gradient(
-          135deg,
-          #fdfbff 0%,
-          #f3f0ff 15%,
-          rgba(127, 115, 255, 0.1) 30%,
-          rgba(20, 208, 240, 0.08) 50%,
-          rgba(255, 131, 195, 0.1) 70%,
-          #fff5fb 85%,
-          #fafafa 100%
-        );
         color: var(--foreground);
         min-height: 100vh;
         margin: 0;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-      }
-      html.dark body {
-        background:
-          radial-gradient(
-            circle at 15% 20%,
-            rgba(127, 115, 255, 0.15) 0%,
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 85% 30%,
-            rgba(20, 208, 240, 0.12) 0%,
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 50% 70%,
-            rgba(255, 131, 195, 0.14) 0%,
-            transparent 40%
-          ),
-          radial-gradient(
-            circle at 20% 80%,
-            rgba(53, 226, 195, 0.1) 0%,
-            transparent 35%
-          ),
-          #0a0a0f;
-      }
-      html.light body {
-        background: linear-gradient(
-          135deg,
-          #fdfbff 0%,
-          #f3f0ff 15%,
-          rgba(127, 115, 255, 0.1) 30%,
-          rgba(20, 208, 240, 0.08) 50%,
-          rgba(255, 131, 195, 0.1) 70%,
-          #fff5fb 85%,
-          #fafafa 100%
-        );
-      }
-      @media (prefers-color-scheme: dark) {
-        html:not(.dark):not(.light) body {
-          background:
-            radial-gradient(
-              circle at 15% 20%,
-              rgba(127, 115, 255, 0.15) 0%,
-              transparent 40%
-            ),
-            radial-gradient(
-              circle at 85% 30%,
-              rgba(20, 208, 240, 0.12) 0%,
-              transparent 40%
-            ),
-            radial-gradient(
-              circle at 50% 70%,
-              rgba(255, 131, 195, 0.14) 0%,
-              transparent 40%
-            ),
-            radial-gradient(
-              circle at 20% 80%,
-              rgba(53, 226, 195, 0.1) 0%,
-              transparent 35%
-            ),
-            #0a0a0f;
-        }
       }
       .min-h-screen {
         min-height: 100vh;
