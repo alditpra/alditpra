@@ -1,140 +1,157 @@
 ---
 import { SITE_CONFIG } from "../../lib/constants";
-import { cn } from "../../lib/utils";
-import { sanitizeUrl } from "../../lib/security";
+import { cn, sanitizeUrl } from "../../lib/utils";
 import { getColorByIndex } from "../../lib/colors";
 import SafeIcon from "../ui/SafeIcon.astro";
 import { Icon } from "astro-icon/components";
 import type { Link } from "../../types";
 
 interface Props {
-  link: Link;
-  index?: number;
-  className?: string;
+    link: Link;
+    index?: number;
+    className?: string;
 }
 
 const { link, index = 0, className } = Astro.props;
 
 if (!link || !link.id || !link.name) {
-  throw new Error("Invalid link prop");
+    throw new Error("Invalid link prop");
 }
 
 const color = getColorByIndex(index);
 const isDirectLink = link.level === 0 && link.link;
-const sanitizedLink = link.link ? sanitizeUrl(link.link) : '#';
-const href = isDirectLink && sanitizedLink !== '#' ? sanitizedLink : `/${link.id}`;
+const sanitizedLink = link.link ? sanitizeUrl(link.link) : "#";
+const href =
+    isDirectLink && sanitizedLink !== "#" ? sanitizedLink : `/${link.id}`;
 
 // Check if link is internal (relative or matches site URL)
-const isRelative = sanitizedLink.startsWith('/') || sanitizedLink.startsWith('#');
+const isRelative =
+    sanitizedLink.startsWith("/") || sanitizedLink.startsWith("#");
 const isInternalAbsolute = sanitizedLink.startsWith(SITE_CONFIG.url);
 const isInternal = isRelative || isInternalAbsolute;
 
 // Only open external links in new tab
-const shouldOpenInNewTab = isDirectLink && sanitizedLink !== '#' && !isInternal;
-const externalLinkProps = shouldOpenInNewTab ? {
-  target: '_blank',
-  rel: 'noopener noreferrer',
-} : {};
+const shouldOpenInNewTab = isDirectLink && sanitizedLink !== "#" && !isInternal;
+const externalLinkProps = shouldOpenInNewTab
+    ? {
+          target: "_blank",
+          rel: "noopener noreferrer",
+      }
+    : {};
 
 // FontAwesome to Lucide icon name mapping (for migrated data)
 const faToLucideMap: Record<string, string> = {
-  'object-group': 'layout-grid',
-  'book': 'book-open',
-  'video': 'play-circle',
-  'file-alt': 'file-text',
-  'cog': 'settings',
-  'certificate': 'award',
-  'tools': 'wrench',
+    "object-group": "layout-grid",
+    book: "book-open",
+    video: "play-circle",
+    "file-alt": "file-text",
+    cog: "settings",
+    certificate: "award",
+    tools: "wrench",
 };
 
 // Get icon name: try spreadsheet value, then map legacy FA names
 const rawIcon = link.icon;
-const iconName = rawIcon ? (faToLucideMap[rawIcon] || rawIcon) : null;
+const iconName = rawIcon ? faToLucideMap[rawIcon] || rawIcon : null;
 ---
 
 <a
-  href={href}
-  {...externalLinkProps}
-  class={cn("group relative block w-full h-full link-card-item", className)}
-  data-name={link.name.toLowerCase()}
-  data-category={link.category || 'kuliah'}
+    href={href}
+    {...externalLinkProps}
+    class={cn("group relative block w-full h-full link-card-item", className)}
+    data-name={link.name.toLowerCase()}
+    data-category={link.category || "kuliah"}
 >
-  <div class="relative h-full transition-all duration-300 ease-out group-hover:-translate-y-3 group-hover:scale-[1.03] group-hover:rotate-1">
-    {/* Card Background - Solid background for Firefox compatibility */}
-    <div 
-        class={cn(
-            "absolute inset-0 rounded-3xl transition-all duration-300",
-            "bg-white/70 dark:bg-zinc-900/70"
-        )}
-        style="box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);"
-    ></div>
-    
-    {/* Ambient Glow Effect - Dreamy subtle presence, ethereal on hover */}
     <div
-        class="absolute inset-0 rounded-3xl opacity-5 transition-all duration-500 group-hover:opacity-30"
-        style={`box-shadow: 0 0 40px -10px ${color.glow}, 0 20px 40px -20px ${color.glow};`}
-    ></div>
-
-    {/* Content */}
-    <div class="relative p-6 h-full flex items-start gap-5">
-        {/* Icon - Using Lucide or First Letter Fallback */}
-        <div 
+        class="relative h-full transition-all duration-300 ease-out group-hover:-translate-y-3 group-hover:scale-[1.03] group-hover:rotate-1"
+    >
+        {/* Card Background - Solid background for Firefox compatibility */}
+        <div
             class={cn(
-                "shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300",
-                "group-hover:scale-125 group-hover:rotate-12",
-                color.bg,
-                color.text
+                "absolute inset-0 rounded-3xl transition-all duration-300",
+                "bg-white/70 dark:bg-zinc-900/70",
             )}
-            style={`box-shadow: 0 0 25px -5px ${color.glow}, 0 8px 25px -10px ${color.glow};`}
+            style="box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.1);"
         >
-            <SafeIcon 
-                name={iconName} 
-                fallbackText={link.name}
-                class="w-7 h-7"
-                fallbackClass="text-2xl font-bold"
-            />
         </div>
 
-        {/* Text Content */}
-        <div class="flex-1 min-w-0 space-y-2">
-            <div class="flex items-center gap-2">
-                <h3 class={cn(
-                    "font-bold text-lg text-zinc-800 dark:text-zinc-100 truncate pr-4 transition-colors duration-300",
-                    "group-hover:text-zinc-900 dark:group-hover:text-white"
-                )}>
-                    {link.name}
-                </h3>
+        {/* Ambient Glow Effect - Dreamy subtle presence, ethereal on hover */}
+        <div
+            class="absolute inset-0 rounded-3xl opacity-5 transition-all duration-500 group-hover:opacity-30"
+            style={`box-shadow: 0 0 40px -10px ${color.glow}, 0 20px 40px -20px ${color.glow};`}
+        >
+        </div>
+
+        {/* Content */}
+        <div class="relative p-6 h-full flex items-start gap-5">
+            {/* Icon - Using Lucide or First Letter Fallback */}
+            <div
+                class={cn(
+                    "shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300",
+                    "group-hover:scale-125 group-hover:rotate-12",
+                    color.bg,
+                    color.text,
+                )}
+                style={`box-shadow: 0 0 25px -5px ${color.glow}, 0 8px 25px -10px ${color.glow};`}
+            >
+                <SafeIcon
+                    name={iconName}
+                    fallbackText={link.name}
+                    class="w-7 h-7"
+                    fallbackClass="text-2xl font-bold"
+                />
             </div>
-            
-            {link.description && (
-                <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
-                    {link.description}
-                </p>
-            )}
 
-            {/* Semester Badge if available */}
-            {link.semester && (
-                <div class="flex items-center gap-2 pt-1">
-                    <span class={cn(
-                        "text-xs font-medium px-2.5 py-1 rounded-full",
-                        color.bg,
-                        color.text
-                    )}>
-                        Semester {link.semester}
-                    </span>
+            {/* Text Content */}
+            <div class="flex-1 min-w-0 space-y-2">
+                <div class="flex items-center gap-2">
+                    <h3
+                        class={cn(
+                            "font-bold text-lg text-zinc-800 dark:text-zinc-100 truncate pr-4 transition-colors duration-300",
+                            "group-hover:text-zinc-900 dark:group-hover:text-white",
+                        )}
+                    >
+                        {link.name}
+                    </h3>
                 </div>
-            )}
-        </div>
 
-        {/* Arrow indicator - Candy colored */}
-        <div class={cn(
-            "shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
-            color.bg,
-            color.text,
-            "group-hover:translate-x-2 group-hover:scale-110"
-        )}>
-            <Icon name="lucide:arrow-right" class="w-4 h-4" />
+                {
+                    link.description && (
+                        <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 leading-relaxed group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors">
+                            {link.description}
+                        </p>
+                    )
+                }
+
+                {/* Semester Badge if available */}
+                {
+                    link.semester && (
+                        <div class="flex items-center gap-2 pt-1">
+                            <span
+                                class={cn(
+                                    "text-xs font-medium px-2.5 py-1 rounded-full",
+                                    color.bg,
+                                    color.text,
+                                )}
+                            >
+                                Semester {link.semester}
+                            </span>
+                        </div>
+                    )
+                }
+            </div>
+
+            {/* Arrow indicator - Candy colored */}
+            <div
+                class={cn(
+                    "shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300",
+                    color.bg,
+                    color.text,
+                    "group-hover:translate-x-2 group-hover:scale-110",
+                )}
+            >
+                <Icon name="lucide:arrow-right" class="w-4 h-4" />
+            </div>
         </div>
     </div>
-  </div>
 </a>

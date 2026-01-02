@@ -6,3 +6,20 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // groupByCategory moved to category-utils.ts
+
+/**
+ * Sanitize URL to prevent XSS (javascript: links)
+ */
+export function sanitizeUrl(url: string): string {
+    if (!url) return '#';
+
+    // Trim whitespace
+    const content = url.trim();
+
+    // Check for javascript: protocol
+    if (content.toLowerCase().startsWith('javascript:')) {
+        return '#';
+    }
+
+    return content;
+}
