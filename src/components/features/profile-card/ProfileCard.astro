@@ -227,13 +227,25 @@ const isSidebar = variant === "sidebar";
         // Find all typewriter text elements (both sidebar and default variants)
         const elements = document.querySelectorAll('[id^="typewriter-text-"]');
 
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const element = entry.target as HTMLElement;
+                    // Start typing if not already started
+                    if (!(element as any)._hasStarted) {
+                        (element as any)._hasStarted = true;
+                        startTyping(element);
+                    }
+                }
+            });
+        });
+
         elements.forEach((element) => {
             if (!element) return;
+            observer.observe(element);
+        });
 
-            // Performance: detailed visibility check
-            // Don't run animation if element is hidden (mobile view optimization)
-            if (element.offsetParent === null) return;
-
+        function startTyping(element: HTMLElement) {
             // Get phrases from data attribute
             let phrases = [];
             try {
@@ -317,7 +329,7 @@ const isSidebar = variant === "sidebar";
 
             // Start typing
             setTimeout(type, 500);
-        });
+        }
     }
 
     // Initialize
