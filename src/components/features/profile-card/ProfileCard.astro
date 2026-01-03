@@ -248,7 +248,7 @@ const isSidebar = variant === "sidebar";
             const typingSpeed = 50;
             const deletingSpeed = 30;
             const pauseEnd = 2000;
-            const pauseStart = 2000;
+            const pauseStart = 500;
 
             let phraseIndex = 0;
             let charIndex = 0;
@@ -258,8 +258,21 @@ const isSidebar = variant === "sidebar";
             if ((element as any)._typeTimeout)
                 clearTimeout((element as any)._typeTimeout);
 
+            function getCommonPrefixLength(s1, s2) {
+                let i = 0;
+                while (i < s1.length && i < s2.length && s1[i] === s2[i]) {
+                    i++;
+                }
+                return i;
+            }
+
             function type() {
                 const currentPhrase = phrases[phraseIndex];
+                const nextPhrase = phrases[(phraseIndex + 1) % phrases.length];
+                const commonPrefixLen = getCommonPrefixLength(
+                    currentPhrase,
+                    nextPhrase,
+                );
 
                 if (isDeleting) {
                     element.textContent = currentPhrase.substring(
@@ -284,7 +297,7 @@ const isSidebar = variant === "sidebar";
                     } else {
                         typeSpeed = pauseEnd;
                     }
-                } else if (isDeleting && charIndex === 0) {
+                } else if (isDeleting && charIndex === commonPrefixLen) {
                     isDeleting = false;
                     phraseIndex = (phraseIndex + 1) % phrases.length;
                     typeSpeed = pauseStart;
