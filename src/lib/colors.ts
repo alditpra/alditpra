@@ -25,12 +25,12 @@ export const candyColors = [
     name: "pink"
   },
   {
-    bg: "bg-candy-yellow/20",
-    text: "text-[color:color-mix(in_srgb,var(--candy-yellow),black_50%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_40%)]",
-    border: "hover:border-candy-yellow",
-    glow: "var(--candy-yellow)",
-    hex: "var(--candy-yellow)",
-    name: "yellow"
+    bg: "bg-candy-orange/20",
+    text: "text-[color:color-mix(in_srgb,var(--candy-orange),black_50%)] dark:text-[color:color-mix(in_srgb,var(--candy-orange),white_40%)]",
+    border: "hover:border-candy-orange",
+    glow: "var(--candy-orange)",
+    hex: "var(--candy-orange)",
+    name: "orange"
   },
   {
     bg: "bg-candy-teal/20",

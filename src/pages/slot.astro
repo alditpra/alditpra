@@ -1,98 +1,80 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import MeshGradient from '../components/ui/MeshGradient.astro';
-import InputModeSelector from '../components/SLOT/InputModeSelector.astro';
-import FileUploader from '../components/SLOT/FileUploader.astro';
-import ManualInput from '../components/SLOT/ManualInput.astro';
-import ControlPanel from '../components/SLOT/ControlPanel.astro';
-import VerticalScrollPicker from '../components/SLOT/VerticalScrollPicker.astro';
-import ConfirmationModal from '../components/SLOT/ConfirmationModal.astro';
-import ResultsDisplay from '../components/SLOT/ResultsDisplay.astro';
+import ToolPageLayout from "../layouts/ToolPageLayout.astro";
+import InputModeSelector from "../components/SLOT/InputModeSelector.astro";
+import FileUploader from "../components/SLOT/FileUploader.astro";
+import ManualInput from "../components/SLOT/ManualInput.astro";
+import ControlPanel from "../components/SLOT/ControlPanel.astro";
+import VerticalScrollPicker from "../components/SLOT/VerticalScrollPicker.astro";
+import ConfirmationModal from "../components/SLOT/ConfirmationModal.astro";
+import ResultsDisplay from "../components/SLOT/ResultsDisplay.astro";
 
-const title = 'SLOT - Saatnya LOtre Tanya';
-const description = 'Sistem pemilihan acak mahasiswa untuk sesi tanya jawab di kelas.';
+const title = "SLOT - Saatnya LOtre Tanya";
+const description =
+  "Sistem pemilihan acak mahasiswa untuk sesi tanya jawab di kelas.";
 ---
 
-<Layout title={title} description={description}>
-  <main class="min-h-screen relative overflow-hidden">
-    {/* Background */}
-    <MeshGradient />
+<ToolPageLayout
+  title={title}
+  subtitle="SLOT"
+  description={description}
+  themeColor="candy-purple"
+>
+  <div slot="header-icon">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]"
+    >
+      <rect width="12" height="12" x="2" y="10" rx="2" ry="2"></rect>
+      <path
+        d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"
+      ></path>
+      <path d="M6 18h.01"></path>
+      <path d="M10 14h.01"></path>
+      <path d="M15 6h.01"></path>
+      <path d="M18 9h.01"></path>
+    </svg>
+  </div>
 
-    <div class="relative z-10 container mx-auto px-4 py-8 sm:py-12 max-w-5xl">
-      {/* Back Navigation */}
-      <a 
-        href="/" 
-        class="inline-flex items-center gap-2 px-5 py-3 mb-6 rounded-3xl transition-all duration-300
-               bg-candy-purple/20 border border-candy-purple/30
-               hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg group"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)] transition-transform group-hover:-translate-x-1">
-          <path d="m12 19-7-7 7-7"/>
-          <path d="M19 12H5"/>
-        </svg>
-        <span class="font-semibold text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]">Kembali</span>
-      </a>
+  {/* Main Content */}
+  <div id="input-section" class="mb-12">
+    {/* Input Data Section */}
+    <div
+      class="p-6 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg mb-8"
+    >
+      <h2 class="text-xl font-bold text-zinc-800 dark:text-zinc-100 mb-4">
+        Input Data Mahasiswa
+      </h2>
 
-      {/* Header */}
-      <div class="relative bg-white/70 dark:bg-zinc-900/70 rounded-3xl p-6 sm:p-8 mb-8 border border-white/60 dark:border-zinc-700/50 shadow-xl overflow-hidden transition-all duration-300">
-        {/* Subtle gradient overlay */}
-        <div class="absolute inset-0 bg-gradient-to-br from-candy-purple/5 via-transparent to-candy-teal/5 pointer-events-none rounded-3xl"></div>
-        
-        <div class="relative flex items-start gap-5 sm:gap-6">
-          <div class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-candy-purple/20 flex items-center justify-center shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)]">
-              <rect width="12" height="12" x="2" y="10" rx="2" ry="2"/>
-              <path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/>
-              <path d="M6 18h.01"/>
-              <path d="M10 14h.01"/>
-              <path d="M15 6h.01"/>
-              <path d="M18 9h.01"/>
-            </svg>
-          </div>
-          
-          <div class="flex-1 min-w-0">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_40%)] mb-2">
-              SLOT - Saatnya LOtre Tanya
-            </h1>
-            <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed text-base sm:text-lg">
-              {description}
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Input Mode Selector */}
+      <InputModeSelector />
 
-      {/* Section 1: Input Area */}
-      <div id="input-section" class="mb-12">
-        {/* Input Data Section */}
-        <div class="p-6 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg mb-8">
-          <h2 class="text-xl font-bold text-zinc-800 dark:text-zinc-100 mb-4">
-            Input Data Mahasiswa
-          </h2>
-          
-          {/* Input Mode Selector */}
-          <InputModeSelector />
-          
-          {/* File Upload Area */}
-          <FileUploader />
-          
-          {/* Manual Input Area */}
-          <ManualInput />
-        </div>
+      {/* File Upload Area */}
+      <FileUploader />
 
-        {/* Control Panel */}
-        <ControlPanel />
-      </div>
-
-      {/* Section 2: Results & History */}
-      <div id="results-section" class="mb-8">
-        <ResultsDisplay />
-      </div>
+      {/* Manual Input Area */}
+      <ManualInput />
     </div>
 
-    {/* Section 3: Fullscreen Animation Overlay */}
-    <VerticalScrollPicker />
-    
-    {/* Confirmation Modal */}
-    <ConfirmationModal />
-  </main>
-</Layout>
+    {/* Control Panel */}
+    <ControlPanel />
+  </div>
+
+  {/* Section 2: Results & History */}
+  <div id="results-section" class="mb-8">
+    <ResultsDisplay />
+  </div>
+
+  {/* Section 3: Fullscreen Animation Overlay */}
+  <VerticalScrollPicker />
+
+  {/* Confirmation Modal */}
+  <ConfirmationModal />
+</ToolPageLayout>

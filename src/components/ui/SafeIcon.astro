@@ -40,7 +40,7 @@ if (shouldTryIcon) {
     class="safe-icon-wrapper"
   >
     <Icon 
-      name={`lucide:${name}`} 
+      name={name.startsWith('lucide:') ? name : `lucide:${name}`} 
       class={className}
     />
   </span>

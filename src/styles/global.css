@@ -21,7 +21,7 @@
   --candy-blue: #14d0f0;
   --candy-purple: #7f73ff;
   --candy-pink: #ff83c3;
-  --candy-yellow: #ffe552;
+  --candy-orange: #FFAD5A;
 }
 
 /* Dark mode - Manual toggle */
@@ -55,7 +55,7 @@ html.dark {
   --color-candy-blue: var(--candy-blue);
   --color-candy-purple: var(--candy-purple);
   --color-candy-pink: var(--candy-pink);
-  --color-candy-yellow: var(--candy-yellow);
+  --color-candy-orange: var(--candy-orange);
 }
 
 body {
@@ -117,7 +117,6 @@ html.dark body {
 /* Individual components can add their own transitions as needed */
 
 /* Exclude animations from any inherited transitions */
-.no-transition,
 .animate-spin,
 .animate-ping,
 [class*="animate-"] {
@@ -155,6 +154,6 @@ html.dark .bg-candy-pink\/20 {
   background-color: rgba(255, 131, 195, 0.20) !important;
 }
 
-html.dark .bg-candy-yellow\/20 {
-  background-color: rgba(255, 229, 82, 0.20) !important;
+html.dark .bg-candy-orange\/20 {
+  background-color: rgba(255, 173, 90, 0.20) !important;
 }

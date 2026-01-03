@@ -61,6 +61,7 @@ const isSidebar = variant === "sidebar";
                                     }
                                     loading="eager"
                                 />
+
                                 {/* Online Status Indicator */}
                                 <div
                                     class={`absolute ${isSidebar ? "bottom-1 right-1 w-4 h-4" : "bottom-2 right-2 w-5 h-5"} bg-candy-teal rounded-full border-3 border-white shadow-md`}
@@ -86,8 +87,17 @@ const isSidebar = variant === "sidebar";
                         </h1>
 
                         {/* Tagline - Typewriter Effect with Gradient */}
+
+                        {/* Mobile: Static Text (Performance Optimized) */}
+                        <div class="mb-3 block sm:hidden">
+                            <p class="text-lg font-medium bg-gradient-to-r from-candy-blue to-candy-pink bg-clip-text text-transparent inline-block">
+                                {SITE_CONFIG.profilePhrases[0]}
+                            </p>
+                        </div>
+
+                        {/* Desktop: Animated Typewriter */}
                         <div
-                            class={`mb-${isSidebar ? "3" : "4"} ${isSidebar ? "h-6" : "h-8"} flex items-center justify-center`}
+                            class={`mb-${isSidebar ? "3" : "4"} ${isSidebar ? "h-6" : "h-8"} hidden sm:flex items-center justify-center`}
                         >
                             <p
                                 id={`typewriter-text-${isSidebar ? "sidebar" : "default"}`}
@@ -220,6 +230,10 @@ const isSidebar = variant === "sidebar";
         elements.forEach((element) => {
             if (!element) return;
 
+            // Performance: detailed visibility check
+            // Don't run animation if element is hidden (mobile view optimization)
+            if (element.offsetParent === null) return;
+
             // Get phrases from data attribute
             let phrases = [];
             try {
@@ -314,14 +328,5 @@ const isSidebar = variant === "sidebar";
     }
     .animate-blink {
         animation: blink 1s step-end infinite;
-    }
-
-    /* Avatar Ring Animation */
-    .avatar-ring {
-        transition: all 0.3s ease;
-    }
-
-    .avatar-ring:hover {
-        box-shadow: 0 0 0 4px rgba(127, 115, 255, 0.2);
     }
 </style>

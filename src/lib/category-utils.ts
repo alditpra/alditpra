@@ -1,4 +1,5 @@
 import type { Link, Category } from "../types";
+import { candyColors } from "./colors";
 
 /**
  * Groups links by category for display
@@ -47,8 +48,19 @@ export function getLinkColorIndex(linkId: string, links: Link[], categories: Cat
         const categoryLinks = groupedLinks.get(category.id) || [];
         if (categoryLinks.length === 0) continue;
 
-        // Category header consumes one index
-        globalIndex++;
+        // Note: HomePage.astro does NOT increment globalIndex for the header itself.
+        // It only increments for each link.
+
+        // PREVENT COLOR CLASH (Mirroring HomePage.astro logic):
+        // If the next item's color would match the header's color, we skip one index.
+        const categoryIdx = categories.indexOf(category);
+
+        const nextItemColorIndex = globalIndex % candyColors.length;
+        const headerColorIndex = categoryIdx % candyColors.length;
+
+        if (nextItemColorIndex === headerColorIndex) {
+            globalIndex++;
+        }
 
         // Check each link in this category
         for (const link of categoryLinks) {

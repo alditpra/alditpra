@@ -21,9 +21,6 @@ try {
     hasError = true;
     // Will render error UI below
 }
-
-// Flatten links for easier searching in DOM
-// Actually we render all of them and toggle visibility.
 ---
 
 {/* Error State */}
@@ -76,6 +73,19 @@ try {
                         // Use categoryIdx for header color to match sidebar
                         const headerColor =
                             candyColors[categoryIdx % candyColors.length];
+
+                        // PREVENT COLOR CLASH:
+                        // Ensure the first item in this category doesn't have the same color as the header.
+                        // We check the *next* globalIndex against the category header color.
+                        const nextItemColorIndex =
+                            globalIndex % candyColors.length;
+                        const headerColorIndex =
+                            categoryIdx % candyColors.length;
+
+                        if (nextItemColorIndex === headerColorIndex) {
+                            // Skip one color index if they match
+                            globalIndex++;
+                        }
 
                         return (
                             <section
@@ -141,7 +151,7 @@ try {
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-7 auto-rows-fr">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 sm:gap-7 auto-rows-fr">
                                     {categoryLinks.map((link) => {
                                         const currentIndex = globalIndex++;
                                         return (

@@ -20,6 +20,7 @@ export const SITE_CONFIG = {
     tagline: "Personal Link Directory",
     // Typewriter effect phrases
     profilePhrases: [
+        "Lecturer & Code Tinkerer",
         "Sebuah link directory",
         "Niatnya untuk sharing materi",
         "Tapi malah jadi begini..",

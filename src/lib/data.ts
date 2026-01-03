@@ -141,7 +141,7 @@ function transformLink(row: RawLinkRow, index: number): Link | null {
             id: id,
             name: 'SANTET',
             description: 'Saran ANti TElat Tugas: Prompt generator tugas kuliah yang efektif & terstruktur.',
-            icon: 'sparkles', // New magic icon
+            icon: validIcon || 'sparkles', // Use spreadsheet icon if available, else magic icon
             category: row.category?.trim().toLowerCase() || "kuliah",
             link: '/santet',
             level: autoLevel,
