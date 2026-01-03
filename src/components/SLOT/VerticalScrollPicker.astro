@@ -136,7 +136,7 @@
         )
           return;
 
-        // Unhide container (WRITE)
+        // Unhide container (WRITE - 1)
         scrollContainer.classList.remove("hidden");
 
         // Wait for layout to settle before measuring
@@ -156,10 +156,10 @@
               }
 
               // Fixed item height for consistency
-              // 160px min-height + 64px padding (py-8 = 32px top + 32px bottom) = 224px total
-              const ITEM_HEIGHT = 224; // px - actual rendered height
+              const ITEM_HEIGHT = 224;
 
-              // Render all names (WRITE)
+              // Render all names (WRITE - 2)
+              // This invalidates layout! We must NOT read geometry immediately after this.
               namesScroller.innerHTML = namesList
                 .map(
                   (name, idx) => `
@@ -172,7 +172,7 @@
                 )
                 .join("");
 
-              // Find target index (middle occurrence of selected student)
+              // Find target index (Calculation only, no DOM)
               let targetIndex = -1;
               const middleStart = Math.floor(namesList.length / 3);
               const middleEnd = Math.floor((namesList.length * 2) / 3);
@@ -190,34 +190,41 @@
                 return;
               }
 
-              // MEASURE (READ) - Batched together
-              const containerHeight = scrollContainer.offsetHeight;
-              const firstItem = namesScroller.querySelector(
-                ".scroll-item",
-              ) as HTMLElement;
-              const actualItemHeight = firstItem ? firstItem.offsetHeight : 224;
+              // Schedule READ for the NEXT frame after layout is painted
+              requestAnimationFrame(() => {
+                // MEASURE (READ) - Now safe because it's a fresh frame
+                const containerHeight = scrollContainer.offsetHeight;
+                const firstItem = namesScroller.querySelector(
+                  ".scroll-item",
+                ) as HTMLElement;
+                const actualItemHeight = firstItem
+                  ? firstItem.offsetHeight
+                  : 224;
 
-              // IMPORTANT: Scroller has py-12 (48px top padding), so first item starts at 48px, not 0
-              const scrollerPaddingTop = 48; // py-12 = 3rem = 48px
+                const scrollerPaddingTop = 48; // py-12 = 3rem = 48px
+                const targetPosition =
+                  scrollerPaddingTop +
+                  targetIndex * actualItemHeight +
+                  actualItemHeight / 2;
+                const scrollDistance = targetPosition - containerHeight / 2;
 
-              const targetPosition =
-                scrollerPaddingTop +
-                targetIndex * actualItemHeight +
-                actualItemHeight / 2; // center of target item
-              const scrollDistance = targetPosition - containerHeight / 2;
+                // Start from top (WRITE - 3)
+                namesScroller.style.transform = "translateY(0)";
 
-              // Start from top (WRITE)
-              namesScroller.style.transform = "translateY(0)";
+                // Force a reflow/repaint for the start position to take effect?
+                // Actually, we need to wait one more frame to ensure the 'translateY(0)' is applied
+                // before setting the transition, otherwise the browser might optimize it away.
+                requestAnimationFrame(() => {
+                  // Scroll to target (WRITE - 4) with transition
+                  namesScroller.style.transition =
+                    "transform 10s cubic-bezier(0.33, 0, 0.2, 1)";
+                  namesScroller.style.transform = `translateY(-${scrollDistance}px)`;
 
-              // Allow browser to register the start position
-              requestAnimationFrame(async () => {
-                // Scroll to target (WRITE)
-                namesScroller.style.transition =
-                  "transform 10s cubic-bezier(0.33, 0, 0.2, 1)";
-                namesScroller.style.transform = `translateY(-${scrollDistance}px)`;
-
-                await sleep(10000);
-                resolve();
+                  // We can resolve after animation
+                  setTimeout(() => {
+                    resolve();
+                  }, 10000);
+                });
               });
             });
           });

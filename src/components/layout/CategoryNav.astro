@@ -95,24 +95,23 @@ const { categories, linkCounts } = Astro.props;
         };
 
         const observer = new IntersectionObserver((entries) => {
-            // Find all visible headers
-            const visibleHeaders = entries
-                .filter((entry) => entry.isIntersecting)
-                .map((entry) => entry.target);
+            // Find all visible headers directly from entries
+            const visibleEntries = entries.filter(
+                (entry) => entry.isIntersecting,
+            );
 
-            if (visibleHeaders.length > 0) {
-                // Get the topmost visible header
-                const topmostHeader = visibleHeaders.reduce(
+            if (visibleEntries.length > 0) {
+                // Get the topmost visible header using entry.boundingClientRect
+                const topmostEntry = visibleEntries.reduce(
                     (topmost, current) => {
-                        const topmostRect = topmost.getBoundingClientRect();
-                        const currentRect = current.getBoundingClientRect();
-                        return currentRect.top < topmostRect.top
+                        return current.boundingClientRect.top <
+                            topmost.boundingClientRect.top
                             ? current
                             : topmost;
                     },
                 );
 
-                const categoryId = topmostHeader
+                const categoryId = topmostEntry.target
                     .closest("[data-category]")
                     ?.getAttribute("data-category");
 

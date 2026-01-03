@@ -310,11 +310,27 @@ try {
             document.addEventListener("keydown", (e) => {
                 if ((e.metaKey || e.ctrlKey) && e.key === "k") {
                     e.preventDefault();
-                    // Focus the first visible input
-                    const visibleInput = searchInputs.find(
-                        (input) => input.offsetParent !== null,
-                    );
-                    if (visibleInput) visibleInput.focus();
+
+                    // Determine which input to focus based on viewport width
+                    // This avoids checking offsetParent/offsetWidth which forces reflow
+                    const isDesktop = window.innerWidth >= 1024; // lg breakpoint
+
+                    const targetInputId = isDesktop
+                        ? "search-input-desktop"
+                        : "search-input-mobile";
+                    const targetInput = document.getElementById(targetInputId);
+
+                    if (targetInput) {
+                        targetInput.focus();
+                    } else {
+                        // Fallback: try the other one if the expected one doesn't exist
+                        const otherInputId = isDesktop
+                            ? "search-input-mobile"
+                            : "search-input-desktop";
+                        const otherInput =
+                            document.getElementById(otherInputId);
+                        if (otherInput) otherInput.focus();
+                    }
                 }
             });
 
