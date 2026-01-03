@@ -130,7 +130,9 @@ html.dark body {
 
 /* Dark mode link card glow effects */
 html.dark .link-card-item {
-  filter: drop-shadow(0 0 40px rgba(127, 115, 255, 0.08));
+  /* Use transform for performant animations instead of filter where possible */
+  /* filter: drop-shadow(...) can be expensive, but acceptable if not animating layout */
+  transition: filter 0.3s ease;
 }
 
 html.dark .link-card-item:hover {
