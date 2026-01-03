@@ -5,6 +5,12 @@
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
+## ⚡ Performance First
+
+![Perfect Lighthouse Score](public/lighthouse-score.png)
+
+> Achieving **100/100** across Performance, Accessibility, Best Practices, and SEO on mobile!
+
 ## ✨ Features
 
 - 🎨 **Modern Design** - Glassmorphism UI with candy color palette
@@ -14,6 +20,7 @@
 - 📱 **Fully Responsive** - Works perfectly on all devices
 - 🧙 **SANTET Generator** - AI prompt generator for academic assignments
 - 🎰 **SLOT** - Student randomizer for Q&A sessions
+- 🧹 **TUMBAL** - Metadata cleaner for lab reports
 - 🔄 **Auto Data Refresh** - Changes appear in minutes
 
 ## 🔄 How It Works
@@ -120,7 +127,10 @@ export const SITE_CONFIG = {
 ```
 
 ### Profile Avatar
-Replace `public/avatar.webp` with your own image (recommended: 230x230px, WebP format).
+Replace `public/avatar-desktop.webp` (desktop) and `public/avatar-mobile.webp` (mobile) with your own images.
+- **Desktop**: ~208x208px circle
+- **Mobile**: ~308x308px circle
+- **Format**: WebP recommended
 
 ## 📦 Build & Deployment
 
@@ -177,6 +187,18 @@ Features:
 - 📝 **History** - Track who has been called
 
 Access at: `/slot`
+
+## 🧹 TUMBAL Tool
+
+**T**ools **U**bah **M**etadata **B**uat **A**nak **L**aprak - File metadata cleaner/editor.
+
+Features:
+- 🕵️ **Metadata Converter** - Change file creation/modification dates
+- 📱 **Device Spoofing** - Make files look like they were created on mobile
+- 🖼️ **Preview** - Check file properties before downloading
+- 📂 **Bulk Processing** - Handle multiple files
+
+Access at: `/tumbal`
 
 ## 🤝 Contributing
 

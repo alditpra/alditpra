@@ -150,7 +150,12 @@ const iconName = rawIcon ? faToLucideMap[rawIcon] || rawIcon : null;
                     "group-hover:translate-x-2 group-hover:scale-110",
                 )}
             >
-                <Icon name="lucide:arrow-right" class="w-4 h-4" />
+                <Icon
+                    name={shouldOpenInNewTab
+                        ? "lucide:arrow-up-right"
+                        : "lucide:arrow-right"}
+                    class="w-4 h-4"
+                />
             </div>
         </div>
     </div>
