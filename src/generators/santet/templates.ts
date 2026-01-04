@@ -5,7 +5,6 @@ export interface PromptTemplate {
    variations: {
       standard: string;
       detailed: string;
-      concise: string;
    };
 }
 
@@ -14,6 +13,7 @@ const commonrefs = `\n**Referensi:**\nTuliskan 5-7 link referensi valid yang rel
 const detailedRefs = `\n**Referensi:**\nTuliskan 7-10 link referensi valid yang relevan dengan topik "{topic}" dalam bentuk URL saja, prioritaskan:\n- Jurnal akademik peer-reviewed (minimal 5)\n- Artikel ilmiah dari universitas terkemuka\n- Data atau report dari institusi resmi`;
 
 const baseContext = "Bertindaklah sebagai penulis akademik profesional dengan gaya bahasa Akademis & Formal. {difficultyInstruction}{disciplineHint}";
+const groupBaseContext = "Bertindaklah sebagai Konsultan Akademik dan Project Manager handal. {difficultyInstruction}{disciplineHint}";
 
 // Individual Assignment Templates
 export const individualTemplates: Record<string, PromptTemplate> = {
@@ -23,9 +23,7 @@ export const individualTemplates: Record<string, PromptTemplate> = {
       variations: {
          standard: `${baseContext} Saya perlu bantuan menyusun Essay akademik tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -42,9 +40,7 @@ Bantu saya membuat kerangka yang terstruktur dan komprehensif.`,
 
          detailed: `${baseContext} Saya perlu bantuan menyusun Essay akademik yang mendalam tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -73,18 +69,7 @@ ${detailedRefs}
 
 Bantu saya membuat kerangka yang sangat terstruktur, komprehensif, dan detail.`,
 
-         concise: `Buat outline Essay tentang "{topic}" untuk {subject}.
-Gaya Sitasi: {citationStyle}
-Konsep Kunci: {keyConcepts}
 
-{specificRequirements}
-
-**Need:**
-1. Outline struktur (intro, body, conclusion)
-2. 3 Argumen utama dengan brief evidence
-3. 5 referensi akademik valid
-
-{additionalInstructions}`
       }
    },
 
@@ -94,9 +79,7 @@ Konsep Kunci: {keyConcepts}
       variations: {
          standard: `${baseContext} Saya perlu bantuan menyusun Presentasi akademik tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -113,9 +96,7 @@ Bantu saya membuat materi presentasi yang menarik dan informatif.`,
 
          detailed: `${baseContext} Saya perlu bantuan menyusun Presentasi akademik yang komprehensif tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -140,18 +121,7 @@ ${detailedRefs}
 
 Fokus pada kejelasan komunikasi visual dan verbal.`,
 
-         concise: `Buat struktur Presentasi (Slide Deck) tentang "{topic}" ({subject}).
-Konsep: {keyConcepts}
 
-{specificRequirements}
-
-**Need:**
-1. Outline 7-10 slide
-2. Poin utama per slide
-3. Ide visual singkat
-4. 5 referensi valid
-
-{additionalInstructions}`
       }
    },
 
@@ -161,9 +131,7 @@ Konsep: {keyConcepts}
       variations: {
          standard: `${baseContext} Saya perlu bantuan menganalisis Studi Kasus tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -181,9 +149,7 @@ Gunakan pendekatan analitis dan berbasis bukti.`,
 
          detailed: `${baseContext} Saya membutuhkan analisis Studi Kasus mendalam tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -208,18 +174,7 @@ ${detailedRefs}
 
 Berikan analisis yang tajam, kritis, dan solutif.`,
 
-         concise: `Analisis Case Study: "{topic}" ({subject}).
-Konsep: {keyConcepts}
 
-{specificRequirements}
-
-**Need:**
-1. Problem Statement
-2. Analisis 3 Alternatif Solusi
-3. Rekomendasi Final
-4. 5 Referensi pendukung
-
-{additionalInstructions}`
       }
    },
 
@@ -229,9 +184,7 @@ Konsep: {keyConcepts}
       variations: {
          standard: `${baseContext} Saya perlu menyusun Paper Analisis tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -248,9 +201,7 @@ Fokus pada kedalaman analisis dan ketajaman argumen.`,
 
          detailed: `${baseContext} Saya perlu menyusun Paper Analisis Kritis (Critical Analysis) tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -268,18 +219,7 @@ ${detailedRefs}
 
 Pastikan analisis bersifat objektif dan didukung bukti kuat.`,
 
-         concise: `Outline Paper Analisis: "{topic}" ({subject}).
-Konsep: {keyConcepts}
 
-{specificRequirements}
-
-**Need:**
-1. Framework analisis
-2. Poin-poin analisis utama
-3. Kesimpulan kritis
-4. 5 Referensi
-
-{additionalInstructions}`
       }
    },
 
@@ -289,9 +229,7 @@ Konsep: {keyConcepts}
       variations: {
          standard: `${baseContext} Saya perlu membuat Review (Literature/Book/Article Review) tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -306,9 +244,7 @@ ${commonrefs}
 `,
          detailed: `${baseContext} Saya perlu membuat Critical Review mendalam tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -325,18 +261,7 @@ ${commonrefs}
 {additionalInstructions}
 ${detailedRefs}
 `,
-         concise: `Outline Review: "{topic}" ({subject}).
-Konsep: {keyConcepts}
 
-{specificRequirements}
-
-**Need:**
-1. Summary singkat
-2. 3 Poin Kekuatan & Kelemahan
-3. Kesimpulan/Opini
-4. 5 Referensi pembanding
-
-{additionalInstructions}`
       }
    },
 
@@ -346,9 +271,7 @@ Konsep: {keyConcepts}
       variations: {
          standard: `${baseContext} Saya perlu bantuan menyusun Laporan (Report) tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -365,9 +288,7 @@ Pastikan format profesional dan data-driven.`,
 
          detailed: `${baseContext} Saya perlu bantuan menyusun Laporan Formal (Formal Report) tentang "{topic}" untuk mata kuliah {subject}.
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {specificRequirements}
 
@@ -387,18 +308,7 @@ ${detailedRefs}
 
 Gunakan gaya bahasa laporan bisnis/akademik yang lugas.`,
 
-         concise: `Struktur Laporan: "{topic}" ({subject}).
-Konsep: {keyConcepts}
 
-{specificRequirements}
-
-**Need:**
-1. Executive Summary template
-2. Key Findings list
-3. Recommendations list
-4. 5 Referensi/Sumber data
-
-{additionalInstructions}`
       }
    }
 };
@@ -410,19 +320,17 @@ export const groupTemplates: Record<string, PromptTemplate> = {
       id: 'group_essay',
       name: 'Group Essay',
       variations: {
-         standard: `Saya adalah ketua kelompok untuk proyek Essay Akademik tentang "{topic}" di mata kuliah {subject}.
+         standard: `${groupBaseContext} Saya adalah Ketua Kelompok untuk proyek Essay Akademik tentang "{topic}" di mata kuliah {subject}.
 Konteks: Tim terdiri dari {memberCount} orang.
 Gaya Bahasa: Akademis & Formal. {difficultyInstruction}{disciplineHint}
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 
 {specificRequirements}
 
-**Yang saya butuhkan sebagai ketua kelompok:**
+**Yang saya butuhkan sebagai Ketua Kelompok:**
 1. **Manajemen Tim**: Strategi pembagian tugas menulis dan riset yang adil untuk {memberCount} orang.
 2. **Struktur Essay**: Outline yang jelas (Pendahuluan, Isi, Kesimpulan) untuk dipandu bersama.
 3. **Integrasi**: Cara menyatukan berbagai gaya penulisan menjadi satu suara yang kohesif.
@@ -433,13 +341,11 @@ ${commonrefs}
 
 Bantu saya memimpin tim ini agar menghasilkan essay yang solid dan terpadu.`,
 
-         detailed: `Saya adalah ketua kelompok untuk proyek Essay Akademik mendalam tentang "{topic}" di mata kuliah {subject}.
+         detailed: `${groupBaseContext} Saya adalah Ketua Kelompok untuk proyek Essay Akademik mendalam tentang "{topic}" di mata kuliah {subject}.
 Konteks: Tim terdiri dari {memberCount} orang.
 Gaya Bahasa: Akademis & Formal. {difficultyInstruction}{disciplineHint}
 
-**Spesifikasi:**
-- Gaya sitasi: {citationStyle}
-- Konsep kunci: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 
@@ -467,21 +373,7 @@ ${detailedRefs}
 
 Berikan panduan teknis dan manajerial yang komprehensif.`,
 
-         concise: `Ketua Kelompok Essay: "{topic}" ({subject})
-Tim: {memberCount} orang | Citation: {citationStyle}
-{difficultyInstruction}{disciplineHint}
 
-{teamChallenges}
-{specificRequirements}
-
-**Need:**
-1. Job desc (Riset/Tulis/Edit)
-2. Outline Essay Lengkap
-3. Timeline pengerjaan
-4. QC Checklist
-5. 5 Referensi
-
-{additionalInstructions}`
       }
    },
 
@@ -489,12 +381,11 @@ Tim: {memberCount} orang | Citation: {citationStyle}
       id: 'group_presentation',
       name: 'Group Presentation',
       variations: {
-         standard: `Saya ketua kelompok Presentasi Akademik topik "{topic}" ({subject}).
+         standard: `${groupBaseContext} Saya Ketua Kelompok Presentasi Akademik topik "{topic}" ({subject}).
 Konteks: Tim {memberCount} orang.
 Gaya: Akademis & Formal.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -508,11 +399,10 @@ Gaya: Akademis & Formal.
 {additionalInstructions}
 ${commonrefs}`,
 
-         detailed: `Saya ketua kelompok Presentasi Akademik komprehensif topik "{topic}" ({subject}).
+         detailed: `${groupBaseContext} Saya Ketua Kelompok Presentasi Akademik komprehensif topik "{topic}" ({subject}).
 Konteks: Tim {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -532,20 +422,7 @@ Konteks: Tim {memberCount} orang.
 {additionalInstructions}
 ${detailedRefs}`,
 
-         concise: `Group Presentation Lead: "{topic}"
-Tim: {memberCount} org.
-{difficultyInstruction}{disciplineHint}
 
-{teamChallenges}
-{specificRequirements}
-
-**Need:**
-1. Slide outline & PIC
-2. Speaker transition script
-3. Visual guidelines
-4. 5 Referensi
-
-{additionalInstructions}`
       }
    },
 
@@ -553,11 +430,10 @@ Tim: {memberCount} org.
       id: 'group_case_study',
       name: 'Group Case Study',
       variations: {
-         standard: `Saya ketua kelompok Analisis Case Study: "{topic}" ({subject}).
+         standard: `${groupBaseContext} Saya Ketua Kelompok Analisis Case Study: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -571,11 +447,10 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${commonrefs}`,
 
-         detailed: `Saya ketua kelompok Analisis Case Study Mendalam: "{topic}" ({subject}).
+         detailed: `${groupBaseContext} Saya Ketua Kelompok Analisis Case Study Mendalam: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -596,21 +471,7 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${detailedRefs}`,
 
-         concise: `Group Case Study Lead: "{topic}"
-Tim: {memberCount} org.
-{difficultyInstruction}{disciplineHint}
 
-{teamChallenges}
-{specificRequirements}
-
-**Need:**
-1. Brainstorming guide
-2. Analisis role division
-3. Konsensus solusi logic
-4. Report structure
-5. 5 Referensi
-
-{additionalInstructions}`
       }
    },
 
@@ -618,11 +479,10 @@ Tim: {memberCount} org.
       id: 'group_analysis',
       name: 'Group Analysis',
       variations: {
-         standard: `Saya ketua kelompok Paper Analisis: "{topic}" ({subject}).
+         standard: `${groupBaseContext} Saya Ketua Kelompok Paper Analisis: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -636,11 +496,10 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${commonrefs}`,
 
-         detailed: `Saya ketua kelompok Critical Analysis Paper: "{topic}" ({subject}).
+         detailed: `${groupBaseContext} Saya Ketua Kelompok Critical Analysis Paper: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -657,20 +516,7 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${detailedRefs}`,
 
-         concise: `Group Analysis Lead: "{topic}"
-Tim: {memberCount} org.
-{difficultyInstruction}{disciplineHint}
 
-{teamChallenges}
-{specificRequirements}
-
-**Need:**
-1. Sub-topic division
-2. Unified theory framework
-3. Internal review process
-4. 5 Referensi
-
-{additionalInstructions}`
       }
    },
 
@@ -678,11 +524,10 @@ Tim: {memberCount} org.
       id: 'group_report',
       name: 'Group Report',
       variations: {
-         standard: `Saya ketua kelompok Laporan (Report): "{topic}" ({subject}).
+         standard: `${groupBaseContext} Saya Ketua Kelompok Laporan (Report): "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -696,11 +541,10 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${commonrefs}`,
 
-         detailed: `Saya ketua kelompok Formal Report: "{topic}" ({subject}).
+         detailed: `${groupBaseContext} Saya Ketua Kelompok Formal Report: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -720,20 +564,7 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${detailedRefs}`,
 
-         concise: `Group Report Lead: "{topic}"
-Tim: {memberCount} org.
-{difficultyInstruction}{disciplineHint}
 
-{teamChallenges}
-{specificRequirements}
-
-**Need:**
-1. Chapter division
-2. Formatting standards
-3. Editing workflow
-4. 5 Referensi/Data
-
-{additionalInstructions}`
       }
    },
 
@@ -742,11 +573,10 @@ Tim: {memberCount} org.
       id: 'group_review',
       name: 'Group Review',
       variations: {
-         standard: `Saya ketua kelompok Review Literatur/Buku: "{topic}" ({subject}).
+         standard: `${groupBaseContext} Saya Ketua Kelompok Review Literatur/Buku: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -760,11 +590,10 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${commonrefs}`,
 
-         detailed: `Saya ketua kelompok Critical Review: "{topic}" ({subject}).
+         detailed: `${groupBaseContext} Saya Ketua Kelompok Critical Review: "{topic}" ({subject}).
 Tim: {memberCount} orang.
 
-**Spesifikasi:**
-- Konsep: {keyConcepts}
+{specifications}
 
 {teamChallenges}
 {specificRequirements}
@@ -781,20 +610,7 @@ Tim: {memberCount} orang.
 {additionalInstructions}
 ${detailedRefs}`,
 
-         concise: `Group Review Lead: "{topic}"
-Tim: {memberCount} org.
-{difficultyInstruction}{disciplineHint}
 
-{teamChallenges}
-{specificRequirements}
-
-**Need:**
-1. Reading division
-2. Discussion points
-3. Writing assignments
-4. 5 Referensi
-
-{additionalInstructions}`
       }
    }
 };
@@ -803,7 +619,7 @@ Tim: {memberCount} org.
 export function getTemplate(
    assignmentType: string,
    isGroup: boolean,
-   variation: 'standard' | 'detailed' | 'concise' = 'standard'
+   variation: 'standard' | 'detailed' = 'standard'
 ): string {
    // Both individual and group templates now share the same keys (essay, presentation, etc.)
    const templates = isGroup ? groupTemplates : individualTemplates;

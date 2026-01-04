@@ -211,9 +211,13 @@ try {
         // Add small delay to ensure all components are mounted
         setTimeout(() => {
             const searchInputs = [
-                document.getElementById("search-input-desktop"),
-                document.getElementById("search-input-mobile"),
-            ].filter((el) => el !== null);
+                document.getElementById(
+                    "search-input-desktop",
+                ) as HTMLInputElement | null,
+                document.getElementById(
+                    "search-input-mobile",
+                ) as HTMLInputElement | null,
+            ].filter((el): el is HTMLInputElement => el !== null);
 
             const linkSections = document.querySelectorAll(".link-section");
             const linkCards = document.querySelectorAll(".link-card-item");
@@ -289,7 +293,7 @@ try {
                 input.addEventListener(
                     "input",
                     (e) => {
-                        const target = e.target;
+                        const target = e.target as HTMLInputElement;
                         const value = target.value;
                         searchQuery = value.trim().toLowerCase();
 

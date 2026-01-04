@@ -110,7 +110,7 @@ const description =
     // Initialize generator
     const generator = new PromptGenerator();
     let currentAssignmentType: "individual" | "group" = "individual";
-    let currentTemplateStyle: "standard" | "detailed" | "concise" = "standard";
+    let currentTemplateStyle: "standard" | "detailed" = "standard";
     let previousPrompt = "";
 
     // Get DOM elements
@@ -118,7 +118,7 @@ const description =
     const previewEl = document.querySelector("#prompt-preview");
     const copyBtn = document.querySelector<HTMLButtonElement>("#copy-btn");
     const charCount = document.querySelector("#char-count");
-    const qualityScore = document.querySelector("#quality-score");
+    const qualityScore = document.querySelector<HTMLElement>("#quality-score");
     const qualityBar = document.querySelector<HTMLElement>("#quality-bar");
     const qualitySuggestion = document.querySelector("#quality-suggestion");
     const groupFields = document.querySelector("#group-fields");
@@ -291,8 +291,23 @@ const description =
       if (groupFields) {
         if (currentAssignmentType === "group") {
           groupFields.classList.remove("hidden");
+
+          // Set default to Presentation for Group assignments
+          const assignmentTypeSelect =
+            form?.querySelector<HTMLSelectElement>("#assignmentType");
+          if (assignmentTypeSelect) {
+            assignmentTypeSelect.value = "Presentation";
+          }
         } else {
           groupFields.classList.add("hidden");
+
+          // Optional: Reset to Essay for Individual if desired, or keep as is.
+          // For now, let's reset to Essay to match the "default" feel
+          const assignmentTypeSelect =
+            form?.querySelector<HTMLSelectElement>("#assignmentType");
+          if (assignmentTypeSelect) {
+            assignmentTypeSelect.value = "Essay";
+          }
         }
       }
 

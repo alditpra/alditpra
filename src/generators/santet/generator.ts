@@ -4,7 +4,7 @@ export interface FormData {
     assignmentType: string;
     subject: string;
     topic: string;
-    templateStyle: 'standard' | 'detailed' | 'concise';
+    templateStyle: 'standard' | 'detailed';
     difficultyLevel: string;
     citationStyle: string;
     keyConcepts: string;
@@ -67,19 +67,7 @@ export class PromptGenerator {
             }
         }
 
-        // Conditional Spesifikasi Section - only include filled fields
-        const specItems: string[] = [];
-        if (citationStyle && citationStyle !== 'None') {
-            specItems.push(`- Gaya sitasi: ${citationStyle}`);
-        }
-        if (keyConcepts && keyConcepts.trim().length > 0) {
-            specItems.push(`- Konsep kunci: ${formattedConcepts}`);
-        }
 
-        // Build specifications section only if there are items
-        const specificationsSection = specItems.length > 0
-            ? `\n**Spesifikasi:**\n${specItems.join('\n')}\n`
-            : '';
 
         // Conditional Formatting: Headers for optional sections
         const requirementsContent = specificRequirements
@@ -101,21 +89,62 @@ export class PromptGenerator {
         const getDisciplineHint = (subjectText: string): string => {
             const s = subjectText.toLowerCase();
 
-            // Informatika / Sistem Informasi
-            if (/informatika|sistem informasi|pemrograman|database|jaringan|software|ai|machine learning|data science|algoritma|basis data/.test(s)) {
-                return '\n**Konteks Disiplin:** Sertakan diagram teknis (flowchart/UML/ERD) jika relevan. Referensikan standar IEEE/ACM dan teknologi spesifik yang digunakan.';
+            // Informatika / CS / Engineering
+            if (/informatika|sistem informasi|pemrograman|database|jaringan|software|ai|machine learning|data science|algoritma|basis data|teknik|engineering|elektro|mesin|sibil|arsitektur/.test(s)) {
+                return '\n**Konteks Disiplin:** Sertakan diagram teknis (flowchart/UML/ERD/Blueprints) jika relevan. Referensikan standar industri (IEEE/ACM/ISO/SNI) dan teknologi spesifik.';
             }
-            // Bisnis Digital / E-Commerce
-            if (/bisnis digital|e-commerce|digital marketing|startup|platform digital|fintech|marketplace/.test(s)) {
-                return '\n**Konteks Disiplin:** Gunakan framework bisnis (Business Model Canvas, Value Proposition) dan metrics digital (CAC, LTV, conversion rate) jika applicable.';
+            // --- HYBRID / SPECIALIZED BUSINESS COURSES ---
+
+            // Business Cloud Computing
+            if (/cloud|komputasi awan|aws|azure|gcp|saas|paas|iaas|serverless/.test(s)) {
+                return '\n**Konteks Disiplin (Business Cloud):** Fokus pada Cost Benefit Analysis (CBA), model layanan (SaaS/PaaS), dan strategi skalabilitas bisnis. Jangan terlalu teknis pada konfigurasi server/coding.';
             }
-            // Manajemen
-            if (/manajemen|sdm|hrm|human resource|operasional|strategis|organisasi|leadership|msdm|pemasaran|marketing/.test(s)) {
-                return '\n**Konteks Disiplin:** Gunakan framework analisis (SWOT, Porter\'s Five Forces, PESTLE) dan sertakan implikasi manajerial yang actionable.';
+
+            // Metodologi Penelitian Bisnis
+            if (/metodologi|metpen|riset|penelitian|skripsi|tugas akhir|metode survei|sem|spss|pls/.test(s)) {
+                return '\n**Konteks Disiplin (Riset Bisnis):** Tentukan jenis data (Primer/Sekunder). Gunakan metode analisis yang relevan (Statistik/Kualitatif) sesuai pertanyaan riset. Validasi hipotesis (jika ada) adalah kunci.';
             }
-            // Ekonomi
-            if (/ekonomi|makroekonomi|mikroekonomi|fiskal|moneter|perdagangan|keuangan|akuntansi|perbankan/.test(s)) {
-                return '\n**Konteks Disiplin:** Sertakan data dari sumber resmi (BPS, World Bank, Bank Indonesia) dan grafik ekonomi jika relevan untuk memperkuat argumen.';
+
+            // 1. Digital Marketing & Branding
+            if (/marketing|pemasaran|branding|seo|social media|konten|copywriting|ads|iklan|perilaku konsumen/.test(s)) {
+                return '\n**Konteks Disiplin (Digital Marketing):** Gunakan framework AIDA/AISAS, analisis STP (Segmenting, Targeting, Positioning), dan metrics digital (CTR, Conversion Rate, CAC/LTV).';
+            }
+
+            // 2. Fintech & Keuangan
+            if (/fintech|keuangan|akuntansi|crypto|blockchain|saham|investasi|bank|moneter|fiskal|paylater|pinjol/.test(s)) {
+                return '\n**Konteks Disiplin (Fintech/Finance):** Sertakan analisis risiko finansial, regulasi OJK/BI, dan data laporan keuangan. Gunakan rasio keuangan (ROI, ROE) sebagai bukti.';
+            }
+
+            // 3. Startup & Manajemen Produk
+            if (/startup|produk|product management|agile|scrum|mvp|inovasi|bisnis model|business model|kewirausahaan|entrepreneur/.test(s)) {
+                return '\n**Konteks Disiplin (Startup/Product):** Gunakan metodologi Lean Startup, Business Model Canvas (BMC), dan Value Proposition Canvas. Fokus pada validasi pasar dan User Persona.';
+            }
+
+            // 4. Hukum Bisnis & Etika Digital
+            if (/hukum|law|legal|etika|cyber|ite|privasi|data protection|hak cipta|haki|regulasi/.test(s)) {
+                return '\n**Konteks Disiplin (Hukum & Etika):** Referensikan UU ITE, PP Perdagangan Elektronik (PMSE), dan etika bisnis digital. Analisis dari sudut pandang kepatuhan (compliance).';
+            }
+
+            // 5. E-Commerce & Platform Strategy
+            if (/e-commerce|marketplace|platform|logistik|supply chain|omnichannel|ritel|toko online/.test(s)) {
+                return '\n**Konteks Disiplin (E-Commerce):** Fokus pada ekosistem platform, Customer Journey Map, dan strategi logistik/operasional. Sertakan tren pasar e-commerce terkini.';
+            }
+
+            // 6. General Business/Management (Fallback)
+            if (/manajemen|bisnis|administrasi|organisasi|kepemimpinan|leadership|strategi|operasional/.test(s)) {
+                return '\n**Konteks Disiplin (Manajemen Umum):** Gunakan analisis SWOT, PESTLE, atau Porter\'s Five Forces. Fokus pada implikasi manajerial dan pengambilan keputusan strategis.';
+            }
+            // Hukum / Law
+            if (/hukum|pidana|perdata|tata negara|law|legal|advokasi/.test(s)) {
+                return '\n**Konteks Disiplin:** Wajib menyertakan dasar hukum positif (UU, PERPU, Putusan Pengadilan) yang relevan. Gunakan interpretasi yuridis yang ketat.';
+            }
+            // Psikologi / Kesehatan / Kedokteran
+            if (/psikologi|kesehatan|kedokteran|keperawatan|farmasi|gizi|konseling|klinis/.test(s)) {
+                return '\n**Konteks Disiplin:** Gunakan pedoman etika medis/psikologis. Referensikan panduan klinis terbaru (WHO/Kemenkes) atau manual diagnostik (DSM/ICD) jika relevan.';
+            }
+            // Komunikasi / Soshum / Politik
+            if (/komunikasi|sosiologi|politik|hubungan internasional|antropologi|jurnalistik|humas|public relation/.test(s)) {
+                return '\n**Konteks Disiplin:** Fokus pada analisis wacana, teori sosial, atau dinamika geopolitik. Gunakan perspektif kritis dan multidisipliner.';
             }
 
             return ''; // No specific hint for unknown disciplines
@@ -133,6 +162,23 @@ export class PromptGenerator {
         };
         const difficultyInstruction = difficultyMap[difficultyLevel] || difficultyMap['Medium'];
 
+        // --- Specifications Generation Logic ---
+        let specificationsSection = '';
+        const specs: string[] = [];
+
+        // Determine if we should include Citation Style
+        const showCitation = citationStyle && citationStyle !== 'None';
+        const showConcepts = keyConcepts && keyConcepts.trim().length > 0;
+
+        // Standard/Detailed Format: **Spesifikasi:** header + bullet points
+        if (showCitation) specs.push(`- Gaya sitasi: ${citationStyle}`);
+        if (showConcepts) specs.push(`- Konsep kunci: ${formattedConcepts}`);
+
+        // Build section only if there are items
+        if (specs.length > 0) {
+            specificationsSection = `\n**Spesifikasi:**\n${specs.join('\n')}\n`;
+        }
+
         // Replace placeholders
         let prompt = template
             .replace(/{assignmentType}/g, assignmentType)
@@ -140,19 +186,15 @@ export class PromptGenerator {
             .replace(/{topic}/g, topic || '*[Topik]*')
             .replace(/{difficultyInstruction}/g, difficultyInstruction)
             .replace(/{disciplineHint}/g, disciplineHint)
-            .replace(/{citationStyle}/g, citationStyle)
-            .replace(/{keyConcepts}/g, formattedConcepts)
+            .replace(/{specifications}/g, specificationsSection) // Replaces unified placeholder
             .replace(/{specificRequirements}/g, requirementsContent)
             .replace(/{memberCount}/g, memberCount?.toString() || '0')
             .replace(/{additionalInstructions}/g, instructionsContent)
             .replace(/{teamChallenges}/g, challengesContent);
 
-        // Remove hardcoded Spesifikasi section and replace with conditional one
-        // Match pattern: **Spesifikasi:** followed by lines starting with - until next section or empty line
-        prompt = prompt.replace(/\*\*Spesifikasi:\*\*\n(- [^\n]+\n?)+/g, specificationsSection);
-
-        // Clean up any remaining empty placeholders
-        prompt = prompt.replace(/\{\w+\}/g, '');
+        // Clean up remaining placeholders (just in case)
+        prompt = prompt.replace(/{citationStyle}/g, '')
+            .replace(/{keyConcepts}/g, '');
 
         // Clean up multiple consecutive empty lines
         prompt = prompt.replace(/\n{3,}/g, '\n\n');
@@ -216,19 +258,6 @@ export class PromptGenerator {
         }
     }
 
-    // Format prompt with markdown-like styling
-    formatPromptForDisplay(prompt: string): string {
-        // Bold section headers
-        let formatted = prompt.replace(/\*\*([^*]+):\*\*/g, '<strong>$1:</strong>');
-
-        // Italic for placeholders in brackets
-        formatted = formatted.replace(/\*\[([^\]]+)\]\*/g, '<em>[$1]</em>');
-
-        // Preserve line breaks
-        formatted = formatted.replace(/\n/g, '<br>');
-
-        return formatted;
-    }
 
     // Reset to default state
     reset() {
