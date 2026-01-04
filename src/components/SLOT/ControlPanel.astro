@@ -1,6 +1,8 @@
 {/* Control panel with Start button and Fair Mode toggle */}
 
-<div class="p-6 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg mb-6">
+<div
+  class="p-6 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg mb-6"
+>
   <h3 class="text-lg font-semibold text-zinc-800 dark:text-zinc-100 mb-4">
     Kontrol Undian
   </h3>
@@ -11,15 +13,21 @@
       <div class="flex items-center gap-3">
         <div class="text-2xl">🎯</div>
         <div>
-          <div id="fair-mode-label" class="font-semibold text-zinc-800 dark:text-zinc-100">
+          <div
+            id="fair-mode-label"
+            class="font-semibold text-zinc-800 dark:text-zinc-100"
+          >
             Mode Adil (Tanpa Duplikasi)
           </div>
-          <div id="fair-mode-counter" class="text-sm text-zinc-600 dark:text-zinc-400">
+          <div
+            id="fair-mode-counter"
+            class="text-sm text-zinc-600 dark:text-zinc-400"
+          >
             Tersisa: 0 dari 0 mahasiswa
           </div>
         </div>
       </div>
-      
+
       <div class="relative">
         <input
           type="checkbox"
@@ -27,13 +35,17 @@
           class="sr-only peer"
           checked
         />
-        <div class="w-14 h-8 rounded-full transition-all duration-300
+        <div
+          class="w-14 h-8 rounded-full transition-all duration-300
                     bg-zinc-300 dark:bg-zinc-600
                     peer-checked:bg-candy-blue peer-checked:shadow-[0_0_20px_-5px_var(--candy-blue)]
-                    peer-focus:ring-2 peer-focus:ring-candy-blue/50">
+                    peer-focus:ring-2 peer-focus:ring-candy-blue/50"
+        >
         </div>
-        <div class="absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300
-                    peer-checked:translate-x-6">
+        <div
+          class="absolute top-1 left-1 w-6 h-6 rounded-full bg-white shadow-md transition-transform duration-300
+                    peer-checked:translate-x-6"
+        >
         </div>
       </div>
     </label>
@@ -50,8 +62,18 @@
            disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
            flex items-center justify-center gap-3"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polygon points="5 3 19 12 5 21 5 3"/>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
     </svg>
     <span id="start-btn-text">Mulai Undian</span>
   </button>
@@ -66,34 +88,47 @@
            hover:scale-[1.02] hover:shadow-[0_0_15px_-5px_var(--candy-pink)]
            flex items-center justify-center gap-2"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
-      <path d="M21 3v5h-5"/>
-      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
-      <path d="M3 21v-5h5"/>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+      <path d="M21 3v5h-5"></path>
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+      <path d="M3 21v-5h5"></path>
     </svg>
     <span>Reset Semua</span>
   </button>
 </div>
 
 <script>
-  import { SlotAnimator } from '../../lib/slot/slot-animator';
-  import { clearAllData } from '../../lib/slot/storage';
+  import { SlotAnimator } from "../../lib/slot/slot-animator";
+  import { clearAllData } from "../../lib/slot/storage";
 
   // Guard to prevent double initialization
   let isInitialized = false;
 
   function initControlPanel() {
     if (isInitialized) {
-      console.log('ControlPanel already initialized, skipping...');
       return;
     }
     isInitialized = true;
-    const fairModeToggle = document.getElementById('fair-mode-toggle') as HTMLInputElement;
-    const fairModeCounter = document.getElementById('fair-mode-counter');
-    const startBtn = document.getElementById('start-lottery-btn') as HTMLButtonElement;
-    const startBtnText = document.getElementById('start-btn-text');
-    const resetBtn = document.getElementById('reset-btn');
+    const fairModeToggle = document.getElementById(
+      "fair-mode-toggle",
+    ) as HTMLInputElement;
+    const fairModeCounter = document.getElementById("fair-mode-counter");
+    const startBtn = document.getElementById(
+      "start-lottery-btn",
+    ) as HTMLButtonElement;
+    const startBtnText = document.getElementById("start-btn-text");
+    const resetBtn = document.getElementById("reset-btn");
 
     let animator: SlotAnimator | null = null;
     let studentsLoaded = false;
@@ -102,34 +137,35 @@
     // (In case FileUploader dispatched 'students-loaded' before we started listening)
     const savedAnimator = SlotAnimator.fromStorage({ fairMode: true });
     if (savedAnimator) {
-      console.log('ControlPanel: Restored state from localStorage');
       animator = savedAnimator;
       studentsLoaded = true;
-      
+
       // Sync Fair Mode toggle
       if (fairModeToggle) {
         fairModeToggle.checked = animator.isFairModeActive();
         updateToggleUI(animator.isFairModeActive());
       }
-      
+
       // Update Start button state immediately
       updateUI();
 
       // Notify ResultsDisplay to show restored history
-      window.dispatchEvent(new CustomEvent('history-updated', {
-        detail: { history: animator.getConfirmedHistory() }
-      }));
+      window.dispatchEvent(
+        new CustomEvent("history-updated", {
+          detail: { history: animator.getConfirmedHistory() },
+        }),
+      );
     }
 
     // Listen for students loaded event
-    window.addEventListener('students-loaded', ((e: CustomEvent) => {
+    window.addEventListener("students-loaded", ((e: CustomEvent) => {
       const { students } = e.detail;
-      
+
       if (animator) {
         animator.updateStudents(students);
       } else {
         animator = new SlotAnimator(students, {
-          fairMode: true // Always ON by default
+          fairMode: true, // Always ON by default
         });
       }
 
@@ -138,18 +174,18 @@
     }) as EventListener);
 
     // Listen for students cleared
-    window.addEventListener('students-cleared', () => {
+    window.addEventListener("students-cleared", () => {
       studentsLoaded = false;
       updateUI();
     });
 
     // Fair Mode toggle
-    fairModeToggle?.addEventListener('change', () => {
+    fairModeToggle?.addEventListener("change", () => {
       const isFairMode = fairModeToggle.checked;
-      
+
       // Update UI immediately
       updateToggleUI(isFairMode);
-      
+
       // Update animator if exists
       if (animator) {
         if (isFairMode) {
@@ -163,12 +199,14 @@
     });
 
     // Start button
-    startBtn?.addEventListener('click', async () => {
+    startBtn?.addEventListener("click", async () => {
       if (!animator || !studentsLoaded) return;
 
       // Check if pool exhausted
       if (animator.isPoolExhausted()) {
-        alert('Semua mahasiswa sudah terpilih. Reset Fair Mode untuk mulai lagi.');
+        alert(
+          "Semua mahasiswa sudah terpilih. Reset Fair Mode untuk mulai lagi.",
+        );
         return;
       }
 
@@ -176,27 +214,33 @@
       if (startBtn) startBtn.disabled = true;
 
       // Dispatch start event
-      window.dispatchEvent(new CustomEvent('lottery-start', {
-        detail: { animator }
-      }));
+      window.dispatchEvent(
+        new CustomEvent("lottery-start", {
+          detail: { animator },
+        }),
+      );
     });
 
     // Reset button
-    resetBtn?.addEventListener('click', () => {
-      if (confirm('Reset semua data? Semua mahasiswa akan tersedia kembali untuk undian.')) {
+    resetBtn?.addEventListener("click", () => {
+      if (
+        confirm(
+          "Reset semua data? Semua mahasiswa akan tersedia kembali untuk undian.",
+        )
+      ) {
         animator?.resetFairMode();
         animator = null;
-        
+
         // Clear localStorage
         clearAllData();
-        
-        window.dispatchEvent(new CustomEvent('reset-all'));
+
+        window.dispatchEvent(new CustomEvent("reset-all"));
         updateStartButton();
       }
     });
 
     // Listen for selection complete to re-enable button
-    window.addEventListener('selection-complete', () => {
+    window.addEventListener("selection-complete", () => {
       if (startBtn) startBtn.disabled = false;
       updateUI();
     });
@@ -204,7 +248,8 @@
     function updateUI() {
       // Update start button state
       if (startBtn) {
-        startBtn.disabled = !studentsLoaded || (animator?.isPoolExhausted() || false);
+        startBtn.disabled =
+          !studentsLoaded || animator?.isPoolExhausted() || false;
       }
 
       // Update button text
@@ -212,20 +257,20 @@
         const remaining = animator.getRemainingCount();
         const historyCount = animator.getHistoryCount();
         const isFairMode = animator.isFairModeActive();
-        
+
         // Only show "Pilih Lagi" if we've already made at least one selection
         if (isFairMode && historyCount > 0 && remaining > 0) {
           startBtnText.textContent = `Pilih Lagi (${remaining} tersisa)`;
         } else if (isFairMode && remaining === 0) {
-          startBtnText.textContent = 'Pool Habis - Reset Untuk Lanjut';
+          startBtnText.textContent = "Pool Habis - Reset Untuk Lanjut";
         } else {
-          startBtnText.textContent = 'Mulai Undian';
+          startBtnText.textContent = "Mulai Undian";
         }
       }
 
       // Update Fair Mode label and counter
-      const fairModeLabel = document.getElementById('fair-mode-label');
-      
+      const fairModeLabel = document.getElementById("fair-mode-label");
+
       if (fairModeCounter && animator) {
         const total = animator.getTotalStudents();
         const remaining = animator.getRemainingCount();
@@ -233,35 +278,37 @@
 
         if (isFairMode) {
           if (fairModeLabel) {
-            fairModeLabel.textContent = 'Mode Adil (Tanpa Duplikasi)';
+            fairModeLabel.textContent = "Mode Adil (Tanpa Duplikasi)";
           }
           fairModeCounter.textContent = `Tersisa: ${remaining} dari ${total} mahasiswa`;
         } else {
           if (fairModeLabel) {
-            fairModeLabel.textContent = 'Mode Berulang';
+            fairModeLabel.textContent = "Mode Berulang";
           }
-          fairModeCounter.textContent = 'Semua mahasiswa dapat dipilih berulang';
+          fairModeCounter.textContent =
+            "Semua mahasiswa dapat dipilih berulang";
         }
       }
     }
 
     function updateToggleUI(isFairMode: boolean) {
-      const fairModeLabel = document.getElementById('fair-mode-label');
-      const fairModeCounter = document.getElementById('fair-mode-counter');
-      
+      const fairModeLabel = document.getElementById("fair-mode-label");
+      const fairModeCounter = document.getElementById("fair-mode-counter");
+
       if (isFairMode) {
         if (fairModeLabel) {
-          fairModeLabel.textContent = 'Mode Adil (Tanpa Duplikasi)';
+          fairModeLabel.textContent = "Mode Adil (Tanpa Duplikasi)";
         }
         if (fairModeCounter) {
-          fairModeCounter.textContent = 'Mahasiswa tidak akan dipilih berulang';
+          fairModeCounter.textContent = "Mahasiswa tidak akan dipilih berulang";
         }
       } else {
         if (fairModeLabel) {
-          fairModeLabel.textContent = 'Mode Berulang';
+          fairModeLabel.textContent = "Mode Berulang";
         }
         if (fairModeCounter) {
-          fairModeCounter.textContent = 'Semua mahasiswa dapat dipilih berulang';
+          fairModeCounter.textContent =
+            "Semua mahasiswa dapat dipilih berulang";
         }
       }
     }
@@ -272,11 +319,11 @@
   }
 
   // Auto-initialize
-  if (typeof window !== 'undefined') {
-    document.addEventListener('astro:page-load', initControlPanel);
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initControlPanel);
+  if (typeof window !== "undefined") {
+    document.addEventListener("astro:page-load", initControlPanel);
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initControlPanel);
     } else {
       initControlPanel();
     }

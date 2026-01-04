@@ -8,20 +8,28 @@
            hover:border-candy-purple hover:bg-candy-purple/5
            drag-over:border-candy-pink drag-over:bg-candy-pink/10"
   >
-    <input
-      type="file"
-      id="file-input"
-      accept=".xlsx,.csv"
-      class="hidden"
-    />
+    <input type="file" id="file-input" accept=".xlsx,.csv" class="hidden" />
 
     {/* Upload icon */}
     <div id="upload-icon" class="mb-4">
-      <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-candy-purple/20 to-candy-pink/20 flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-purple">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="17 8 12 3 7 8"/>
-          <line x1="12" x2="12" y1="3" y2="15"/>
+      <div
+        class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-candy-purple/20 to-candy-pink/20 flex items-center justify-center"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-candy-purple"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" x2="12" y1="3" y2="15"></line>
         </svg>
       </div>
     </div>
@@ -42,15 +50,36 @@
     {/* File info (hidden initially) */}
     <div id="file-info" class="hidden">
       <div class="flex items-center justify-center gap-3 mb-4">
-        <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-600 dark:text-green-400">
-            <polyline points="20 6 9 17 4 12"/>
+        <div
+          class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="text-green-600 dark:text-green-400"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </div>
       </div>
-      <p id="file-name" class="font-semibold text-zinc-800 dark:text-zinc-200 mb-1"></p>
-      <p id="student-count" class="text-sm text-zinc-600 dark:text-zinc-400 mb-4"></p>
-      
+      <p
+        id="file-name"
+        class="font-semibold text-zinc-800 dark:text-zinc-200 mb-1"
+      >
+      </p>
+      <p
+        id="student-count"
+        class="text-sm text-zinc-600 dark:text-zinc-400 mb-4"
+      >
+      </p>
+
       <button
         type="button"
         id="clear-file-btn"
@@ -65,11 +94,18 @@
     <div id="preview-section" class="hidden">
       <div class="flex items-start justify-between mb-4">
         <div class="text-left">
-          <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-100 mb-1">📋 Preview Data</h3>
-          <p id="preview-filename" class="text-sm text-zinc-600 dark:text-zinc-400 mb-1"></p>
-          <p id="preview-count" class="text-sm font-semibold text-candy-purple"></p>
+          <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-100 mb-1">
+            📋 Preview Data
+          </h3>
+          <p
+            id="preview-filename"
+            class="text-sm text-zinc-600 dark:text-zinc-400 mb-1"
+          >
+          </p>
+          <p id="preview-count" class="text-sm font-semibold text-candy-purple">
+          </p>
         </div>
-        
+
         {/* Delete Button */}
         <button
           type="button"
@@ -80,26 +116,51 @@
                  flex items-center gap-1.5"
           title="Hapus data"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="3 6 5 6 21 6"/>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            <line x1="10" x2="10" y1="11" y2="17"/>
-            <line x1="14" x2="14" y1="11" y2="17"/>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path
+              d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+            ></path>
+            <line x1="10" x2="10" y1="11" y2="17"></line>
+            <line x1="14" x2="14" y1="11" y2="17"></line>
           </svg>
           <span class="text-sm font-medium">Hapus</span>
         </button>
       </div>
 
       {/* Scrollable Table */}
-      <div class="mb-4 max-h-96 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-700">
+      <div
+        class="mb-4 max-h-96 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-700"
+      >
         <table class="w-full text-sm">
-          <thead class="sticky top-0 bg-candy-purple/10 dark:bg-candy-purple/20 border-b border-zinc-200 dark:border-zinc-700">
+          <thead
+            class="sticky top-0 bg-candy-purple/10 dark:bg-candy-purple/20 border-b border-zinc-200 dark:border-zinc-700"
+          >
             <tr>
-              <th class="px-4 py-3 text-left font-semibold text-zinc-700 dark:text-zinc-300 w-16">No</th>
-              <th class="px-4 py-3 text-left font-semibold text-zinc-700 dark:text-zinc-300">Nama Mahasiswa</th>
+              <th
+                class="px-4 py-3 text-left font-semibold text-zinc-700 dark:text-zinc-300 w-16"
+                >No</th
+              >
+              <th
+                class="px-4 py-3 text-left font-semibold text-zinc-700 dark:text-zinc-300"
+                >Nama Mahasiswa</th
+              >
             </tr>
           </thead>
-          <tbody id="preview-table-body" class="bg-white/50 dark:bg-zinc-900/50">
+          <tbody
+            id="preview-table-body"
+            class="bg-white/50 dark:bg-zinc-900/50"
+          >
             {/* Rows will be inserted here */}
           </tbody>
         </table>
@@ -108,65 +169,77 @@
 
     {/* Loading state (hidden initially) */}
     <div id="upload-loading" class="hidden">
-      <div class="inline-block w-12 h-12 border-4 border-candy-purple/30 border-t-candy-purple rounded-full animate-spin mb-4"></div>
-      <p class="text-sm text-zinc-600 dark:text-zinc-400">
-        Memproses file...
-      </p>
+      <div
+        class="inline-block w-12 h-12 border-4 border-candy-purple/30 border-t-candy-purple rounded-full animate-spin mb-4"
+      >
+      </div>
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">Memproses file...</p>
     </div>
   </div>
 </div>
 
 <script>
-  import * as XLSX from 'xlsx';
-  import { loadStudents } from '../../lib/slot/storage';
+  import * as XLSX from "xlsx";
+  import { loadStudents } from "../../lib/slot/storage";
 
   // Guard to prevent double initialization
   let isInitialized = false;
 
   function initFileUploader() {
     if (isInitialized) {
-      console.log('FileUploader already initialized, skipping...');
       return;
     }
     isInitialized = true;
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input') as HTMLInputElement;
-    const uploadPrompt = document.getElementById('upload-prompt');
-    const uploadLoading = document.getElementById('upload-loading');
-    const fileInfo = document.getElementById('file-info');
-    const fileName = document.getElementById('file-name');
-    const studentCount = document.getElementById('student-count');
-    const clearFileBtn = document.getElementById('clear-file-btn');
-    
+    const dropZone = document.getElementById("drop-zone");
+    const fileInput = document.getElementById("file-input") as HTMLInputElement;
+    const uploadPrompt = document.getElementById("upload-prompt");
+    const uploadLoading = document.getElementById("upload-loading");
+    const fileInfo = document.getElementById("file-info");
+    const fileName = document.getElementById("file-name");
+    const studentCount = document.getElementById("student-count");
+    const clearFileBtn = document.getElementById("clear-file-btn");
+
     // Preview elements
-    const previewSection = document.getElementById('preview-section');
-    const previewFilename = document.getElementById('preview-filename');
-    const previewCount = document.getElementById('preview-count');
-    const previewTableBody = document.getElementById('preview-table-body');
-    const deletePreviewBtn = document.getElementById('delete-preview-btn');
+    const previewSection = document.getElementById("preview-section");
+    const previewFilename = document.getElementById("preview-filename");
+    const previewCount = document.getElementById("preview-count");
+    const previewTableBody = document.getElementById("preview-table-body");
+    const deletePreviewBtn = document.getElementById("delete-preview-btn");
 
     let currentStudents: string[] = [];
-    let currentFileName: string = '';
+    let currentFileName: string = "";
 
     // Click to browse
-    dropZone?.addEventListener('click', () => {
+    dropZone?.addEventListener("click", () => {
       fileInput?.click();
     });
 
     // Drag and drop handlers
-    dropZone?.addEventListener('dragover', (e) => {
+    dropZone?.addEventListener("dragover", (e) => {
       e.preventDefault();
-      dropZone.classList.add('drag-over', 'border-candy-pink', 'bg-candy-pink/10');
+      dropZone.classList.add(
+        "drag-over",
+        "border-candy-pink",
+        "bg-candy-pink/10",
+      );
     });
 
-    dropZone?.addEventListener('dragleave', () => {
-      dropZone.classList.remove('drag-over', 'border-candy-pink', 'bg-candy-pink/10');
+    dropZone?.addEventListener("dragleave", () => {
+      dropZone.classList.remove(
+        "drag-over",
+        "border-candy-pink",
+        "bg-candy-pink/10",
+      );
     });
 
-    dropZone?.addEventListener('drop', (e) => {
+    dropZone?.addEventListener("drop", (e) => {
       e.preventDefault();
-      dropZone.classList.remove('drag-over', 'border-candy-pink', 'bg-candy-pink/10');
-      
+      dropZone.classList.remove(
+        "drag-over",
+        "border-candy-pink",
+        "bg-candy-pink/10",
+      );
+
       const files = e.dataTransfer?.files;
       if (files && files.length > 0) {
         handleFile(files[0]);
@@ -174,7 +247,7 @@
     });
 
     // File input change
-    fileInput?.addEventListener('change', (e) => {
+    fileInput?.addEventListener("change", (e) => {
       const target = e.target as HTMLInputElement;
       const files = target.files;
       if (files && files.length > 0) {
@@ -183,87 +256,99 @@
     });
 
     // Clear file button
-    clearFileBtn?.addEventListener('click', (e) => {
+    clearFileBtn?.addEventListener("click", (e) => {
       e.stopPropagation();
       clearFile();
     });
-    
+
     // Delete preview button
-    deletePreviewBtn?.addEventListener('click', (e) => {
+    deletePreviewBtn?.addEventListener("click", (e) => {
       e.stopPropagation();
       clearFile();
     });
 
     function showLoading() {
-      uploadPrompt?.classList.add('hidden');
-      fileInfo?.classList.add('hidden');
-      uploadLoading?.classList.remove('hidden');
+      uploadPrompt?.classList.add("hidden");
+      fileInfo?.classList.add("hidden");
+      uploadLoading?.classList.remove("hidden");
     }
 
     function showFileInfo(name: string, count: number) {
-      uploadPrompt?.classList.add('hidden');
-      uploadLoading?.classList.add('hidden');
-      fileInfo?.classList.remove('hidden');
-      
+      uploadPrompt?.classList.add("hidden");
+      uploadLoading?.classList.add("hidden");
+      fileInfo?.classList.remove("hidden");
+
       if (fileName) fileName.textContent = name;
       if (studentCount) studentCount.textContent = `${count} mahasiswa`;
     }
 
     function showPrompt() {
-      uploadLoading?.classList.add('hidden');
-      fileInfo?.classList.add('hidden');
-      previewSection?.classList.add('hidden');
-      uploadPrompt?.classList.remove('hidden');
+      uploadLoading?.classList.add("hidden");
+      fileInfo?.classList.add("hidden");
+      previewSection?.classList.add("hidden");
+      uploadPrompt?.classList.remove("hidden");
     }
-    
+
     function showPreview(students: string[], filename: string) {
-      uploadLoading?.classList.add('hidden');
-      uploadPrompt?.classList.add('hidden');
-      fileInfo?.classList.add('hidden');
-      previewSection?.classList.remove('hidden');
-      
+      uploadLoading?.classList.add("hidden");
+      uploadPrompt?.classList.add("hidden");
+      fileInfo?.classList.add("hidden");
+      previewSection?.classList.remove("hidden");
+
       // Update preview header
       if (previewFilename) previewFilename.textContent = filename;
-      if (previewCount) previewCount.textContent = `${students.length} mahasiswa`;
-      
+      if (previewCount)
+        previewCount.textContent = `${students.length} mahasiswa`;
+
       // Populate table
       if (previewTableBody) {
-        previewTableBody.innerHTML = students.map((name, index) => `
+        previewTableBody.innerHTML = students
+          .map(
+            (name, index) => `
           <tr class="border-b border-zinc-100 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
             <td class="px-4 py-3 font-medium text-zinc-600 dark:text-zinc-400">${index + 1}</td>
             <td class="px-4 py-3 text-zinc-800 dark:text-zinc-100">${escapeHtml(name)}</td>
           </tr>
-        `).join('');
+        `,
+          )
+          .join("");
       }
     }
 
-    
     function escapeHtml(text: string): string {
-      const div = document.createElement('div');
+      const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
     }
 
     function clearFile() {
-      if (fileInput) fileInput.value = '';
+      if (fileInput) fileInput.value = "";
       currentStudents = [];
       showPrompt();
-      
+
       // Dispatch event
-      window.dispatchEvent(new CustomEvent('students-cleared'));
+      window.dispatchEvent(new CustomEvent("students-cleared"));
     }
 
     async function handleFile(file: File) {
       // Validate file type
-      const validTypes = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv', 'application/vnd.ms-excel'];
-      if (!validTypes.includes(file.type) && !file.name.endsWith('.csv') && !file.name.endsWith('.xlsx')) {
-        showToast('Format file tidak valid. Gunakan .xlsx atau .csv', 'error');
+      const validTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/csv",
+        "application/vnd.ms-excel",
+      ];
+      if (
+        !validTypes.includes(file.type) &&
+        !file.name.endsWith(".csv") &&
+        !file.name.endsWith(".xlsx")
+      ) {
+        showToast("Format file tidak valid. Gunakan .xlsx atau .csv", "error");
         return;
       }
 
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        showToast('File terlalu besar. Maksimal 5MB.', 'error');
+        showToast("File terlalu besar. Maksimal 5MB.", "error");
         return;
       }
 
@@ -271,34 +356,39 @@
 
       try {
         const students = await parseFile(file);
-        
+
         if (students.length < 2) {
-          showToast('Minimal 2 nama mahasiswa diperlukan.', 'error');
+          showToast("Minimal 2 nama mahasiswa diperlukan.", "error");
           showPrompt();
           return;
         }
 
         if (students.length > 500) {
-          showToast('Maksimal 500 nama mahasiswa.', 'error');
+          showToast("Maksimal 500 nama mahasiswa.", "error");
           showPrompt();
           return;
         }
 
         currentStudents = students;
         currentFileName = file.name;
-        
+
         // Show preview
         showPreview(students, file.name);
-        
+
         // Auto-load students after showing preview
-        window.dispatchEvent(new CustomEvent('students-loaded', { 
-          detail: { students, source: 'upload', fileName: file.name } 
-        }));
-        
-        showToast(`${students.length} mahasiswa berhasil dimuat`, 'success');
+        window.dispatchEvent(
+          new CustomEvent("students-loaded", {
+            detail: { students, source: "upload", fileName: file.name },
+          }),
+        );
+
+        showToast(`${students.length} mahasiswa berhasil dimuat`, "success");
       } catch (error) {
-        console.error('Error parsing file:', error);
-        showToast('Gagal membaca file. Pastikan format Excel/CSV benar.', 'error');
+        console.error("Error parsing file:", error);
+        showToast(
+          "Gagal membaca file. Pastikan format Excel/CSV benar.",
+          "error",
+        );
         showPrompt();
       }
     }
@@ -306,77 +396,91 @@
     async function parseFile(file: File): Promise<string[]> {
       const data = await file.arrayBuffer();
       const workbook = XLSX.read(data);
-      
+
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 }) as string[][];
-      
+      const jsonData = XLSX.utils.sheet_to_json(firstSheet, {
+        header: 1,
+      }) as string[][];
+
       // Extract first column, remove empty rows
       const names: string[] = [];
       let isFirstRow = true;
-      
+
       for (const row of jsonData) {
         if (!row || row.length === 0) continue;
-        
-        let name = String(row[0] || '').trim();
+
+        let name = String(row[0] || "").trim();
         if (!name) continue;
-        
+
         // Skip header if detected
-        if (isFirstRow && (name.toLowerCase().includes('nama') || name.toLowerCase().includes('name'))) {
+        if (
+          isFirstRow &&
+          (name.toLowerCase().includes("nama") ||
+            name.toLowerCase().includes("name"))
+        ) {
           isFirstRow = false;
           continue;
         }
         isFirstRow = false;
-        
+
         // Clean name: remove ID prefix (e.g., "257808-25110310003 - AHMAD RISKI")
         // Pattern: numbers-numbers - Name
         // Extract text after the last " - "
-        const dashIndex = name.lastIndexOf(' - ');
+        const dashIndex = name.lastIndexOf(" - ");
         if (dashIndex !== -1) {
           name = name.substring(dashIndex + 3).trim();
         }
-        
+
         // Skip if empty after cleaning
         if (!name) continue;
-        
+
         names.push(name);
       }
-      
+
       // Remove duplicates
       const uniqueNames = [...new Set(names)];
-      
+
       if (uniqueNames.length < names.length) {
         const duplicateCount = names.length - uniqueNames.length;
-        showToast(`Ditemukan ${duplicateCount} nama duplikat. Duplikat telah dihapus.`, 'warning');
+        showToast(
+          `Ditemukan ${duplicateCount} nama duplikat. Duplikat telah dihapus.`,
+          "warning",
+        );
       }
-      
+
       return uniqueNames;
     }
 
-    function showToast(message: string, type: 'success' | 'error' | 'warning' | 'info') {
+    function showToast(
+      message: string,
+      type: "success" | "error" | "warning" | "info",
+    ) {
       // TODO: Implement proper toast component
       // For now, use simple alert
-      console.log(`[${type.toUpperCase()}] ${message}`);
+      // console.log(`[${type.toUpperCase()}] ${message}`);
     }
-    
+
     // Try to restore data from localStorage on page load
     function restoreFromStorage() {
       const savedData = loadStudents();
       if (savedData && savedData.students.length > 0) {
         currentStudents = savedData.students;
-        currentFileName = savedData.fileName || 'data-tersimpan.xlsx';
-        
+        currentFileName = savedData.fileName || "data-tersimpan.xlsx";
+
         // Show preview with restored data
         showPreview(currentStudents, currentFileName);
-        
+
         // Dispatch event so other components know data is loaded
-        window.dispatchEvent(new CustomEvent('students-loaded', {
-          detail: { students: currentStudents }
-        }));
+        window.dispatchEvent(
+          new CustomEvent("students-loaded", {
+            detail: { students: currentStudents },
+          }),
+        );
       }
     }
-    
+
     // Listen for reset-all event from ControlPanel
-    window.addEventListener('reset-all', () => {
+    window.addEventListener("reset-all", () => {
       clearFile();
     });
 
@@ -385,11 +489,11 @@
   }
 
   // Auto-initialize
-  if (typeof window !== 'undefined') {
-    document.addEventListener('astro:page-load', initFileUploader);
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initFileUploader);
+  if (typeof window !== "undefined") {
+    document.addEventListener("astro:page-load", initFileUploader);
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initFileUploader);
     } else {
       initFileUploader();
     }

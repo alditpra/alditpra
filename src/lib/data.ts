@@ -17,7 +17,10 @@ interface RawLinkRow {
     icon?: string;
     category?: string;
     link?: string; // Direct Link
-    // level, order, active are auto-generated - not needed from CSV
+    // NOTE: The following columns in spreadsheet are IGNORED/Unused:
+    // - level (Auto-detected from link type)
+    // - order (Auto-generated from row position)
+    // - active (Hardcoded to 1)
 }
 
 interface RawLevelOneRow {
@@ -28,7 +31,9 @@ interface RawLevelOneRow {
     link?: string; // Generic link
     type?: string;
     icon?: string;
-    // urutan and active are auto-generated - not needed from CSV
+    // NOTE: The following columns in spreadsheet are IGNORED/Unused:
+    // - urutan (Auto-generated from row position)
+    // - active (Hardcoded to 1)
 }
 
 interface RawCategoryRow {
@@ -36,7 +41,9 @@ interface RawCategoryRow {
     title?: string;
     description?: string;
     icon?: string;
-    // order and active are no longer needed - auto-generated from row position
+    // NOTE: The following columns in spreadsheet are IGNORED/Unused:
+    // - order (Auto-generated from row position)
+    // - active (Hardcoded to 1)
 }
 
 async function fetchSheetData(url: string): Promise<string> {
@@ -340,7 +347,7 @@ export const getAppData = async (): Promise<AppData> => {
         }
 
         // Cache expired, log for debugging
-        console.log(`[Data Cache] Expired (age: ${Math.round(age / 1000)}s), fetching fresh data`);
+        // console.log(`[Data Cache] Expired (age: ${Math.round(age / 1000)}s), fetching fresh data`);
     }
 
     // Fetch fresh data and cache it

@@ -124,9 +124,7 @@ export class SlotAnimator {
         if (this.fairMode) {
             this.excludedStudents.add(this.currentSelection);
             this.saveState(); // Save state after excluding
-            console.log(`[Fair Mode] Excluded: ${this.currentSelection}, Remaining: ${this.getRemainingCount()}`);
         } else {
-            console.log(`[Skip] Fair Mode OFF - ${this.currentSelection} will be available again`);
         }
 
         this.currentSelection = null;

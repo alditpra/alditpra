@@ -121,7 +121,6 @@ export class PromptGenerator {
             return ''; // No specific hint for unknown disciplines
         };
         const disciplineHint = getDisciplineHint(subject);
-        console.log('[SANTET DEBUG] Subject:', subject, '| Hint:', disciplineHint ? 'FOUND' : 'NONE');
 
         // Difficulty Level Mapping
         const difficultyMap: Record<string, string> = {
