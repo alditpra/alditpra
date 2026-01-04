@@ -6,17 +6,28 @@
 ---
 
 <div id="tumbal-converted-preview">
-  <div class="p-5 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg">
+  <div
+    class="p-5 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg"
+  >
     {/* Stats */}
     <div class="flex items-center justify-between mb-4">
       <div>
-        <p id="tumbal-converted-info" class="text-sm font-medium text-zinc-700 dark:text-zinc-300"></p>
+        <p
+          id="tumbal-converted-info"
+          class="text-sm font-medium text-zinc-700 dark:text-zinc-300"
+        >
+        </p>
       </div>
 
       {/* Pagination controls */}
       <div class="flex items-center gap-2">
-        <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Tampilkan:</span>
-        <select id="tumbal-page-size" class="px-3 py-1.5 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm font-medium focus:ring-2 focus:ring-candy-purple/50 focus:border-candy-purple">
+        <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300"
+          >Tampilkan:</span
+        >
+        <select
+          id="tumbal-page-size"
+          class="px-3 py-1.5 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-sm font-medium focus:ring-2 focus:ring-candy-purple/50 focus:border-candy-purple"
+        >
           <option value="10">10</option>
           <option value="25">25</option>
           <option value="50">50</option>
@@ -26,13 +37,24 @@
     </div>
 
     {/* Table container */}
-    <div class="relative overflow-hidden rounded-xl border-2 border-zinc-300 dark:border-zinc-600 shadow-sm">
-      <div id="tumbal-converted-table-wrapper" class="max-h-[500px] overflow-auto">
+    <div
+      class="relative overflow-hidden rounded-xl border-2 border-zinc-300 dark:border-zinc-600 shadow-sm"
+    >
+      <div
+        id="tumbal-converted-table-wrapper"
+        class="max-h-[500px] overflow-auto"
+      >
         <table class="w-full text-sm border-collapse">
-          <thead id="tumbal-converted-thead" class="sticky top-0 z-10 bg-zinc-50 dark:bg-zinc-800">
+          <thead
+            id="tumbal-converted-thead"
+            class="sticky top-0 z-10 bg-zinc-50 dark:bg-zinc-800"
+          >
             {/* Header row will be inserted here */}
           </thead>
-          <tbody id="tumbal-converted-tbody" class="bg-white/50 dark:bg-zinc-900/50">
+          <tbody
+            id="tumbal-converted-tbody"
+            class="bg-white/50 dark:bg-zinc-900/50"
+          >
             {/* Data rows will be inserted here */}
           </tbody>
         </table>
@@ -40,13 +62,28 @@
     </div>
 
     {/* Pagination */}
-    <div id="tumbal-pagination" class="flex items-center justify-between mt-4 hidden">
-      <p id="tumbal-page-info" class="text-sm font-medium text-zinc-700 dark:text-zinc-300"></p>
+    <div
+      id="tumbal-pagination"
+      class="flex items-center justify-between mt-4 hidden"
+    >
+      <p
+        id="tumbal-page-info"
+        class="text-sm font-medium text-zinc-700 dark:text-zinc-300"
+      >
+      </p>
       <div class="flex gap-2">
-        <button type="button" id="tumbal-prev-btn" class="px-4 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+        <button
+          type="button"
+          id="tumbal-prev-btn"
+          class="px-4 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
           ← Prev
         </button>
-        <button type="button" id="tumbal-next-btn" class="px-4 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+        <button
+          type="button"
+          id="tumbal-next-btn"
+          class="px-4 py-2 rounded-lg border-2 border-zinc-300 dark:border-zinc-600 text-sm font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
           Next →
         </button>
       </div>
@@ -55,19 +92,25 @@
 </div>
 
 <script>
-  import { convertTable, type ParsedTable, type TumbalConfig, type ConvertedTable } from '../../lib/tumbal/converter';
+  import {
+    convertTable,
+    type ParsedTable,
+    type TumbalConfig,
+    type ConvertedTable,
+  } from "../../lib/tumbal/converter";
 
   let isInitialized = false;
   let currentData: ParsedTable | null = null;
   let convertedData: ConvertedTable | null = null;
   let currentConfig: TumbalConfig = {
     headerRows: 2,
-    separator: ' - ',
+    separator: " - ",
     skipRows: 0,
     dataStartRow: 0,
     dataEndRow: null,
     startColumn: 0,
     endColumn: null,
+    excludeColumns: [],
   };
   let currentPage = 0;
   let pageSize = 10;
@@ -76,18 +119,24 @@
     if (isInitialized) return;
     isInitialized = true;
 
-    const container = document.getElementById('tumbal-converted-preview');
-    const infoEl = document.getElementById('tumbal-converted-info');
-    const thead = document.getElementById('tumbal-converted-thead');
-    const tbody = document.getElementById('tumbal-converted-tbody');
-    const pagination = document.getElementById('tumbal-pagination');
-    const pageInfo = document.getElementById('tumbal-page-info');
-    const pageSizeSelect = document.getElementById('tumbal-page-size') as HTMLSelectElement;
-    const prevBtn = document.getElementById('tumbal-prev-btn') as HTMLButtonElement;
-    const nextBtn = document.getElementById('tumbal-next-btn') as HTMLButtonElement;
+    const container = document.getElementById("tumbal-converted-preview");
+    const infoEl = document.getElementById("tumbal-converted-info");
+    const thead = document.getElementById("tumbal-converted-thead");
+    const tbody = document.getElementById("tumbal-converted-tbody");
+    const pagination = document.getElementById("tumbal-pagination");
+    const pageInfo = document.getElementById("tumbal-page-info");
+    const pageSizeSelect = document.getElementById(
+      "tumbal-page-size",
+    ) as HTMLSelectElement;
+    const prevBtn = document.getElementById(
+      "tumbal-prev-btn",
+    ) as HTMLButtonElement;
+    const nextBtn = document.getElementById(
+      "tumbal-next-btn",
+    ) as HTMLButtonElement;
 
     function escapeHtml(text: string): string {
-      const div = document.createElement('div');
+      const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
     }
@@ -98,10 +147,12 @@
       const { headers, data, stats } = convertedData;
 
       // Render header
-      const headerHtml = headers.map(h => {
-        const displayH = h.length > 40 ? h.substring(0, 40) + '...' : h;
-        return `<th class="px-4 py-3 text-left font-bold text-zinc-800 dark:text-zinc-100 border-b-2 border-r border-zinc-300 dark:border-zinc-600 bg-gradient-to-b from-candy-teal/20 to-candy-purple/20 dark:from-candy-teal/30 dark:to-candy-purple/30 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(displayH)}</th>`;
-      }).join('');
+      const headerHtml = headers
+        .map((h) => {
+          const displayH = h.length > 40 ? h.substring(0, 40) + "..." : h;
+          return `<th class="px-4 py-3 text-left font-bold text-zinc-800 dark:text-zinc-100 border-b-2 border-r border-zinc-300 dark:border-zinc-600 bg-gradient-to-b from-candy-teal/20 to-candy-purple/20 dark:from-candy-teal/30 dark:to-candy-purple/30 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(h)}">${escapeHtml(displayH)}</th>`;
+        })
+        .join("");
       thead.innerHTML = `<tr>${headerHtml}</tr>`;
 
       // Calculate pagination
@@ -111,13 +162,18 @@
       const pageData = data.slice(start, end);
 
       // Render body
-      const bodyHtml = pageData.map((row) => {
-        const cells = row.map(cell => {
-          const displayCell = cell.length > 50 ? cell.substring(0, 50) + '...' : cell;
-          return `<td class="px-4 py-2.5 text-zinc-800 dark:text-zinc-200 border-b border-r border-zinc-200 dark:border-zinc-700 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(cell)}">${escapeHtml(displayCell) || '<span class="text-zinc-400 dark:text-zinc-500">—</span>'}</td>`;
-        }).join('');
-        return `<tr class="hover:bg-candy-teal/10 dark:hover:bg-candy-teal/20 transition-colors">${cells}</tr>`;
-      }).join('');
+      const bodyHtml = pageData
+        .map((row) => {
+          const cells = row
+            .map((cell) => {
+              const displayCell =
+                cell.length > 50 ? cell.substring(0, 50) + "..." : cell;
+              return `<td class="px-4 py-2.5 text-zinc-800 dark:text-zinc-200 border-b border-r border-zinc-200 dark:border-zinc-700 whitespace-nowrap max-w-[200px] truncate" title="${escapeHtml(cell)}">${escapeHtml(displayCell) || '<span class="text-zinc-400 dark:text-zinc-500">—</span>'}</td>`;
+            })
+            .join("");
+          return `<tr class="hover:bg-candy-teal/10 dark:hover:bg-candy-teal/20 transition-colors">${cells}</tr>`;
+        })
+        .join("");
       tbody.innerHTML = bodyHtml;
 
       // Update info
@@ -127,63 +183,72 @@
 
       // Update pagination
       if (data.length > pageSize) {
-        pagination?.classList.remove('hidden');
+        pagination?.classList.remove("hidden");
         if (pageInfo) {
           pageInfo.textContent = `Halaman ${currentPage + 1} dari ${totalPages} (${start + 1}-${end} dari ${data.length})`;
         }
         if (prevBtn) prevBtn.disabled = currentPage === 0;
         if (nextBtn) nextBtn.disabled = currentPage >= totalPages - 1;
       } else {
-        pagination?.classList.add('hidden');
+        pagination?.classList.add("hidden");
       }
 
       // Dispatch converted data for download buttons
-      window.dispatchEvent(new CustomEvent('tumbal-data-converted', {
-        detail: convertedData
-      }));
+      window.dispatchEvent(
+        new CustomEvent("tumbal-data-converted", {
+          detail: convertedData,
+        }),
+      );
     }
 
     function updateConversion() {
       if (!currentData) return;
-      
+
       try {
         convertedData = convertTable(currentData, currentConfig);
         currentPage = 0;
         renderTable();
       } catch (err) {
-        console.error('Conversion error:', err);
+        console.error("Conversion error:", err);
       }
     }
 
     // Pagination controls
-    pageSizeSelect?.addEventListener('change', () => {
+    pageSizeSelect?.addEventListener("change", () => {
       pageSize = parseInt(pageSizeSelect.value);
       currentPage = 0;
       renderTable();
     });
 
-    prevBtn?.addEventListener('click', () => {
+    prevBtn?.addEventListener("click", () => {
       if (currentPage > 0) {
         currentPage--;
         renderTable();
       }
     });
 
-    nextBtn?.addEventListener('click', () => {
-      if (convertedData && currentPage < Math.ceil(convertedData.data.length / pageSize) - 1) {
+    nextBtn?.addEventListener("click", () => {
+      if (
+        convertedData &&
+        currentPage < Math.ceil(convertedData.data.length / pageSize) - 1
+      ) {
         currentPage++;
         renderTable();
       }
     });
 
     // Listen for file upload
-    window.addEventListener('tumbal-file-uploaded', ((e: CustomEvent<ParsedTable>) => {
+    window.addEventListener("tumbal-file-uploaded", ((
+      e: CustomEvent<ParsedTable>,
+    ) => {
       currentData = e.detail;
       updateConversion();
     }) as EventListener);
 
     // Listen for config change
-    window.addEventListener('tumbal-config-changed', ((e: CustomEvent<TumbalConfig>) => {
+    window.addEventListener("tumbal-config-changed", ((
+      e: CustomEvent<TumbalConfig>,
+    ) => {
       currentConfig = e.detail;
       if (currentData) {
         updateConversion();
@@ -191,22 +256,22 @@
     }) as EventListener);
 
     // Listen for clear
-    window.addEventListener('tumbal-file-cleared', () => {
+    window.addEventListener("tumbal-file-cleared", () => {
       currentData = null;
       convertedData = null;
     });
 
-    window.addEventListener('tumbal-reset', () => {
+    window.addEventListener("tumbal-reset", () => {
       currentData = null;
       convertedData = null;
     });
   }
 
   // Initialize
-  if (typeof window !== 'undefined') {
-    document.addEventListener('astro:page-load', initConvertedPreview);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initConvertedPreview);
+  if (typeof window !== "undefined") {
+    document.addEventListener("astro:page-load", initConvertedPreview);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initConvertedPreview);
     } else {
       initConvertedPreview();
     }

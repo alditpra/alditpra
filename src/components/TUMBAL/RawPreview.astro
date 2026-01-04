@@ -6,24 +6,43 @@
 ---
 
 <div id="tumbal-raw-preview" class="hidden">
-  <div class="p-6 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg">
+  <div
+    class="p-6 rounded-3xl bg-white/90 dark:bg-zinc-900/90 border border-white/60 dark:border-zinc-700/50 shadow-lg"
+  >
     {/* Header */}
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h3 class="text-lg font-bold text-zinc-800 dark:text-zinc-100 flex items-center gap-2">
+        <h3
+          class="text-lg font-bold text-zinc-800 dark:text-zinc-100 flex items-center gap-2"
+        >
           <span>📋</span> Tabel Asli (Sebelum Ditumbalkan)
         </h3>
-        <p id="tumbal-raw-info" class="text-sm text-zinc-700 dark:text-zinc-300 mt-1"></p>
+        <p
+          id="tumbal-raw-info"
+          class="text-sm text-zinc-700 dark:text-zinc-300 mt-1"
+        >
+        </p>
       </div>
       <div class="flex items-center gap-2 text-xs">
-        <span class="px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-200 font-medium">Skip</span>
-        <span class="px-2 py-1 rounded bg-candy-purple/30 text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_30%)] font-medium">Header</span>
-        <span class="px-2 py-1 rounded bg-candy-teal/30 text-[color:color-mix(in_srgb,var(--candy-teal),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_30%)] font-medium">Data</span>
+        <span
+          class="px-2 py-1 rounded bg-zinc-200 dark:bg-zinc-600 text-zinc-700 dark:text-zinc-200 font-medium"
+          >Skip</span
+        >
+        <span
+          class="px-2 py-1 rounded bg-candy-purple/30 text-[color:color-mix(in_srgb,var(--candy-purple),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-purple),white_30%)] font-medium"
+          >Header</span
+        >
+        <span
+          class="px-2 py-1 rounded bg-candy-teal/30 text-[color:color-mix(in_srgb,var(--candy-teal),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-teal),white_30%)] font-medium"
+          >Data</span
+        >
       </div>
     </div>
 
     {/* Table container */}
-    <div class="relative overflow-hidden rounded-xl border-2 border-zinc-300 dark:border-zinc-600 shadow-sm">
+    <div
+      class="relative overflow-hidden rounded-xl border-2 border-zinc-300 dark:border-zinc-600 shadow-sm"
+    >
       <div id="tumbal-raw-table-wrapper" class="max-h-[400px] overflow-auto">
         <table class="w-full text-sm border-collapse">
           <tbody id="tumbal-raw-tbody" class="bg-white/50 dark:bg-zinc-900/50">
@@ -34,41 +53,47 @@
     </div>
 
     {/* Row limit notice */}
-    <p id="tumbal-raw-limit-notice" class="text-sm text-zinc-600 dark:text-zinc-400 mt-3 text-center hidden font-medium">
-      Menampilkan 30 baris pertama dari total <span id="tumbal-raw-total-rows">0</span> baris
+    <p
+      id="tumbal-raw-limit-notice"
+      class="text-sm text-zinc-600 dark:text-zinc-400 mt-3 text-center hidden font-medium"
+    >
+      Menampilkan 30 baris pertama dari total <span id="tumbal-raw-total-rows"
+        >0</span
+      > baris
     </p>
   </div>
 </div>
 
 <script>
-  import type { ParsedTable, TumbalConfig } from '../../lib/tumbal/converter';
+  import type { ParsedTable, TumbalConfig } from "../../lib/tumbal/converter";
 
   let isInitialized = false;
   let currentData: ParsedTable | null = null;
   let currentConfig: TumbalConfig = {
     headerRows: 2,
-    separator: ' - ',
+    separator: " - ",
     skipRows: 0,
     dataStartRow: 0,
     dataEndRow: null,
     startColumn: 0,
     endColumn: null,
+    excludeColumns: [],
   };
 
   function initRawPreview() {
     if (isInitialized) return;
     isInitialized = true;
 
-    const container = document.getElementById('tumbal-raw-preview');
-    const rawInfo = document.getElementById('tumbal-raw-info');
-    const tbody = document.getElementById('tumbal-raw-tbody');
-    const limitNotice = document.getElementById('tumbal-raw-limit-notice');
-    const totalRowsSpan = document.getElementById('tumbal-raw-total-rows');
+    const container = document.getElementById("tumbal-raw-preview");
+    const rawInfo = document.getElementById("tumbal-raw-info");
+    const tbody = document.getElementById("tumbal-raw-tbody");
+    const limitNotice = document.getElementById("tumbal-raw-limit-notice");
+    const totalRowsSpan = document.getElementById("tumbal-raw-total-rows");
 
     const MAX_PREVIEW_ROWS = 30;
 
     function escapeHtml(text: string): string {
-      const div = document.createElement('div');
+      const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
     }
@@ -77,66 +102,76 @@
       if (!tbody || !currentData) return;
 
       const { rawData } = currentData;
-      const maxCols = Math.min(Math.max(...rawData.map(r => r.length)), 20); // Limit columns
+      const maxCols = Math.min(Math.max(...rawData.map((r) => r.length)), 20); // Limit columns
       const displayRows = rawData.slice(0, MAX_PREVIEW_ROWS);
 
       const { skipRows, headerRows } = currentConfig;
       const headerEnd = skipRows + headerRows;
 
-      const html = displayRows.map((row, rowIdx) => {
-        // Determine row type
-        let rowClass = '';
-        let rowLabel = '';
-        
-        if (rowIdx < skipRows) {
-          rowClass = 'bg-zinc-200 dark:bg-zinc-700/60 text-zinc-500 dark:text-zinc-400';
-          rowLabel = 'skip';
-        } else if (rowIdx < headerEnd) {
-          rowClass = 'bg-candy-purple/20 dark:bg-candy-purple/30 font-medium text-zinc-800 dark:text-zinc-200';
-          rowLabel = 'header';
-        } else {
-          rowClass = 'hover:bg-candy-teal/10 text-zinc-800 dark:text-zinc-200';
-          rowLabel = 'data';
-        }
+      const html = displayRows
+        .map((row, rowIdx) => {
+          // Determine row type
+          let rowClass = "";
+          let rowLabel = "";
 
-        // Row number cell
-        const rowNumCell = `<td class="px-3 py-2 text-center font-mono text-sm font-medium text-zinc-600 dark:text-zinc-300 border-r-2 border-zinc-300 dark:border-zinc-600 sticky left-0 bg-zinc-100 dark:bg-zinc-800 w-14">${rowIdx + 1}</td>`;
+          if (rowIdx < skipRows) {
+            rowClass =
+              "bg-zinc-200 dark:bg-zinc-700/60 text-zinc-500 dark:text-zinc-400";
+            rowLabel = "skip";
+          } else if (rowIdx < headerEnd) {
+            rowClass =
+              "bg-candy-purple/20 dark:bg-candy-purple/30 font-medium text-zinc-800 dark:text-zinc-200";
+            rowLabel = "header";
+          } else {
+            rowClass =
+              "hover:bg-candy-teal/10 text-zinc-800 dark:text-zinc-200";
+            rowLabel = "data";
+          }
 
-        // Data cells
-        const cells = Array.from({ length: maxCols }, (_, i) => {
-          const value = row[i] ?? '';
-          const displayValue = value.length > 30 ? value.substring(0, 30) + '...' : value;
-          return `<td class="px-3 py-2 border-r border-zinc-200 dark:border-zinc-700 whitespace-nowrap max-w-[180px] truncate" title="${escapeHtml(value)}">${escapeHtml(displayValue) || '<span class="text-zinc-400 dark:text-zinc-500">—</span>'}</td>`;
-        }).join('');
+          // Row number cell
+          const rowNumCell = `<td class="px-3 py-2 text-center font-mono text-sm font-medium text-zinc-600 dark:text-zinc-300 border-r-2 border-zinc-300 dark:border-zinc-600 sticky left-0 bg-zinc-100 dark:bg-zinc-800 w-14">${rowIdx + 1}</td>`;
 
-        return `<tr class="${rowClass} border-b border-zinc-200 dark:border-zinc-700">${rowNumCell}${cells}</tr>`;
-      }).join('');
+          // Data cells
+          const cells = Array.from({ length: maxCols }, (_, i) => {
+            const value = row[i] ?? "";
+            const displayValue =
+              value.length > 30 ? value.substring(0, 30) + "..." : value;
+            return `<td class="px-3 py-2 border-r border-zinc-200 dark:border-zinc-700 whitespace-nowrap max-w-[180px] truncate" title="${escapeHtml(value)}">${escapeHtml(displayValue) || '<span class="text-zinc-400 dark:text-zinc-500">—</span>'}</td>`;
+          }).join("");
+
+          return `<tr class="${rowClass} border-b border-zinc-200 dark:border-zinc-700">${rowNumCell}${cells}</tr>`;
+        })
+        .join("");
 
       tbody.innerHTML = html;
 
       // Update info
       if (rawInfo) {
-        rawInfo.textContent = `${currentData.fileName} • ${rawData.length} baris × ${Math.max(...rawData.map(r => r.length))} kolom`;
+        rawInfo.textContent = `${currentData.fileName} • ${rawData.length} baris × ${Math.max(...rawData.map((r) => r.length))} kolom`;
       }
 
       // Show limit notice if needed
       if (rawData.length > MAX_PREVIEW_ROWS) {
-        limitNotice?.classList.remove('hidden');
+        limitNotice?.classList.remove("hidden");
         if (totalRowsSpan) totalRowsSpan.textContent = String(rawData.length);
       } else {
-        limitNotice?.classList.add('hidden');
+        limitNotice?.classList.add("hidden");
       }
     }
 
     // Listen for file upload
-    window.addEventListener('tumbal-file-uploaded', ((e: CustomEvent<ParsedTable>) => {
+    window.addEventListener("tumbal-file-uploaded", ((
+      e: CustomEvent<ParsedTable>,
+    ) => {
       currentData = e.detail;
-      container?.classList.remove('hidden');
+      container?.classList.remove("hidden");
       renderTable();
     }) as EventListener);
 
     // Listen for config change
-    window.addEventListener('tumbal-config-changed', ((e: CustomEvent<TumbalConfig>) => {
+    window.addEventListener("tumbal-config-changed", ((
+      e: CustomEvent<TumbalConfig>,
+    ) => {
       currentConfig = e.detail;
       if (currentData) {
         renderTable();
@@ -144,23 +179,23 @@
     }) as EventListener);
 
     // Listen for clear
-    window.addEventListener('tumbal-file-cleared', () => {
+    window.addEventListener("tumbal-file-cleared", () => {
       currentData = null;
-      container?.classList.add('hidden');
-      if (tbody) tbody.innerHTML = '';
+      container?.classList.add("hidden");
+      if (tbody) tbody.innerHTML = "";
     });
 
-    window.addEventListener('tumbal-reset', () => {
+    window.addEventListener("tumbal-reset", () => {
       currentData = null;
-      container?.classList.add('hidden');
+      container?.classList.add("hidden");
     });
   }
 
   // Initialize
-  if (typeof window !== 'undefined') {
-    document.addEventListener('astro:page-load', initRawPreview);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initRawPreview);
+  if (typeof window !== "undefined") {
+    document.addEventListener("astro:page-load", initRawPreview);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initRawPreview);
     } else {
       initRawPreview();
     }
