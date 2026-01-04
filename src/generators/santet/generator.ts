@@ -30,7 +30,7 @@ export class PromptGenerator {
 
     // Update form data
     updateField(field: keyof FormData, value: any) {
-        this.formData[field] = value;
+        (this.formData as any)[field] = value;
     }
 
     // Update multiple fields at once
