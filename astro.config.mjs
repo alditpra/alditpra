@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import tailwindConfig from './tailwind.config.ts';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
 import { fileURLToPath } from 'url';
@@ -45,7 +46,7 @@ export default defineConfig({
         // }),
     ],
     vite: {
-        plugins: [tailwindcss()],
+        plugins: [tailwindcss(tailwindConfig)],
         resolve: {
             alias: {
                 "@": path.resolve(__dirname, "./src"),
@@ -58,13 +59,7 @@ export default defineConfig({
         build: {
             cssCodeSplit: true,
             minify: 'esbuild',
-            rollupOptions: {
-                output: {
-                    manualChunks: {
-                        'vendor': ['papaparse'],
-                    },
-                },
-            },
         },
     },
 });
+
