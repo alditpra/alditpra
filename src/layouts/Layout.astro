@@ -79,12 +79,7 @@ const { title = SITE_CONFIG.name, description = SITE_CONFIG.description } =
       media="(prefers-color-scheme: dark)"
     />
 
-    <!-- Preload Critical CSS - Improves LCP by ~70ms -->
-    <link rel="preload" href="/_astro/santet.DXaw9dH3.css" as="style" fetchpriority="high" />
-    <link rel="preload" href="/_astro/slot.[hash].css" as="style" fetchpriority="high" />
-    <link rel="preload" href="/_astro/tumbal.[hash].css" as="style" fetchpriority="high" />
-
-    <!-- Resource hints for critical domains - Optimized order -->
+    <!-- Resource hints for critical domains -->
     <link rel="preconnect" href="https://docs.google.com" />
     <link rel="preconnect" href="https://drive.google.com" />
     <link rel="dns-prefetch" href="https://docs.google.com" />

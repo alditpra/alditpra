@@ -1,6 +1,5 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
-import tailwindConfig from './tailwind.config.ts';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
 import { fileURLToPath } from 'url';
@@ -13,7 +12,7 @@ export default defineConfig({
     output: 'server',
     prefetch: false, // Disable prefetch to avoid performance issues with many links
     build: {
-        inlineStylesheets: 'auto', // 'auto' untuk optimal CSS loading (inline kecil, eksternal untuk yang besar)
+        inlineStylesheets: 'always', // Inline semua CSS ke HTML - tidak ada external CSS blocking
     },
     adapter: vercel({
         isr: {
@@ -46,7 +45,7 @@ export default defineConfig({
         // }),
     ],
     vite: {
-        plugins: [tailwindcss(tailwindConfig)],
+        plugins: [tailwindcss()],
         resolve: {
             alias: {
                 "@": path.resolve(__dirname, "./src"),
