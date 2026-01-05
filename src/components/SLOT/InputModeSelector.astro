@@ -35,12 +35,13 @@
       data-mode="manual"
     >
       <div class="flex items-center justify-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-candy-yellow/20 flex items-center justify-center flex-shrink-0"
-             style="box-shadow: 0 0 20px -5px var(--candy-yellow);">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-yellow),black_50%)] dark:text-[color:color-mix(in_srgb,var(--candy-yellow),white_40%)]">
-            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-          </svg>
-        </div>
+        <div class="w-10 h-10 rounded-xl bg-candy-orange/20 flex items-center justify-center flex-shrink-0"
+             style="box-shadow: 0 0 20px -5px var(--candy-orange);"
+          >
+           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[color:color-mix(in_srgb,var(--candy-orange),black_50%)] dark:text-[color:color-mix(in_srgb,var(--candy-orange),white_40%)]">
+             <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+           </svg>
+         </div>
         <span class="text-zinc-800 dark:text-zinc-200">Tulis Manual</span>
       </div>
     </button>
@@ -64,13 +65,9 @@
         uploadBtn?.classList.add('active', 'border-candy-teal/50', 'shadow-[0_0_25px_-5px_var(--candy-teal)]');
         uploadBtn?.classList.remove('border-white/40', 'dark:border-zinc-700/30');
         
-        manualBtn?.classList.remove('active', 'border-candy-yellow/50', 'shadow-[0_0_25px_-5px_var(--candy-yellow)]');
-        manualBtn?.classList.add('border-white/40', 'dark:border-zinc-700/30');
-        
-        uploadArea?.classList.remove('hidden');
-        manualArea?.classList.add('hidden');
+        manualBtn?.classList.remove('active', 'border-candy-orange/50', 'shadow-[0_0_25px_-5px_var(--candy-orange)]');
       } else {
-        manualBtn?.classList.add('active', 'border-candy-yellow/50', 'shadow-[0_0_25px_-5px_var(--candy-yellow)]');
+        manualBtn?.classList.add('active', 'border-candy-orange/50', 'shadow-[0_0_25px_-5px_var(--candy-orange)]');
         manualBtn?.classList.remove('border-white/40', 'dark:border-zinc-700/30');
         
         uploadBtn?.classList.remove('active', 'border-candy-teal/50', 'shadow-[0_0_25px_-5px_var(--candy-teal)]');

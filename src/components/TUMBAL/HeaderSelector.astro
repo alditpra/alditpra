@@ -11,7 +11,7 @@
     {/* Row Configuration */}
     <div class="grid md:grid-cols-2 gap-6 mb-6">
       {/* Skip Rows */}
-      <div class="p-4 rounded-xl bg-candy-yellow/5 dark:bg-candy-yellow/10 border border-candy-yellow/20">
+      <div class="p-4 rounded-xl bg-candy-orange/5 dark:bg-candy-orange/10 border border-candy-orange/20">
         <label class="block text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3">
           🔽 Skip Baris Awal
         </label>
@@ -21,7 +21,7 @@
               type="button"
               data-skip-count={num}
               class={`tumbal-skip-btn aspect-square rounded-xl font-bold text-lg transition-all duration-200
-                     border-2 ${num === 0 ? 'border-candy-yellow bg-candy-yellow text-zinc-900 shadow-lg scale-105' : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-candy-yellow/50 hover:bg-candy-yellow/10'}`}
+                     border-2 ${num === 0 ? 'border-candy-orange bg-candy-orange text-zinc-900 shadow-lg scale-105' : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-candy-orange/50 hover:bg-candy-orange/10'}`}
             >
               {num}
             </button>
@@ -33,7 +33,7 @@
       </div>
 
       {/* Header Rows */}
-      <div class="p-4 rounded-xl bg-candy-yellow/5 dark:bg-candy-yellow/10 border border-candy-yellow/20">
+      <div class="p-4 rounded-xl bg-candy-orange/5 dark:bg-candy-orange/10 border border-candy-orange/20">
         <label class="block text-sm font-bold text-zinc-700 dark:text-zinc-300 mb-3">
           📊 Jumlah Baris Header
         </label>
@@ -43,7 +43,7 @@
               type="button"
               data-header-count={num}
               class={`tumbal-header-btn aspect-square rounded-xl font-bold text-lg transition-all duration-200
-                     border-2 ${num === 2 ? 'border-candy-yellow bg-candy-yellow text-zinc-900 shadow-lg scale-105' : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-candy-yellow/50 hover:bg-candy-yellow/10'}`}
+                     border-2 ${num === 2 ? 'border-candy-orange bg-candy-orange text-zinc-900 shadow-lg scale-105' : 'border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:border-candy-orange/50 hover:bg-candy-orange/10'}`}
             >
               {num}
             </button>
@@ -187,8 +187,8 @@
         const count = parseInt((btn as HTMLElement).dataset.headerCount || '2');
         const isActive = count === currentConfig.headerRows;
         // Active: solid yellow bg with dark text for contrast
-        btn.classList.toggle('border-candy-yellow', isActive);
-        btn.classList.toggle('bg-candy-yellow', isActive);
+        btn.classList.toggle('border-candy-orange', isActive);
+        btn.classList.toggle('bg-candy-orange', isActive);
         btn.classList.toggle('text-zinc-900', isActive);
         btn.classList.toggle('shadow-lg', isActive);
         btn.classList.toggle('scale-105', isActive);
@@ -205,8 +205,8 @@
         const count = parseInt((btn as HTMLElement).dataset.skipCount || '0');
         const isActive = count === currentConfig.skipRows;
         // Active: solid yellow bg with dark text for contrast
-        btn.classList.toggle('border-candy-yellow', isActive);
-        btn.classList.toggle('bg-candy-yellow', isActive);
+        btn.classList.toggle('border-candy-orange', isActive);
+        btn.classList.toggle('bg-candy-orange', isActive);
         btn.classList.toggle('text-zinc-900', isActive);
         btn.classList.toggle('shadow-lg', isActive);
         btn.classList.toggle('scale-105', isActive);
