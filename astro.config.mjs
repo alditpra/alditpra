@@ -12,7 +12,7 @@ export default defineConfig({
     output: 'server',
     prefetch: false, // Disable prefetch to avoid performance issues with many links
     build: {
-        inlineStylesheets: 'always', // Inline all CSS to eliminate render-blocking external stylesheets
+        inlineStylesheets: 'auto', // 'auto' untuk optimal CSS loading (inline kecil, eksternal untuk yang besar)
     },
     adapter: vercel({
         isr: {

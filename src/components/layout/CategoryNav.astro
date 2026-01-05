@@ -67,22 +67,48 @@ const { categories, linkCounts } = Astro.props;
         // Select category headers, not sections
         const categoryHeaders = document.querySelectorAll(".category-header");
 
-        if (navItems.length === 0 || categoryHeaders.length === 0) return;
+        console.log('[CategoryNav] Init:', {
+            navItems: navItems.length,
+            categoryHeaders: categoryHeaders.length
+        });
+
+        if (navItems.length === 0 || categoryHeaders.length === 0) {
+            console.warn('[CategoryNav] Cannot init: Missing elements');
+            return;
+        }
 
         // Smooth scroll handler
-        navItems.forEach((item) => {
+        navItems.forEach((item, index) => {
             item.addEventListener("click", (e) => {
+                console.log(`[CategoryNav] Clicked nav item ${index}`);
                 e.preventDefault();
                 const categoryId = item.getAttribute("data-category-id");
-                const section = document.querySelector(
-                    `[data-category="${categoryId}"]`,
-                );
+                console.log(`[CategoryNav] Category ID: ${categoryId}`);
+
+                // Try to find section by ID first (more specific)
+                let section = document.querySelector(`#category-${categoryId}`);
+
+                // Fallback to data-category attribute if ID not found
+                if (!section) {
+                    console.warn(`[CategoryNav] Section by ID not found, trying data-category`);
+                    section = document.querySelector(
+                        `[data-category="${categoryId}"]`,
+                    );
+                }
+
+                console.log(`[CategoryNav] Section found:`, !!section);
 
                 if (section) {
+                    console.log(`[CategoryNav] Scrolling to section`);
                     section.scrollIntoView({
                         behavior: "smooth",
                         block: "start",
                     });
+
+                    // Update URL hash without scroll
+                    history.pushState(null, '', `#category-${categoryId}`);
+                } else {
+                    console.error(`[CategoryNav] Section not found for category: ${categoryId}`);
                 }
             });
         });
@@ -135,12 +161,28 @@ const { categories, linkCounts } = Astro.props;
         categoryHeaders.forEach((header) => observer.observe(header));
     }
 
-    // Initialize
+    // Initialize with retry logic
     if (typeof window !== "undefined") {
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", initCategoryNav);
-        } else {
+        const tryInit = () => {
             initCategoryNav();
+
+            // Retry once if init failed (might be timing issue)
+            setTimeout(() => {
+                const navItems = document.querySelectorAll(".category-nav-item");
+                const categoryHeaders = document.querySelectorAll(".category-header");
+
+                if (navItems.length > 0 && categoryHeaders.length > 0) {
+                    console.log('[CategoryNav] Retry - elements found, re-initializing');
+                    initCategoryNav();
+                }
+            }, 500);
+        };
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", tryInit);
+        } else {
+            // Add small delay to ensure all components are mounted
+            setTimeout(tryInit, 100);
         }
     }
 </script>

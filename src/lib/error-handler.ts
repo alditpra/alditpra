@@ -79,8 +79,6 @@ export function getFallbackLinks() {
     {
       id: 'fallback-1',
       name: 'Konten Tidak Tersedia',
-      semester: '',
-      detail: 'Error',
       description: 'Terjadi kesalahan saat memuat konten. Silakan refresh halaman.',
       icon: 'alert-triangle',
       category: 'lainnya',

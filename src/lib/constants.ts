@@ -27,5 +27,65 @@ export const SITE_CONFIG = {
     ],
     author: "Aldit Pratyasto",
     url: "https://alditpra.vercel.app", // Update with your actual domain
-    ogImage: "/og-image.png", // OG preview image
+    ogImage: "/og-image.webp", // OG preview image (WebP optimized)
+} as const;
+
+// UI Text Constants
+export const UI_TEXT = {
+    // Navigation
+    back: "Kembali",
+    backToHome: "Kembali ke Home",
+    tryAgain: "Coba Lagi",
+    refresh: "Refresh",
+
+    // General
+    search: "Cari link, tools, atau resource...",
+    searchPlaceholder: "Cari...",
+    noResults: "Tidak ada hasil ditemukan",
+    noResultsHint: "Coba kata kunci lain atau ubah kategori.",
+
+    // Errors
+    loadError: "Gagal Memuat Data",
+    loadErrorMessage: "Terjadi kesalahan saat mengambil data dari Google Sheets.",
+    loadErrorHint: "Silakan refresh halaman atau coba lagi nanti.",
+
+    // Tools
+    santet: {
+        shortName: "SANTET",
+        fullName: "SANTET - Senjata ANti TElat Tugas",
+        description: "Generator prompt AI untuk membantu mahasiswa brainstorming dan menyelesaikan tugas tepat waktu.",
+        warning: "AI bisa keliru (halusinasi). Verifikasi semua fakta, referensi, dan data. Gunakan hasil untuk belajar, bukan copy-paste.",
+    },
+    slot: {
+        shortName: "SLOT",
+        fullName: "SLOT - Saatnya LOtre Tanya",
+        description: "Sistem pemilihan acak mahasiswa untuk sesi tanya jawab di kelas.",
+    },
+    tumbal: {
+        shortName: "TUMBAL",
+        fullName: "TUMBAL - Tabel Urut Mudah Buat Analisa Lanjutan",
+        description: "Konversi tabel dengan nested headers dan merged cells menjadi format rapi untuk analisa lanjutan.",
+        quote: "Mengorbankan tabel lama yang jelek demi mendapatkan kekayaan data yang melimpah. Contohnya tabel BPS.",
+    },
+
+    // Categories
+    categories: "Kategori",
+    allData: "All Data",
+
+    // Buttons
+    copy: "Salin",
+    copyPrompt: "Salin Prompt",
+    copied: "✓ Disalin!",
+    download: "Download",
+    upload: "Upload",
+    clear: "Hapus",
+    reset: "Reset",
+    confirm: "Konfirmasi",
+    cancel: "Batal",
+    skip: "Lewati",
+
+    // Empty states
+    noContent: "Belum ada konten untuk topik ini.",
+    noStudents: "Belum ada data mahasiswa.",
+    noHistory: "Belum ada riwayat pemilihan.",
 } as const;

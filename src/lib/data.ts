@@ -9,6 +9,7 @@ import {
     retryOperation
 } from "./error-handler";
 import Papa from 'papaparse';
+import { getMappedIconName } from "./icon-mapping";
 
 interface RawLinkRow {
     id?: string;
@@ -104,24 +105,9 @@ function transformLink(row: RawLinkRow, index: number): Link | null {
         return null;
     }
 
-    // FontAwesome to Lucide + invalid icon name mapping
-    const iconMap: Record<string, string> = {
-        'object-group': 'layout-grid',
-        'book': 'book-open',
-        'video': 'play-circle',
-        'file-alt': 'file-text',
-        'cog': 'settings',
-        'certificate': 'award',
-        'tools': 'wrench',
-        'book-code': 'notebook-pen', // Fix: book-code doesn't exist in lucide
-    };
-
     // Trim and validate icon - empty string should become undefined
-    const rawIcon = row.icon?.trim().toLowerCase();
-    // Map to valid lucide icon if needed, otherwise use as-is
-    const validIcon = rawIcon && rawIcon.length > 0
-        ? (iconMap[rawIcon] || rawIcon)
-        : undefined;
+    const rawIcon = row.icon?.trim();
+    const validIcon = getMappedIconName(rawIcon);
 
     const linkUrl = row.link?.trim() || undefined;
 
@@ -328,6 +314,10 @@ const appDataCache: { cached: CachedData | null } = { cached: null };
 // Cache duration: 5 minutes (matches ISR expiration)
 const CACHE_DURATION_MS = 5 * 60 * 1000; // 300,000ms = 5 minutes
 
+// Stale-while-revalidate window: return stale data while fetching fresh
+// After STALE_WINDOW_MS, we'll wait for fresh data
+const STALE_WINDOW_MS = 2 * 60 * 1000; // 2 minutes
+
 export const getAppData = async (): Promise<AppData> => {
     const isDev = import.meta.env.DEV;
     const now = Date.now();
@@ -337,16 +327,30 @@ export const getAppData = async (): Promise<AppData> => {
         return fetchFreshData();
     }
 
-    // In production, use time-based cache
+    // In production, use time-based cache with stale-while-revalidate
     if (appDataCache.cached) {
         const age = now - appDataCache.cached.timestamp;
 
-        // Return cached data if still fresh (< 5 minutes old)
-        if (age < CACHE_DURATION_MS) {
+        // Fresh data (age < 2 min): return immediately
+        if (age < STALE_WINDOW_MS) {
             return appDataCache.cached.data;
         }
 
-        // Cache expired, log for debugging
+        // Stale data (2 min < age < 5 min): return stale, trigger background refresh
+        if (age < CACHE_DURATION_MS) {
+            // Trigger background refresh
+            fetchFreshData().then(freshData => {
+                appDataCache.cached = {
+                    data: Promise.resolve(freshData),
+                    timestamp: now,
+                };
+            }).catch(err => {
+                console.warn('[Data Cache] Background refresh failed:', err);
+            });
+            return appDataCache.cached.data;
+        }
+
+        // Cache expired (age >= 5 min): fetch fresh and wait
         // console.log(`[Data Cache] Expired (age: ${Math.round(age / 1000)}s), fetching fresh data`);
     }
 

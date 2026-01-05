@@ -44,7 +44,7 @@ html.dark {
   }
 }
 
-@theme inline {
+ @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /* Native system font stack - zero download, instant render */
@@ -58,34 +58,13 @@ html.dark {
   --color-candy-orange: var(--candy-orange);
 }
 
+/* Base body styles - Background handled by MeshGradient component (light mode) */
 body {
-  /* Light mode - Soft pastel dreamy candy gradient */
-  background: linear-gradient(135deg,
-      #fdfbff 0%,
-      #f3f0ff 15%,
-      rgba(127, 115, 255, 0.1) 30%,
-      rgba(20, 208, 240, 0.08) 50%,
-      rgba(255, 131, 195, 0.1) 70%,
-      #fff5fb 85%,
-      #fafafa 100%);
   color: var(--foreground);
   min-height: 100vh;
-  /* transition: background 0.3s ease, color 0.3s ease; - Removed for instant switch */
 }
 
-/* Explicit light mode body - Manual toggle */
-html.light body {
-  background: linear-gradient(135deg,
-      #fdfbff 0%,
-      #f3f0ff 15%,
-      rgba(127, 115, 255, 0.1) 30%,
-      rgba(20, 208, 240, 0.08) 50%,
-      rgba(255, 131, 195, 0.1) 70%,
-      #fff5fb 85%,
-      #fafafa 100%) !important;
-}
-
-/* Dark mode body - Manual toggle (higher specificity) */
+/* Dark mode body - Manual toggle (solid base + radial gradients dreamy) */
 html.dark body {
   background:
     radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.08) 0%, transparent 40%),
@@ -95,7 +74,7 @@ html.dark body {
     #0a0a0f !important;
 }
 
-/* Dark mode body - Auto system preference (lowest priority) */
+/* Dark mode body - Auto system preference (solid base + radial gradients dreamy) */
 @media (prefers-color-scheme: dark) {
   html:not(.dark):not(.light) body {
     background:
@@ -106,8 +85,6 @@ html.dark body {
       #0a0a0f;
   }
 }
-
-
 
 /* ========================================
    OPTIMIZED THEME TRANSITION

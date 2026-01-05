@@ -90,6 +90,7 @@ try {
                         return (
                             <section
                                 class="mb-16 link-section"
+                                id={`category-${category.id}`}
                                 data-category={category.id}
                             >
                                 {/* Enhanced Section Header - Table of Contents Style */}
@@ -205,120 +206,123 @@ try {
     )
 }
 
-<script>
-    // Search functionality
-    function initSearch() {
-        // Add small delay to ensure all components are mounted
-        setTimeout(() => {
-            const searchInputs = [
-                document.getElementById(
-                    "search-input-desktop",
-                ) as HTMLInputElement | null,
-                document.getElementById(
-                    "search-input-mobile",
-                ) as HTMLInputElement | null,
-            ].filter((el): el is HTMLInputElement => el !== null);
+<!-- Search Script - Production ready -->
+<script is:inline>
+(function() {
+    'use strict';
 
-            const linkSections = document.querySelectorAll(".link-section");
-            const linkCards = document.querySelectorAll(".link-card-item");
-            const emptyState = document.getElementById("empty-state");
+    let searchQuery = "";
+    let searchInputs = [];
+    let linkCards = null;
+    let linkSections = null;
+    let emptyState = null;
+    let pendingFrame = null;
+    let initCalled = false;
 
-            if (searchInputs.length === 0) {
+    function performFilter() {
+        if (pendingFrame) {
+            cancelAnimationFrame(pendingFrame);
+        }
+
+        pendingFrame = requestAnimationFrame(() => {
+            const query = searchQuery;
+
+            if (!linkCards) {
+                pendingFrame = null;
                 return;
             }
 
-            // Force visible initially
-            linkCards.forEach((card) => card.classList.remove("hidden"));
+            const cardStates = Array.from(linkCards).map((card) => {
+                const name = (
+                    card.getAttribute("data-name") || ""
+                ).toLowerCase();
+                const visible = name.includes(query);
+                return { element: card, visible };
+            });
 
-            let searchQuery = "";
-            let pendingFrame = null;
+            let hasVisibleLinks = false;
+            const sectionMap = new Map();
 
-            function performFilter() {
-                if (pendingFrame) {
-                    cancelAnimationFrame(pendingFrame);
-                }
+            cardStates.forEach(({ element, visible }) => {
+                if (visible) {
+                    element.classList.remove("hidden");
+                    hasVisibleLinks = true;
 
-                pendingFrame = requestAnimationFrame(() => {
-                    const query = searchQuery;
-
-                    const cardStates = Array.from(linkCards).map((card) => {
-                        const name = (
-                            card.getAttribute("data-name") || ""
-                        ).toLowerCase();
-                        const visible = name.includes(query);
-                        return { element: card, visible };
-                    });
-
-                    let hasVisibleLinks = false;
-                    const sectionMap = new Map();
-
-                    cardStates.forEach(({ element, visible }) => {
-                        if (visible) {
-                            element.classList.remove("hidden");
-                            hasVisibleLinks = true;
-
-                            const section = element.closest(".link-section");
-                            if (section) {
-                                const count = sectionMap.get(section) || 0;
-                                sectionMap.set(section, count + 1);
-                            }
-                        } else {
-                            element.classList.add("hidden");
-                        }
-                    });
-
-                    linkSections.forEach((section) => {
-                        const visibleCount = sectionMap.get(section) || 0;
-                        if (visibleCount === 0) {
-                            section.classList.add("hidden");
-                        } else {
-                            section.classList.remove("hidden");
-                        }
-                    });
-
-                    if (!hasVisibleLinks && query) {
-                        emptyState?.classList.remove("hidden");
-                        emptyState?.classList.add("flex");
-                    } else {
-                        emptyState?.classList.add("hidden");
-                        emptyState?.classList.remove("flex");
+                    const section = element.closest(".link-section");
+                    if (section) {
+                        const count = sectionMap.get(section) || 0;
+                        sectionMap.set(section, count + 1);
                     }
+                } else {
+                    element.classList.add("hidden");
+                }
+            });
 
-                    pendingFrame = null;
+            if (linkSections) {
+                linkSections.forEach((section) => {
+                    const visibleCount = sectionMap.get(section) || 0;
+                    if (visibleCount === 0) {
+                        section.classList.add("hidden");
+                    } else {
+                        section.classList.remove("hidden");
+                    }
                 });
             }
 
-            // Attach input listener to ALL search inputs with sync
-            searchInputs.forEach((input) => {
-                input.addEventListener(
-                    "input",
-                    (e) => {
-                        const target = e.target as HTMLInputElement;
-                        const value = target.value;
-                        searchQuery = value.trim().toLowerCase();
+            if (!hasVisibleLinks && query) {
+                emptyState?.classList.remove("hidden");
+                emptyState?.classList.add("flex");
+            } else {
+                emptyState?.classList.add("hidden");
+                emptyState?.classList.remove("flex");
+            }
 
-                        // Sync value to other inputs
-                        searchInputs.forEach((otherInput) => {
-                            if (otherInput !== target) {
-                                otherInput.value = value;
-                            }
-                        });
+            pendingFrame = null;
+        });
+    }
 
-                        performFilter();
-                    },
-                    true,
-                );
-            });
+    function initSearch() {
+        searchInputs = Array.from(document.querySelectorAll('[id^="search-input"]'))
+            .filter(el => el !== null);
 
-            // Keyboard Shortcut
-            document.addEventListener("keydown", (e) => {
+        linkSections = document.querySelectorAll(".link-section");
+        linkCards = document.querySelectorAll(".link-card-item");
+        emptyState = document.getElementById("empty-state");
+
+        if (searchInputs.length === 0) {
+            return;
+        }
+
+        if (linkCards) {
+            linkCards.forEach((card) => card.classList.remove("hidden"));
+        }
+
+        searchInputs.forEach((input) => {
+            input.addEventListener("input", (e) => {
+                try {
+                    const target = e.target;
+                    const value = target.value;
+                    searchQuery = value.trim().toLowerCase();
+
+                    searchInputs.forEach((otherInput) => {
+                        if (otherInput !== target) {
+                            otherInput.value = value;
+                        }
+                    });
+
+                    performFilter();
+                } catch (err) {
+                    console.error('[Search] Error in input event:', err);
+                }
+            }, true);
+        });
+
+        document.addEventListener("keydown", (e) => {
+            try {
                 if ((e.metaKey || e.ctrlKey) && e.key === "k") {
                     e.preventDefault();
 
-                    // Determine which input to focus based on viewport width
-                    // This avoids checking offsetParent/offsetWidth which forces reflow
-                    const isDesktop = window.innerWidth >= 1024; // lg breakpoint
-
+                    const isDesktop = window.innerWidth >= 1024;
                     const targetInputId = isDesktop
                         ? "search-input-desktop"
                         : "search-input-mobile";
@@ -327,29 +331,56 @@ try {
                     if (targetInput) {
                         targetInput.focus();
                     } else {
-                        // Fallback: try the other one if the expected one doesn't exist
                         const otherInputId = isDesktop
                             ? "search-input-mobile"
                             : "search-input-desktop";
-                        const otherInput =
-                            document.getElementById(otherInputId);
+                        const otherInput = document.getElementById(otherInputId);
                         if (otherInput) otherInput.focus();
                     }
                 }
-            });
-
-            // Initial filter (check value of first input found)
-            if (searchInputs[0] && searchInputs[0].value) {
-                searchQuery = searchInputs[0].value.trim().toLowerCase();
-                performFilter();
+            } catch (err) {
+                console.error('[Search] Error in keydown event:', err);
             }
-        }, 100); // 100ms delay
+        });
+
+        if (searchInputs[0] && searchInputs[0].value) {
+            searchQuery = searchInputs[0].value.trim().toLowerCase();
+            performFilter();
+        }
     }
 
-    // Initialize
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initSearch);
-    } else {
+    function doInit() {
+        if (initCalled) {
+            return;
+        }
+        initCalled = true;
+
         initSearch();
+
+        setTimeout(() => {
+            const inputs = document.querySelectorAll('[id^="search-input"]');
+            const cards = document.querySelectorAll('.link-card-item');
+
+            if (inputs.length > 0 && cards.length > 0) {
+                initCalled = false;
+                initSearch();
+            }
+        }, 500);
     }
+
+    try {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", doInit, { once: true });
+            document.addEventListener("readystatechange", () => {
+                if (document.readyState === "interactive" || document.readyState === "complete") {
+                    doInit();
+                }
+            }, { once: true });
+        } else {
+            setTimeout(doInit, 100);
+        }
+    } catch (err) {
+        console.error('[Search] Error in init:', err);
+    }
+})();
 </script>
