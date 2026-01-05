@@ -63,7 +63,6 @@
 
   <script>
     import type { SlotAnimator } from "../../lib/slot/slot-animator";
-    import confetti from "canvas-confetti";
 
     function initVerticalScrollPicker() {
       const overlay = document.getElementById("animation-overlay");
@@ -323,11 +322,11 @@
         );
       }
 
-      function fireConfetti() {
-        // Celebration confetti with candy colors!
+      async function fireConfetti() {
+        const module = await import('canvas-confetti');
+        const confetti = module.default;
         const colors = ["#a855f7", "#ec4899", "#14b8a6", "#fbbf24", "#f97316"];
 
-        // Burst from center
         confetti({
           particleCount: 100,
           spread: 70,
@@ -338,7 +337,6 @@
           scalar: 1.2,
         });
 
-        // Side bursts for extra celebration
         setTimeout(() => {
           confetti({
             particleCount: 50,

@@ -30,19 +30,6 @@ export default defineConfig({
     }),
     integrations: [
         icon(),
-        // Uncomment after installing astro-compress:
-        // import compress from 'astro-compress';
-        // compress({
-        //     CSS: true,
-        //     HTML: {
-        //         removeAttributeQuotes: false,
-        //         collapseWhitespace: true,
-        //         conservativeCollapse: true,
-        //     },
-        //     Image: false, // We handle images separately
-        //     JavaScript: true,
-        //     SVG: true,
-        // }),
     ],
     vite: {
         plugins: [tailwindcss()],

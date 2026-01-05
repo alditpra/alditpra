@@ -3,8 +3,6 @@
  * Enhanced converter library with advanced configuration
  */
 
-import * as XLSX from 'xlsx';
-
 // ============================================
 // Types
 // ============================================
@@ -89,6 +87,7 @@ export async function parseFile(file: File): Promise<ParsedTable> {
 
 async function parseExcelFile(file: File): Promise<ParsedTable> {
   const data = await file.arrayBuffer();
+  const XLSX = await import('xlsx');
   const workbook = XLSX.read(data, { type: 'array' });
 
   const sheetName = workbook.SheetNames[0];
@@ -449,7 +448,8 @@ export function exportToCSV(table: ConvertedTable, filename: string): void {
   downloadBlob(blob, filename.endsWith('.csv') ? filename : `${filename}.csv`);
 }
 
-export function exportToExcel(table: ConvertedTable, filename: string): void {
+export async function exportToExcel(table: ConvertedTable, filename: string): Promise<void> {
+  const XLSX = await import('xlsx');
   const rows = [table.headers, ...table.data];
 
   const worksheet = XLSX.utils.aoa_to_sheet(rows);
