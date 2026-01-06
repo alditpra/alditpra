@@ -17,12 +17,12 @@ export const candyColors = [
     name: "blue"
   },
   {
-    bg: "bg-candy-pink/20",
-    text: "text-[color:color-mix(in_srgb,var(--candy-pink),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-pink),white_40%)]",
-    border: "hover:border-candy-pink",
-    glow: "var(--candy-pink)",
-    hex: "var(--candy-pink)",
-    name: "pink"
+    bg: "bg-candy-lime/20",
+    text: "text-[color:color-mix(in_srgb,var(--candy-lime),black_40%)] dark:text-[color:color-mix(in_srgb,var(--candy-lime),white_30%)]",
+    border: "hover:border-candy-lime",
+    glow: "var(--candy-lime)",
+    hex: "var(--candy-lime)",
+    name: "lime"
   },
   {
     bg: "bg-candy-orange/20",

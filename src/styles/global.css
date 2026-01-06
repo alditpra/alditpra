@@ -20,7 +20,7 @@
   --candy-teal: #35e2c3;
   --candy-blue: #14d0f0;
   --candy-purple: #7f73ff;
-  --candy-pink: #ff83c3;
+  --candy-lime: #A3E635;
   --candy-orange: #FFAD5A;
 }
 
@@ -54,7 +54,7 @@ html.dark {
   --color-candy-teal: var(--candy-teal);
   --color-candy-blue: var(--candy-blue);
   --color-candy-purple: var(--candy-purple);
-  --color-candy-pink: var(--candy-pink);
+  --color-candy-lime: var(--candy-lime);
   --color-candy-orange: var(--candy-orange);
 }
 
@@ -69,7 +69,7 @@ html.dark body {
   background:
     radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.06) 0%, transparent 40%),
-    radial-gradient(circle at 50% 70%, rgba(255, 131, 195, 0.07) 0%, transparent 40%),
+      radial-gradient(circle at 50% 70%, rgba(163, 230, 53, 0.07) 0%, transparent 40%),
     radial-gradient(circle at 20% 80%, rgba(53, 226, 195, 0.05) 0%, transparent 35%),
     #0a0a0f !important;
 }
@@ -80,7 +80,7 @@ html.dark body {
     background:
       radial-gradient(circle at 15% 20%, rgba(127, 115, 255, 0.08) 0%, transparent 40%),
       radial-gradient(circle at 85% 30%, rgba(20, 208, 240, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 50% 70%, rgba(255, 131, 195, 0.07) 0%, transparent 40%),
+      radial-gradient(circle at 50% 70%, rgba(163, 230, 53, 0.07) 0%, transparent 40%),
       radial-gradient(circle at 20% 80%, rgba(53, 226, 195, 0.05) 0%, transparent 35%),
       #0a0a0f;
   }
@@ -125,6 +125,103 @@ html.dark .bg-candy-teal\/20 {
   background-color: rgba(53, 226, 195, 0.20) !important;
 }
 
-html.dark .bg-candy-pink\/20 {
-  background-color: rgba(255, 131, 195, 0.20) !important;
+html.dark .bg-candy-lime\/20 {
+  background-color: rgba(163, 230, 53, 0.20) !important;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+/* Glass card utilities */
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dark .glass-card {
+  background-color: rgba(24, 24, 27, 0.7);
+  border-color: rgba(63, 63, 70, 0.5);
+}
+
+.glass-card-sm {
+  padding: 1rem;
+}
+
+.glass-card-md {
+  padding: 1.5rem;
+}
+
+.glass-card-lg {
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .glass-card-lg {
+    padding: 2rem;
+  }
+}
+
+/* Candy color text utilities */
+.text-candy-purple-contrast {
+  color: color-mix(in srgb, var(--candy-purple), black 30%);
+}
+
+.dark .text-candy-purple-contrast {
+  color: color-mix(in srgb, var(--candy-purple), white 40%);
+}
+
+.text-candy-teal-contrast {
+  color: color-mix(in srgb, var(--candy-teal), black 40%);
+}
+
+.dark .text-candy-teal-contrast {
+  color: color-mix(in srgb, var(--candy-teal), white 40%);
+}
+
+.text-candy-orange-contrast {
+  color: color-mix(in srgb, var(--candy-orange), black 30%);
+}
+
+.dark .text-candy-orange-contrast {
+  color: color-mix(in srgb, var(--candy-orange), white 40%);
+}
+
+.text-candy-lime-contrast {
+  color: color-mix(in srgb, var(--candy-lime), black 40%);
+}
+
+.dark .text-candy-lime-contrast {
+  color: color-mix(in srgb, var(--candy-lime), white 30%);
+}
+
+/* Shadow glow utility */
+.shadow-candy-glow {
+  box-shadow: 0 0 25px -5px var(--theme-color, var(--candy-purple)), 0 8px 25px -10px var(--theme-color, var(--candy-purple));
+}
+
+/* Custom scrollbar utility */
+.scrollbar-candy {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(127, 115, 255, 0.3) transparent;
+}
+
+.scrollbar-candy::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-candy::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-candy::-webkit-scrollbar-thumb {
+  background-color: rgba(127, 115, 255, 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-candy::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(127, 115, 255, 0.5);
 }

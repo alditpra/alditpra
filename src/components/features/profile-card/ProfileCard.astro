@@ -78,10 +78,9 @@ const isSidebar = variant === "sidebar";
                         <h1
                             class={
                                 isSidebar
-                                    ? "text-xl font-extrabold tracking-tight mb-1"
-                                    : "text-3xl sm:text-4xl font-extrabold tracking-tight mb-1"
+                                    ? "text-xl font-extrabold tracking-tight mb-1 text-zinc-800 dark:text-zinc-100 profile-name"
+                                    : "text-3xl sm:text-4xl font-extrabold tracking-tight mb-1 text-zinc-800 dark:text-zinc-100 profile-name"
                             }
-                            style="color: var(--candy-purple); filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
                         >
                             {SITE_CONFIG.name}
                         </h1>
@@ -90,7 +89,7 @@ const isSidebar = variant === "sidebar";
 
                         {/* Mobile: Static Text (Performance Optimized) */}
                         <div class="mb-3 block sm:hidden">
-                            <p class="text-lg font-medium bg-gradient-to-r from-candy-blue to-candy-pink bg-clip-text text-transparent inline-block">
+                            <p class="text-lg font-medium bg-gradient-to-r from-candy-purple via-candy-blue to-candy-teal bg-clip-text text-transparent inline-block">
                                 {SITE_CONFIG.profilePhrases[0]}
                             </p>
                         </div>
@@ -103,8 +102,8 @@ const isSidebar = variant === "sidebar";
                                 id={`typewriter-text-${isSidebar ? "sidebar" : "default"}`}
                                 class={
                                     isSidebar
-                                        ? "text-sm font-medium bg-gradient-to-r from-candy-blue to-candy-pink bg-clip-text text-transparent inline-block"
-                                        : "text-lg sm:text-xl font-medium bg-gradient-to-r from-candy-blue to-candy-pink bg-clip-text text-transparent inline-block"
+                                        ? "text-sm font-medium bg-gradient-to-r from-candy-purple via-candy-blue to-candy-teal bg-clip-text text-transparent inline-block"
+                                        : "text-lg sm:text-xl font-medium bg-gradient-to-r from-candy-purple via-candy-blue to-candy-teal bg-clip-text text-transparent inline-block"
                                 }
                                 data-phrases={JSON.stringify(
                                     SITE_CONFIG.profilePhrases,
@@ -178,8 +177,7 @@ const isSidebar = variant === "sidebar";
                     <div class="flex-1 text-center">
                         {/* Name with static candy color */}
                         <h1
-                            class="text-xl font-extrabold tracking-tight mb-1"
-                            style="color: var(--candy-purple); filter: drop-shadow(0 2px 8px rgba(127, 115, 255, 0.2));"
+                            class="text-xl font-extrabold tracking-tight mb-1 text-zinc-800 dark:text-zinc-100 profile-name"
                         >
                             {SITE_CONFIG.name}
                         </h1>
@@ -188,7 +186,7 @@ const isSidebar = variant === "sidebar";
                         <div class="mb-3 h-6 flex items-center justify-center">
                             <p
                                 id="typewriter-text-sidebar"
-                                class="text-sm font-medium bg-gradient-to-r from-candy-blue to-candy-pink bg-clip-text text-transparent inline-block"
+                                class="text-sm font-medium bg-gradient-to-r from-candy-purple via-candy-blue to-candy-teal bg-clip-text text-transparent inline-block"
                                 data-phrases={JSON.stringify(
                                     SITE_CONFIG.profilePhrases,
                                 )}
@@ -341,6 +339,17 @@ const isSidebar = variant === "sidebar";
 </script>
 
 <style>
+    /* Profile name styling - Subtle shadow + micro hover */
+    .profile-name {
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: letter-spacing 0.3s ease, text-shadow 0.3s ease;
+        cursor: default;
+    }
+    .profile-name:hover {
+        letter-spacing: 0.02em;
+        text-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
     /* Blinking cursor animation */
     @keyframes blink {
         0%,

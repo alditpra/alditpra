@@ -110,7 +110,7 @@ Edit the candy color palette in `src/styles/global.css`:
   --candy-teal: #35e2c3;
   --candy-blue: #14d0f0;
   --candy-purple: #7f73ff;
-  --candy-pink: #ff83c3;
+  --candy-lime: #A3E635;
 }
 ```
 

@@ -5,6 +5,22 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
+/**
+ * Escape HTML to prevent XSS
+ */
+export function escapeHtml(text: string): string {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
+ * Sleep/delay utility
+ */
+export function sleep(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // groupByCategory moved to category-utils.ts
 
 /**

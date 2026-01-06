@@ -43,11 +43,11 @@
     {/* Latest selection (featured) */}
     <div
       id="latest-selection"
-      class="mb-6 p-6 rounded-2xl bg-gradient-to-br from-candy-purple/10 to-candy-pink/10 border-2 border-candy-purple/30"
+      class="mb-6 p-6 rounded-2xl bg-gradient-to-br from-candy-purple/10 to-candy-lime/10 border-2 border-candy-purple/30"
     >
       <div class="flex items-center gap-3 mb-3">
         <div
-          class="w-10 h-10 rounded-xl bg-gradient-to-br from-candy-purple to-candy-pink flex items-center justify-center"
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-candy-purple to-candy-lime flex items-center justify-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -277,7 +277,7 @@
     <div class="flex gap-3 mt-6">
       <button
         id="modal-download-btn"
-        class="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-candy-purple to-candy-pink
+        class="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-candy-purple to-candy-lime
                text-white font-semibold hover:scale-105 transition-transform"
       >
         Download
@@ -294,6 +294,7 @@
 </div>
 
 <script>
+  import { escapeHtml } from "../../lib/utils";
   import type { HistoryEntry } from "../../lib/slot/slot-animator";
   import { loadHistory } from "../../lib/slot/storage";
 
@@ -565,12 +566,6 @@
         minute: "2-digit",
         second: "2-digit",
       });
-    }
-
-    function escapeHtml(text: string): string {
-      const div = document.createElement("div");
-      div.textContent = text;
-      return div.innerHTML;
     }
   }
 

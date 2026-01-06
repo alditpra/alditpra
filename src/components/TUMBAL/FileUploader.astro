@@ -10,7 +10,7 @@
     id="tumbal-drop-zone"
     class="relative border-2 border-dashed border-zinc-400 dark:border-zinc-500 rounded-2xl p-8 text-center
            transition-all duration-300 cursor-pointer
-           hover:border-candy-pink hover:bg-candy-pink/5"
+           hover:border-candy-lime hover:bg-candy-lime/5"
   >
     <input
       type="file"
@@ -21,8 +21,8 @@
 
     {/* Upload icon */}
     <div id="tumbal-upload-icon" class="mb-4 pointer-events-none">
-      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-candy-pink/20 to-candy-purple/20 flex items-center justify-center">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-pink">
+      <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-candy-lime/20 to-candy-purple/20 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-candy-lime">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="17 8 12 3 7 8"/>
           <line x1="12" x2="12" y1="3" y2="15"/>
@@ -45,7 +45,7 @@
 
     {/* Loading state */}
     <div id="tumbal-upload-loading" class="hidden">
-      <div class="inline-block w-12 h-12 border-4 border-candy-pink/30 border-t-candy-pink rounded-full animate-spin mb-4"></div>
+      <div class="inline-block w-12 h-12 border-4 border-candy-lime/30 border-t-candy-lime rounded-full animate-spin mb-4"></div>
       <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">
         Memproses file...
       </p>
@@ -66,8 +66,8 @@
       <button
         type="button"
         id="tumbal-clear-btn"
-        class="px-5 py-2.5 rounded-xl bg-candy-pink/20 border border-candy-pink/30
-               text-[color:color-mix(in_srgb,var(--candy-pink),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-pink),white_40%)]
+        class="px-5 py-2.5 rounded-xl bg-candy-lime/20 border border-candy-lime/30
+               text-[color:color-mix(in_srgb,var(--candy-lime),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-lime),white_40%)]
                text-sm font-semibold hover:scale-105 transition-transform duration-200
                flex items-center gap-2 mx-auto"
       >
@@ -205,16 +205,16 @@
 
     dropZone?.addEventListener('dragover', (e) => {
       e.preventDefault();
-      dropZone.classList.add('border-candy-pink', 'bg-candy-pink/10', 'scale-[1.02]');
+      dropZone.classList.add('border-candy-lime', 'bg-candy-lime/10', 'scale-[1.02]');
     });
 
     dropZone?.addEventListener('dragleave', () => {
-      dropZone.classList.remove('border-candy-pink', 'bg-candy-pink/10', 'scale-[1.02]');
+      dropZone.classList.remove('border-candy-lime', 'bg-candy-lime/10', 'scale-[1.02]');
     });
 
     dropZone?.addEventListener('drop', (e) => {
       e.preventDefault();
-      dropZone.classList.remove('border-candy-pink', 'bg-candy-pink/10', 'scale-[1.02]');
+      dropZone.classList.remove('border-candy-lime', 'bg-candy-lime/10', 'scale-[1.02]');
       
       const files = e.dataTransfer?.files;
       if (files && files.length > 0) {
@@ -257,10 +257,5 @@
 <style>
   .animate-spin {
     animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
   }
 </style>

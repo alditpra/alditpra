@@ -6,14 +6,14 @@
     class="relative border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-2xl p-8 text-center
            transition-all duration-300 cursor-pointer
            hover:border-candy-purple hover:bg-candy-purple/5
-           drag-over:border-candy-pink drag-over:bg-candy-pink/10"
+           drag-over:border-candy-lime drag-over:bg-candy-lime/10"
   >
     <input type="file" id="file-input" accept=".xlsx,.csv" class="hidden" />
 
     {/* Upload icon */}
     <div id="upload-icon" class="mb-4">
       <div
-        class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-candy-purple/20 to-candy-pink/20 flex items-center justify-center"
+        class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-candy-purple/20 to-candy-lime/20 flex items-center justify-center"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -110,9 +110,9 @@
         <button
           type="button"
           id="delete-preview-btn"
-          class="p-2 rounded-lg bg-candy-pink/20 border border-candy-pink/30
-                 text-[color:color-mix(in_srgb,var(--candy-pink),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-pink),white_40%)]
-                 hover:scale-105 hover:shadow-[0_0_15px_-5px_var(--candy-pink)] transition-all
+          class="p-2 rounded-lg bg-candy-lime/20 border border-candy-lime/30
+                 text-[color:color-mix(in_srgb,var(--candy-lime),black_30%)] dark:text-[color:color-mix(in_srgb,var(--candy-lime),white_40%)]
+                 hover:scale-105 hover:shadow-[0_0_15px_-5px_var(--candy-lime)] transition-all
                  flex items-center gap-1.5"
           title="Hapus data"
         >
@@ -179,10 +179,12 @@
 </div>
 
 <script>
-  import { loadStudents } from "../../lib/slot/storage";
+  import { escapeHtml } from '../../lib/utils';
 
-  // Guard to prevent double initialization
   let isInitialized = false;
+  let currentStudents: any[] = [];
+  let currentFileName = "";
+  let isProcessing = false;
 
   function initFileUploader() {
     if (isInitialized) {
@@ -218,16 +220,16 @@
       e.preventDefault();
       dropZone.classList.add(
         "drag-over",
-        "border-candy-pink",
-        "bg-candy-pink/10",
+        "border-candy-lime",
+        "bg-candy-lime/10",
       );
     });
 
     dropZone?.addEventListener("dragleave", () => {
       dropZone.classList.remove(
         "drag-over",
-        "border-candy-pink",
-        "bg-candy-pink/10",
+        "border-candy-lime",
+        "bg-candy-lime/10",
       );
     });
 
@@ -235,8 +237,8 @@
       e.preventDefault();
       dropZone.classList.remove(
         "drag-over",
-        "border-candy-pink",
-        "bg-candy-pink/10",
+        "border-candy-lime",
+        "bg-candy-lime/10",
       );
 
       const files = e.dataTransfer?.files;
@@ -312,12 +314,6 @@
           )
           .join("");
       }
-    }
-
-    function escapeHtml(text: string): string {
-      const div = document.createElement("div");
-      div.textContent = text;
-      return div.innerHTML;
     }
 
     function clearFile() {
@@ -503,15 +499,6 @@
 <style>
   .drag-over {
     transform: scale(1.02);
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
   }
 
   .animate-spin {

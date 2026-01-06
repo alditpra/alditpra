@@ -18,7 +18,7 @@
 
   <div class="mt-4 flex items-center justify-between">
     <div class="flex items-center gap-4">
-      <span id="name-count" class="px-4 py-2 rounded-xl bg-gradient-to-r from-candy-purple/20 to-candy-pink/20 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+      <span id="name-count" class="px-4 py-2 rounded-xl bg-gradient-to-r from-candy-purple/20 to-candy-lime/20 text-sm font-semibold text-zinc-700 dark:text-zinc-300">
         0 nama
       </span>
       
@@ -49,6 +49,8 @@
 </div>
 
 <script>
+  import { escapeHtml } from "../../lib/utils";
+
   function initManualInput() {
     const manualInput = document.getElementById('manual-input') as HTMLTextAreaElement;
     const nameCount = document.getElementById('name-count');
@@ -154,13 +156,6 @@
       validationMessage?.classList.add('hidden');
       window.dispatchEvent(new CustomEvent('students-cleared'));
     });
-
-    // Utility function to escape HTML
-    function escapeHtml(text: string): string {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
   }
 
   // Auto-initialize

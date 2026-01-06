@@ -77,6 +77,7 @@ sepertinya bukan{/* Confirmation modal for selected student */}
 </div>
 
 <script>
+  import { sleep } from "../../lib/utils";
   import type { SlotAnimator } from '../../lib/slot/slot-animator';
 
   function initConfirmationModal() {
@@ -225,10 +226,6 @@ sepertinya bukan{/* Confirmation modal for selected student */}
         window.dispatchEvent(new CustomEvent('selection-complete'));
       }
     });
-
-    function sleep(ms: number): Promise<void> {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
   }
 
   // Auto-initialize
