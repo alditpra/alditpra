@@ -1,3 +1,7 @@
+# Project-specific guides (internal use)
+AGENTS.md
+CODEBASE_GUIDE.md
+
 # Dependencies
 node_modules
 package-lock.json
@@ -10,6 +14,7 @@ dist
 .astro
 .netlify
 .output
+.vercel/app
 
 # Environment files
 .env
@@ -23,9 +28,17 @@ dist
 *.swp
 *.swo
 *~
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 desktop.ini
 
@@ -36,6 +49,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.vercel/logs
 
 # Test coverage
 coverage
@@ -45,10 +59,32 @@ coverage
 .cache
 .parcel-cache
 .turbo
+.vite
+.next
+.turbo
+
+# TypeScript
+*.tsbuildinfo
+*.d.ts.map
+
+# Astro 5.0 specific
+.astro/cache
+astro.config.mjs.timestamp-*
+
+# Image optimization temporary
+*.original.*
+_optimized_images/
+
+# AI/LLM tools
+.gemini
+.cursor
+.claude
 
 # Temporary files
 *.tmp
 .temp
+*.bak
+*.swp
 
 # LibreOffice/OpenOffice lock files
 .~lock.*#
