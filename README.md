@@ -7,7 +7,7 @@
 
 ## ⚡ Performance First
 
-![Perfect Lighthouse Score](public/lighthouse-score.png)
+![Perfect Lighthouse Score](public/docs/lighthouse-score.webp)
 
 > Achieving **100/100** across Performance, Accessibility, Best Practices, and SEO on mobile!
 
@@ -25,7 +25,7 @@
 
 ## 🔄 How It Works
 
-![Workflow Diagram](public/workflow.png)
+![Workflow Diagram](public/docs/workflow.webp)
 
 ## 🛠️ Tech Stack
 

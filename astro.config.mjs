@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // https://astro.build/config
 export default defineConfig({
     output: 'server',
-    prefetch: false, // Disable prefetch to avoid performance issues with many links
+    prefetch: true, // Enable prefetch for instant navigation (hover-based by default)
     build: {
         inlineStylesheets: 'always', // Inline semua CSS ke HTML - tidak ada external CSS blocking
     },

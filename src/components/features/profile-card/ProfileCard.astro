@@ -3,6 +3,7 @@ import { SITE_CONFIG } from "../../../lib/constants";
 import SocialLinks from "./SocialLinks.astro";
 import SearchBar from "../../ui/SearchBar.astro";
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 
 interface Props {
     variant?: "default" | "sidebar";
@@ -43,17 +44,11 @@ const isSidebar = variant === "sidebar";
                         <div class="relative">
                             {/* Avatar Container - no shadow */}
                             <div class="relative rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3">
-                                <img
-                                    srcset="/avatar-desktop.webp 208w, /avatar-mobile.webp 308w"
-                                    sizes={
-                                        isSidebar
-                                            ? "60px"
-                                            : "(min-width: 640px) 104px, 154px"
-                                    }
+                                <Image
                                     src="/avatar-desktop.webp"
                                     alt={SITE_CONFIG.name}
-                                    width={isSidebar ? 120 : 208}
-                                    height={isSidebar ? 120 : 208}
+                                    width={208}
+                                    height={208}
                                     class={
                                         isSidebar
                                             ? "w-16 h-16 rounded-full object-cover border-3 border-white"
@@ -155,9 +150,7 @@ const isSidebar = variant === "sidebar";
                         <div class="relative">
                             {/* Avatar Container - no shadow */}
                             <div class="relative rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3">
-                                <img
-                                    srcset="/avatar-desktop.webp 208w, /avatar-mobile.webp 308w"
-                                    sizes="60px"
+                                <Image
                                     src="/avatar-desktop.webp"
                                     alt={SITE_CONFIG.name}
                                     width={120}

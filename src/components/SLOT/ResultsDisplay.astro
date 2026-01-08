@@ -412,14 +412,11 @@
     }
 
     function downloadXLSX(history: HistoryEntry[]) {
-      showDownloadForm((className, courseName) => {
-        // Use SheetJS from CDN
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js";
-        script.onload = () => {
-          const XLSX = (window as any).XLSX;
-
+      showDownloadForm(async (className, courseName) => {
+        try {
+          // Dynamic import from node_modules (lazy loaded)
+          const XLSX = await import("xlsx");
+          
           const data = history.map((entry) => ({
             No: entry.selectionNumber,
             Nama: entry.name,
@@ -433,8 +430,10 @@
 
           const filename = generateFilename(className, courseName, "xlsx");
           XLSX.writeFile(wb, filename);
-        };
-        document.head.appendChild(script);
+        } catch (error) {
+          console.error("Failed to load xlsx:", error);
+          alert("Gagal memuat modul export Excel. Silakan coba lagi.");
+        }
       });
     }
 
